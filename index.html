@@ -189,6 +189,12 @@ input[type=text]:focus, textarea:focus{border-color:var(--accent); outline:2px s
 .save.saved .d{background:var(--accent)}
 @keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
 
+/* ---------- значок синхронизации ---------- */
+.cloud-btn.muted{color:var(--muted)}
+.cloud-btn.ok{color:var(--accent)}
+.cloud-btn.warn{color:var(--warn)}
+.cloud-btn.busy{color:var(--accent); animation:pulse 1.1s infinite}
+
 /* ---------- модалка ---------- */
 .modal{position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center; padding:16px}
 .modal-bg{position:absolute; inset:0; background:rgba(0,0,0,.45)}
@@ -230,17 +236,45 @@ input[type=text]:focus, textarea:focus{border-color:var(--accent); outline:2px s
 <div class="toasts" id="toasts"></div>
 <script>
 /* =====================================================================
-   Подготовка к поединку. Версия клиента 0.1
-   Один файл, ни одной внешней зависимости, ни одного сетевого запроса.
+   Подготовка к поединку.
+   Трек А, версия клиента 0.1. Трек Б, синхронизация 0.1.
+   Один файл, ни одной внешней зависимости и ни одного стороннего скрипта.
+   Сеть трогается только ради вашего файла на Google Диске: вход и Drive API.
    Хранение: только IndexedDB, никаких ключ-значение хранилищ браузера.
    ===================================================================== */
 'use strict';
+
+/* ---------------------------------------------------------------------
+   0. ВОЗВРАТ ИЗ ОКНА ВХОДА GOOGLE.
+   Должен отработать раньше всего остального: окно входа возвращается
+   на этот же адрес и должно немедленно отдать токен и закрыться.
+   --------------------------------------------------------------------- */
+var OAUTH_RETURN = null;
+var IS_OAUTH_POPUP = false;
+(function () {
+  var h = String(window.location.hash || '');
+  if (h.indexOf('access_token=') < 0 && h.indexOf('error=') < 0) return;
+  var p = {}, parts = h.replace(/^#/, '').split('&'), i, kv;
+  for (i = 0; i < parts.length; i++) {
+    kv = parts[i].split('=');
+    if (kv[0]) p[decodeURIComponent(kv[0])] = decodeURIComponent(kv[1] || '');
+  }
+  try { window.history.replaceState(null, '', window.location.pathname + window.location.search); } catch (e) {}
+  if (window.opener && window.opener !== window) {
+    IS_OAUTH_POPUP = true;
+    try { window.opener.postMessage({ ppOAuth: p }, window.location.origin); } catch (e) {}
+    try { window.close(); } catch (e) {}
+    return;
+  }
+  OAUTH_RETURN = p; // вход прошел без отдельного окна, разберет App при запуске
+})();
 
 /* ---------------------------------------------------------------------
    1. КОНСТАНТЫ. Все пороги ТЗ собраны здесь и больше нигде не повторяются.
    --------------------------------------------------------------------- */
 var C = {
   APP_VERSION: '0.1',
+  SYNC_VERSION: '0.1',
   SCHEMA: 2,                 // версия схемы данных, раздел 5 ТЗ
   DB_NAME: 'poedinok-prep',  // раздел 3 ТЗ
   DB_VERSION: 1,
@@ -259,7 +293,20 @@ var C = {
   HISTORY_PER_SITUATION: 200,// раздел 11 ТЗ
 
   SHORT_MAX: 3,              // длина короткой метки роли
-  TITLE_DEFAULT: 'Без названия'
+  TITLE_DEFAULT: 'Без названия',
+
+  /* Синхронизация, раздел 9 ТЗ. Единственные адреса, к которым
+     приложение вообще обращается. */
+  CLOUD: {
+    CLIENT_ID: '350074658152-jep00j22rmer4pq61p055d80o5omp7m4.apps.googleusercontent.com',
+    SCOPE: 'https://www.googleapis.com/auth/drive.file',
+    AUTH_URL: 'https://accounts.google.com/o/oauth2/v2/auth',
+    API: 'https://www.googleapis.com/drive/v3',
+    UPLOAD: 'https://www.googleapis.com/upload/drive/v3',
+    FOLDER: 'Подготовка к поединку',
+    FILE: 'poedinok-prep.json',
+    IDLE_SYNC_MS: 20000      // раздел 9.2: через 20 секунд после последней правки
+  }
 };
 
 /* ---------------------------------------------------------------------
@@ -345,7 +392,17 @@ var Schema = {
       roundMinutes: 5,
       theme: 'auto',
       expressMode: false,
-      cloud: { provider: 'google', connected: false, lastSync: 0 }
+      /* Блок синхронизации свой у каждого устройства и в облако не уходит:
+         номер файла общий, а состояние подключения местное. */
+      cloud: {
+        provider: 'google',
+        connected: false,
+        lastSync: 0,
+        folderId: '',
+        fileId: '',
+        lastVersion: 0,
+        pendingLocal: false
+      }
     };
   },
 
@@ -530,7 +587,11 @@ var Schema = {
       cloud: {
         provider: String((st.cloud && st.cloud.provider) || def.cloud.provider),
         connected: !!(st.cloud && st.cloud.connected),
-        lastSync: Number(st.cloud && st.cloud.lastSync) || 0
+        lastSync: Number(st.cloud && st.cloud.lastSync) || 0,
+        folderId: String((st.cloud && st.cloud.folderId) || ''),
+        fileId: String((st.cloud && st.cloud.fileId) || ''),
+        lastVersion: Number(st.cloud && st.cloud.lastVersion) || 0,
+        pendingLocal: !!(st.cloud && st.cloud.pendingLocal)
       }
     };
 
@@ -932,6 +993,7 @@ var Storage = (function () {
     },
 
     /* ---- служебное ---- */
+    current: function () { return root; },   // кеш без промиса, для тех, кто уже дождался load
     flush: flush,
     saveState: function () { return saveState; },
     hasPending: hasPending,
@@ -939,6 +1001,450 @@ var Storage = (function () {
     useAdapter: function (a) { adapter = a; }
   };
 })();
+/* ---------------------------------------------------------------------
+   6a. GoogleAuth. Вход без сторонних библиотек.
+   Окно входа открывается на адрес Google, возвращается на наш же адрес
+   с токеном в хвосте ссылки. Токен живет только в памяти вкладки:
+   ни в базе, ни в ключ-значение хранилищах он не оседает.
+   --------------------------------------------------------------------- */
+var GoogleAuth = (function () {
+  var token = null;      // { value, exp }
+  var stateKey = '';
+  var waiting = null;    // { resolve, reject, timer }
+
+  function redirectUri() {
+    // должен совпасть с зарегистрированным в консоли Google буква в букву
+    var p = window.location.pathname.replace(/index\.html$/i, '');
+    return window.location.origin + p;
+  }
+
+  function authUrl() {
+    stateKey = U.id('st_') + U.id('');
+    var q = [
+      'client_id=' + encodeURIComponent(C.CLOUD.CLIENT_ID),
+      'redirect_uri=' + encodeURIComponent(redirectUri()),
+      'response_type=token',
+      'scope=' + encodeURIComponent(C.CLOUD.SCOPE),
+      'include_granted_scopes=true',
+      'state=' + encodeURIComponent(stateKey)
+    ];
+    return C.CLOUD.AUTH_URL + '?' + q.join('&');
+  }
+
+  function accept(p) {
+    if (!p) return;
+    if (p.state && stateKey && p.state !== stateKey) {
+      finish(null, new Error('Ответ входа не совпал с запросом'));
+      return;
+    }
+    if (p.error) {
+      finish(null, new Error(p.error === 'access_denied' ? 'Вход отменен' : ('Google вернул ошибку: ' + p.error)));
+      return;
+    }
+    if (!p.access_token) return;
+    token = {
+      value: p.access_token,
+      exp: U.now() + (Number(p.expires_in) || 3600) * 1000 - 60000
+    };
+    finish(token, null);
+  }
+
+  function finish(tok, err) {
+    if (!waiting) return;
+    var w = waiting;
+    waiting = null;
+    if (w.timer) clearTimeout(w.timer);
+    if (err) w.reject(err); else w.resolve(tok);
+  }
+
+  window.addEventListener('message', function (ev) {
+    if (ev.origin !== window.location.origin) return;
+    if (!ev.data || !ev.data.ppOAuth) return;
+    accept(ev.data.ppOAuth);
+  });
+
+  return {
+    redirectUri: redirectUri,
+    authUrl: authUrl,
+    accept: accept,
+
+    has: function () { return !!token && token.exp > U.now(); },
+    value: function () { return token ? token.value : ''; },
+    drop: function () { token = null; },
+
+    /* Вход. Вызывается только по нажатию кнопки: без жеста браузер
+       не даст открыть окно. Если окно заблокировано, уходим на вход
+       прямо этой вкладкой, правки к этому моменту уже сохранены. */
+    signIn: function () {
+      if (GoogleAuth.has()) return Promise.resolve(token);
+      if (!C.CLOUD.CLIENT_ID) return Promise.reject(new Error('Идентификатор клиента Google не задан в коде приложения'));
+      var url = authUrl();
+      var win = null;
+      try {
+        win = window.open(url, 'pp_google_auth', 'width=520,height=680,menubar=no,toolbar=no');
+      } catch (e) { win = null; }
+      if (!win) {
+        return Storage.flush().catch(function () {}).then(function () {
+          window.location.href = url;
+          return new Promise(function () {});
+        });
+      }
+      return new Promise(function (resolve, reject) {
+        waiting = { resolve: resolve, reject: reject, timer: null };
+        waiting.timer = setTimeout(function () {
+          finish(null, new Error('Вход не завершен за две минуты'));
+        }, 120000);
+        var watch = setInterval(function () {
+          if (win.closed) {
+            clearInterval(watch);
+            setTimeout(function () { finish(null, new Error('Окно входа закрыто')); }, 400);
+          }
+          if (!waiting) clearInterval(watch);
+        }, 500);
+      });
+    }
+  };
+})();
+
+/* ---------------------------------------------------------------------
+   6b. Drive. Три операции: найти, прочитать, записать.
+   Область доступа drive.file: приложение видит только то, что создало само.
+   --------------------------------------------------------------------- */
+var Drive = (function () {
+  function req(url, opts) {
+    opts = opts || {};
+    opts.headers = opts.headers || {};
+    opts.headers.Authorization = 'Bearer ' + GoogleAuth.value();
+    if (!navigator.onLine) return Promise.reject(mkErr('offline', 'Нет связи'));
+    return fetch(url, opts).then(function (r) {
+      if (r.status === 401 || r.status === 403) {
+        GoogleAuth.drop();
+        return Promise.reject(mkErr('needauth', 'Доступ к Диску потерян, нужен вход заново'));
+      }
+      if (!r.ok) {
+        return r.text().then(function (t) {
+          return Promise.reject(mkErr('api', 'Диск ответил ' + r.status + '. ' + String(t).slice(0, 160)));
+        });
+      }
+      return r;
+    }, function () {
+      return Promise.reject(mkErr('offline', 'Нет связи с Диском'));
+    });
+  }
+
+  function mkErr(code, msg) {
+    var e = new Error(msg);
+    e.code = code;
+    return e;
+  }
+
+  function list(q) {
+    var url = C.CLOUD.API + '/files?q=' + encodeURIComponent(q) +
+      '&spaces=drive&fields=' + encodeURIComponent('files(id,name,modifiedTime)') + '&pageSize=10';
+    return req(url).then(function (r) { return r.json(); }).then(function (j) { return j.files || []; });
+  }
+
+  return {
+    mkErr: mkErr,
+
+    findFolder: function (name) {
+      return list("name='" + name + "' and mimeType='application/vnd.google-apps.folder' and trashed=false")
+        .then(function (f) { return f.length ? f[0].id : ''; });
+    },
+
+    createFolder: function (name) {
+      return req(C.CLOUD.API + '/files?fields=id', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+        body: JSON.stringify({ name: name, mimeType: 'application/vnd.google-apps.folder' })
+      }).then(function (r) { return r.json(); }).then(function (j) { return j.id; });
+    },
+
+    findFile: function (folderId, name) {
+      return list("'" + folderId + "' in parents and name='" + name + "' and trashed=false")
+        .then(function (f) { return f.length ? f[0].id : ''; });
+    },
+
+    read: function (fileId) {
+      return req(C.CLOUD.API + '/files/' + encodeURIComponent(fileId) + '?alt=media')
+        .then(function (r) { return r.text(); })
+        .then(function (t) {
+          try { return JSON.parse(t); }
+          catch (e) { throw mkErr('bad-file', 'Файл на Диске поврежден и не читается как JSON'); }
+        });
+    },
+
+    create: function (folderId, name, obj) {
+      var b = '-------pp' + U.id('b');
+      var meta = { name: name, mimeType: 'application/json', parents: [folderId] };
+      var body =
+        '--' + b + '\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n' + JSON.stringify(meta) +
+        '\r\n--' + b + '\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n' + JSON.stringify(obj) +
+        '\r\n--' + b + '--';
+      return req(C.CLOUD.UPLOAD + '/files?uploadType=multipart&fields=id', {
+        method: 'POST',
+        headers: { 'Content-Type': 'multipart/related; boundary=' + b },
+        body: body
+      }).then(function (r) { return r.json(); }).then(function (j) { return j.id; });
+    },
+
+    update: function (fileId, obj) {
+      return req(C.CLOUD.UPLOAD + '/files/' + encodeURIComponent(fileId) + '?uploadType=media&fields=id', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json; charset=UTF-8' },
+        body: JSON.stringify(obj)
+      }).then(function (r) { return r.json(); }).then(function (j) { return j.id; });
+    }
+  };
+})();
+
+/* ---------------------------------------------------------------------
+   6c. Cloud. Зеркало состояния в файле на Диске.
+   Раздел 9.2 ТЗ: четыре точки обмена, фонового опроса нет.
+   Раздел 9.4: автоматического слияния нет, при расхождении спрашиваем.
+   --------------------------------------------------------------------- */
+var Cloud = (function () {
+  var st = 'off';        // off | idle | busy | offline | needauth | conflict | error
+  var lastError = '';
+  var subs = [];
+  var pushTimer = null;
+  var running = false;
+  var askConflict = null; // App подставляет сюда свой вопрос пользователю
+
+  function emit() { subs.forEach(function (fn) { try { fn(st, lastError); } catch (e) {} }); }
+  function set(s, err) {
+    st = s;
+    lastError = err || '';
+    emit();
+  }
+
+  function cfg() {
+    var r = Storage.current();
+    return (r && r.settings && r.settings.cloud) || Schema.newSettings().cloud;
+  }
+  function saveCfg(patch) {
+    var k;
+    for (k in patch) Storage.setSetting('cloud.' + k, patch[k]);
+  }
+
+  function deviceName() {
+    var ua = navigator.userAgent || '';
+    var os = /iPhone/.test(ua) ? 'iPhone' : /iPad/.test(ua) ? 'iPad' :
+      /Android/.test(ua) ? 'Android' : /Mac OS X/.test(ua) ? 'Mac' :
+        /Windows/.test(ua) ? 'Windows' : 'браузер';
+    var br = /CriOS|Chrome/.test(ua) ? 'Chrome' : /Firefox/.test(ua) ? 'Firefox' :
+      /Safari/.test(ua) ? 'Safari' : 'браузер';
+    return br + ' на ' + os;
+  }
+
+  /* Что уходит в облако. Блок настроек синхронизации остается местным:
+     у каждого устройства свой номер файла, свой токен и свое состояние. */
+  function payload(root, version) {
+    var state = U.clone(root);
+    delete state.settings.cloud;
+    return {
+      app: 'poedinok-prep',
+      format: 1,
+      version: version,
+      device: deviceName(),
+      savedAt: U.now(),
+      state: state
+    };
+  }
+
+  function unpack(file, localRoot) {
+    if (!file || file.app !== 'poedinok-prep' || !file.state) {
+      throw Drive.mkErr('bad-file', 'Это не файл приложения «Подготовка к поединку»');
+    }
+    var next = Schema.migrate(file.state);
+    next.settings.cloud = U.clone(localRoot.settings.cloud); // местное не трогаем
+    return next;
+  }
+
+  /* Чистое решение о том, что делать. Вынесено отдельно, чтобы проверять без сети. */
+  function decide(remoteVersion, lastVersion, pendingLocal) {
+    if (remoteVersion === null) return 'create';
+    if (remoteVersion === lastVersion) return pendingLocal ? 'push' : 'nothing';
+    if (remoteVersion > lastVersion) return pendingLocal ? 'ask' : 'pull';
+    return 'push'; // в облаке версия старше нашей: наша новее, дописываем
+  }
+
+  function ensurePlace() {
+    var c = cfg();
+    if (c.folderId && c.fileId) return Promise.resolve();
+    return Promise.resolve(c.folderId || Drive.findFolder(C.CLOUD.FOLDER))
+      .then(function (fid) { return fid || Drive.createFolder(C.CLOUD.FOLDER); })
+      .then(function (fid) {
+        saveCfg({ folderId: fid });
+        return Drive.findFile(fid, C.CLOUD.FILE);
+      })
+      .then(function (id) { saveCfg({ fileId: id || '' }); });
+  }
+
+  function readRemote() {
+    var c = cfg();
+    if (!c.fileId) return Promise.resolve(null);
+    return Drive.read(c.fileId);
+  }
+
+  function writeRemote(root, version) {
+    var c = cfg();
+    var obj = payload(root, version);
+    var p = c.fileId ? Drive.update(c.fileId, obj) : Drive.create(c.folderId, C.CLOUD.FILE, obj);
+    return p.then(function (id) {
+      saveCfg({ fileId: id, lastVersion: version, lastSync: U.now(), pendingLocal: false });
+      return version;
+    });
+  }
+
+  /* Одна попытка обмена. reason: 'open' | 'focus' | 'idle' | 'hide' | 'manual' */
+  function sync(reason) {
+    var c = cfg();
+    if (!c.connected) return Promise.resolve('off');
+    if (running) return Promise.resolve('busy');
+    if (!navigator.onLine) { set('offline'); return Promise.resolve('offline'); }
+    if (!GoogleAuth.has()) { set('needauth'); return Promise.resolve('needauth'); }
+
+    running = true;
+    set('busy');
+    var root;
+    return Storage.load()
+      .then(function (r) { root = r; return Storage.flush().catch(function () {}); })
+      .then(ensurePlace)
+      .then(readRemote)
+      .then(function (remote) {
+        var c2 = cfg();
+        var remoteVersion = remote ? (Number(remote.version) || 0) : null;
+        var action = decide(remoteVersion, Number(c2.lastVersion) || 0, !!c2.pendingLocal);
+
+        if (action === 'nothing') { saveCfg({ lastSync: U.now() }); return 'ok'; }
+        if (action === 'create') return writeRemote(root, 1).then(function () { return 'ok'; });
+        if (action === 'push') return writeRemote(root, (remoteVersion || 0) + 1).then(function () { return 'ok'; });
+        if (action === 'pull') {
+          var next = unpack(remote, root);
+          return Storage.replaceAll(next).then(function () {
+            saveCfg({ lastVersion: remoteVersion, lastSync: U.now(), pendingLocal: false });
+            return 'pulled';
+          });
+        }
+        // расхождение: молча не решаем, спрашиваем
+        set('conflict');
+        if (!askConflict) return 'conflict';
+        return askConflict({
+          remoteVersion: remoteVersion,
+          localVersion: Number(c2.lastVersion) || 0,
+          device: remote.device || '',
+          savedAt: Number(remote.savedAt) || 0
+        }).then(function (answer) {
+          if (answer === 'remote') {
+            var next2 = unpack(remote, root);
+            return Storage.replaceAll(next2).then(function () {
+              saveCfg({ lastVersion: remoteVersion, lastSync: U.now(), pendingLocal: false });
+              return 'pulled';
+            });
+          }
+          if (answer === 'local') {
+            return writeRemote(root, remoteVersion + 1).then(function () { return 'ok'; });
+          }
+          return 'conflict';
+        });
+      })
+      .then(function (res) {
+        running = false;
+        if (res === 'conflict') set('conflict');
+        else set('idle');
+        return res;
+      })
+      .catch(function (e) {
+        running = false;
+        if (e && e.code === 'offline') set('offline');
+        else if (e && e.code === 'needauth') set('needauth');
+        else set('error', e && e.message ? e.message : String(e));
+        return 'error';
+      });
+  }
+
+  return {
+    decide: decide,
+    payload: payload,
+    unpack: unpack,
+    deviceName: deviceName,
+
+    state: function () { return st; },
+    error: function () { return lastError; },
+    subscribe: function (fn) { subs.push(fn); return function () { var i = subs.indexOf(fn); if (i >= 0) subs.splice(i, 1); }; },
+    onConflict: function (fn) { askConflict = fn; },
+
+    connected: function () { return !!cfg().connected; },
+    sync: sync,
+
+    /* Первое подключение. Раздел 9.5 ТЗ. */
+    connect: function () {
+      return GoogleAuth.signIn().then(function () {
+        Storage.setSetting('cloud.connected', true);
+        Storage.setSetting('cloud.provider', 'google');
+        return sync('open');
+      });
+    },
+
+    signInAgain: function () {
+      return GoogleAuth.signIn().then(function () { return sync('manual'); });
+    },
+
+    disconnect: function () {
+      GoogleAuth.drop();
+      Storage.setSetting('cloud.connected', false);
+      Storage.setSetting('cloud.fileId', '');
+      Storage.setSetting('cloud.folderId', '');
+      Storage.setSetting('cloud.lastVersion', 0);
+      Storage.setSetting('cloud.pendingLocal', false);
+      set('off');
+      return Storage.flush().catch(function () {});
+    },
+
+    /* Правка данных: помечаем, что местное ушло вперед, и через 20 секунд
+       тишины отправляем. Раздел 9.2, точка 3. */
+    touched: function () {
+      if (!cfg().connected) return;
+      if (!cfg().pendingLocal) Storage.setSetting('cloud.pendingLocal', true);
+      if (pushTimer) clearTimeout(pushTimer);
+      pushTimer = setTimeout(function () {
+        pushTimer = null;
+        sync('idle');
+      }, C.CLOUD.IDLE_SYNC_MS);
+    },
+
+    flushNow: function (reason) {
+      if (pushTimer) { clearTimeout(pushTimer); pushTimer = null; }
+      return sync(reason || 'manual');
+    }
+  };
+})();
+
+/* ---------------------------------------------------------------------
+   6d. CloudAdapter. Тот же интерфейс, что у LocalAdapter (раздел 4 ТЗ):
+   IndexedDB остается основным хранилищем, облако добавляется сверху.
+   --------------------------------------------------------------------- */
+function makeCloudAdapter(base) {
+  return {
+    name: 'cloud',
+    init: function () { return base.init(); },
+    write: function (batch) {
+      return base.write(batch).then(function (r) {
+        var onlyCloudMeta = !batch.situations.length && !batch.removed.length && !batch.history.length;
+        if (!onlyCloudMeta) Cloud.touched();
+        return r;
+      });
+    },
+    replaceAll: function (root) { return base.replaceAll(root); },
+    status: function () {
+      var s = Cloud.state();
+      if (s === 'off') return 'local';
+      if (s === 'offline' || s === 'needauth' || s === 'error') return 'cloud-offline';
+      return 'cloud-online';
+    }
+  };
+}
 /* ---------------------------------------------------------------------
    7. Иконки. Только inline SVG, эмодзи в интерфейсе не используются.
    --------------------------------------------------------------------- */
@@ -960,7 +1466,12 @@ var Icons = (function () {
     check: '<path d="M4 12l5 5L20 6"/>',
     close: '<path d="M6 6l12 12M18 6L6 18"/>',
     doc: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/>',
-    wand: '<path d="M5 19l9-9M14 5l1.5 1.5M19 10l1.5 1.5M15 4l-1 2 2-1zM19 14l-1 2 2-1z"/>'
+    wand: '<path d="M5 19l9-9M14 5l1.5 1.5M19 10l1.5 1.5M15 4l-1 2 2-1zM19 14l-1 2 2-1z"/>',
+    cloud: '<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.5-1A3.9 3.9 0 0121 13a4 4 0 01-4 5z"/>',
+    cloud_ok: '<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.5-1A3.9 3.9 0 0121 13a4 4 0 01-4 5z"/><path d="M9.5 14l2 2 3.5-4"/>',
+    cloud_off: '<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.5-1A3.9 3.9 0 0121 13a4 4 0 01-4 5z"/><path d="M4 3l16 18"/>',
+    cloud_sync: '<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.5-1A3.9 3.9 0 0121 13a4 4 0 01-4 5z"/><path d="M10 14.5h3.5M13 12.5l1.5 2-1.5 2"/>',
+    cloud_alert: '<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.5-1A3.9 3.9 0 0121 13a4 4 0 01-4 5z"/><path d="M12 11v3M12 16.5v.5"/>'
   };
   return function (name, size) {
     var s = size || 20;
@@ -1213,6 +1724,23 @@ var View = (function () {
       '<span class="t">' + txt + '</span></span>';
   }
 
+  /* Значок состояния синхронизации. Раздел 9.2 ТЗ. */
+  var CLOUD_LOOK = {
+    off: { icon: 'cloud_off', cls: 'muted', text: 'Синхронизация выключена' },
+    idle: { icon: 'cloud_ok', cls: 'ok', text: 'Синхронизировано с Диском' },
+    busy: { icon: 'cloud_sync', cls: 'busy', text: 'Обмен с Диском' },
+    offline: { icon: 'cloud_off', cls: 'muted', text: 'Нет связи, работаем на устройстве' },
+    needauth: { icon: 'cloud_alert', cls: 'warn', text: 'Нужен вход в Google' },
+    conflict: { icon: 'cloud_alert', cls: 'warn', text: 'Расхождение с облаком' },
+    error: { icon: 'cloud_alert', cls: 'warn', text: 'Синхронизация не удалась' }
+  };
+
+  function cloudBtn(state) {
+    var look = CLOUD_LOOK[state] || CLOUD_LOOK.off;
+    return '<button class="btn btn-ghost btn-icon cloud-btn ' + look.cls + '" data-act="cloud" id="cloud-ind" title="' +
+      U.esc(look.text) + '" aria-label="' + U.esc(look.text) + '">' + Icons(look.icon) + '</button>';
+  }
+
   function themeBtn(theme) {
     return '<button class="btn btn-ghost btn-icon" data-act="theme" title="' + U.esc(Theme.label[theme]) +
       '" aria-label="' + U.esc(Theme.label[theme]) + '">' + Icons(Theme.icon[theme]) + '</button>';
@@ -1263,8 +1791,8 @@ var View = (function () {
 
     return '<header class="hdr"><div class="hdr-in">' +
       '<div class="hdr-title"><h1>Подготовка к поединку</h1>' +
-      '<div class="hdr-sub">Версия ' + C.APP_VERSION + '</div></div>' +
-      saveIndicator(state) + themeBtn(root.settings.theme) +
+      '<div class="hdr-sub">Версия ' + C.APP_VERSION + ', синхронизация ' + C.SYNC_VERSION + '</div></div>' +
+      saveIndicator(state) + cloudBtn(Cloud.state()) + themeBtn(root.settings.theme) +
       '</div></header>' +
       '<div class="wrap">' +
       '<div class="row" style="margin:16px 0">' +
@@ -1437,17 +1965,43 @@ var View = (function () {
       '<button class="btn btn-ghost btn-icon" data-act="back" title="К списку" aria-label="К списку">' + Icons('back') + '</button>' +
       '<div class="hdr-title"><h1 id="sit-title">' + U.esc(sit.title || C.TITLE_DEFAULT) + '</h1>' +
       (sit.context ? '<div class="hdr-sub">' + U.esc(sit.context) + '</div>' : '') + '</div>' +
-      saveIndicator(state) + themeBtn(root.settings.theme) +
+      saveIndicator(state) + cloudBtn(Cloud.state()) + themeBtn(root.settings.theme) +
       '</div></header>' +
       '<div class="wrap"><div style="height:14px"></div>' + body +
       '<div class="muted" style="text-align:center;margin-top:8px">Шаги 2, 4, 5, 6, 7 и 9 появятся в следующих версиях.</div>' +
       '</div>';
   }
 
+  /* Окно синхронизации: состояние, кнопки, объяснение. */
+  function cloudDialogHtml(root, state) {
+    var c = root.settings.cloud;
+    var look = CLOUD_LOOK[state] || CLOUD_LOOK.off;
+    var h = '<p><b>' + U.esc(look.text) + '.</b></p>';
+    if (state === 'error' && Cloud.error()) h += '<p class="pre muted">' + U.esc(Cloud.error()) + '</p>';
+    if (c.connected) {
+      h += '<p class="muted">Файл: Google Диск, папка «' + U.esc(C.CLOUD.FOLDER) + '», ' + U.esc(C.CLOUD.FILE) + '.<br>' +
+        'Версия файла: ' + (c.lastVersion || 0) + '.<br>' +
+        'Последний обмен: ' + (c.lastSync ? U.dateShort(c.lastSync) + ', ' + new Date(c.lastSync).toTimeString().slice(0, 5) : 'еще не было') + '.' +
+        (c.pendingLocal ? '<br>Есть правки, которые еще не ушли в облако.' : '') + '</p>';
+    } else {
+      h += '<p class="muted">Приложение создаст на вашем Google Диске папку «' + U.esc(C.CLOUD.FOLDER) +
+        '» и будет держать в ней один файл со всеми ситуациями. Доступа к остальному Диску у него нет: ' +
+        'область доступа ограничена файлами, которые приложение создало само.</p>' +
+        '<p class="muted">Это дает две вещи: одинаковые данные на ноутбуке, iPhone и iPad, и резервную копию, ' +
+        'которая переживет очистку данных браузера.</p>';
+    }
+    h += '<p class="muted">Вход в Google живет час. После перезагрузки страницы значок попросит войти заново: ' +
+      'одно нажатие, окно закроется само. Правки при этом не теряются, они лежат на устройстве.</p>';
+    return h;
+  }
+
   return {
     list: screenList,
     situation: screenSituation,
     saveIndicator: saveIndicator,
+    cloudBtn: cloudBtn,
+    cloudLook: CLOUD_LOOK,
+    cloudDialogHtml: cloudDialogHtml,
     counter: counter,
     plural: plural
   };
@@ -1488,6 +2042,14 @@ var App = (function () {
     n.setAttribute('title', txt);
     var t = n.querySelector('.t');
     if (t) t.textContent = txt;
+  }
+
+  function updateCloudIndicator(state) {
+    var n = document.getElementById('cloud-ind');
+    if (!n) return;
+    var tmp = document.createElement('div');
+    tmp.innerHTML = View.cloudBtn(state);
+    n.parentNode.replaceChild(tmp.firstChild, n);
   }
 
   function updateCounter(input) {
@@ -1711,8 +2273,86 @@ var App = (function () {
     },
 
     export: function () { doExport(); },
-    import: function () { doImport(); }
+    import: function () { doImport(); },
+    cloud: function () { cloudDialog(); }
   };
+
+  /* ---------- синхронизация ---------- */
+
+  function useCloudAdapter(on) {
+    Storage.useAdapter(on ? makeCloudAdapter(LocalAdapter) : LocalAdapter);
+  }
+
+  function cloudDialog() {
+    var state = Cloud.state();
+    var acts = [{ label: 'Закрыть', value: null }];
+    if (!Cloud.connected()) {
+      acts.push({ label: 'Подключить Google Диск', kind: 'btn-primary', value: 'connect' });
+    } else if (state === 'needauth') {
+      acts.push({ label: 'Отключить', kind: 'btn-danger', value: 'off' });
+      acts.push({ label: 'Войти в Google', kind: 'btn-primary', value: 'signin' });
+    } else {
+      acts.push({ label: 'Отключить', kind: 'btn-danger', value: 'off' });
+      acts.push({ label: 'Синхронизировать сейчас', kind: 'btn-primary', value: 'sync' });
+    }
+    Modal.open({
+      title: 'Синхронизация',
+      html: View.cloudDialogHtml(root, state),
+      actions: acts
+    }).then(function (a) {
+      if (a === 'connect') {
+        return Cloud.connect().then(function () {
+          useCloudAdapter(true);
+          Toast.show('Диск подключен');
+          render();
+        }).catch(function (e) {
+          Toast.show(e && e.message ? e.message : 'Не удалось подключить Диск', 'err');
+        });
+      }
+      if (a === 'signin') {
+        return Cloud.signInAgain().catch(function (e) {
+          Toast.show(e && e.message ? e.message : 'Вход не удался', 'err');
+        });
+      }
+      if (a === 'sync') {
+        return Cloud.flushNow('manual').then(function (r) {
+          if (r === 'ok') Toast.show('Синхронизировано');
+          if (r === 'pulled') { Toast.show('Взята версия из облака'); render(); }
+        });
+      }
+      if (a === 'off') {
+        return Modal.confirm('Отключить синхронизацию',
+          'Приложение перестанет читать и записывать файл на Диске. Сам файл останется на месте, данные на устройстве тоже. Подключить обратно можно в любой момент.',
+          'Отключить'
+        ).then(function (ok) {
+          if (!ok) return;
+          return Cloud.disconnect().then(function () {
+            useCloudAdapter(false);
+            Toast.show('Синхронизация выключена');
+            render();
+          });
+        });
+      }
+    });
+  }
+
+  /* Раздел 9.4 ТЗ: автоматического слияния нет, спрашиваем. */
+  function conflictDialog(info) {
+    var when = info.savedAt ? (U.dateShort(info.savedAt) + ', ' + new Date(info.savedAt).toTimeString().slice(0, 5)) : 'время неизвестно';
+    return Modal.open({
+      title: 'Расхождение с облаком',
+      html: '<p>В облаке лежит версия <b>' + info.remoteVersion + '</b>, записанная с устройства «' +
+        U.esc(info.device || 'неизвестно') + '» (' + when + ').</p>' +
+        '<p>На этом устройстве версия <b>' + info.localVersion + '</b>, и с тех пор здесь появились правки.</p>' +
+        '<p>Слить автоматически нельзя: приложение не знает, какая правка важнее. Выберите сами. ' +
+        'Если жалко и то, и другое, закройте это окно, выгрузите архив кнопкой на первом экране, и только потом выбирайте.</p>',
+      actions: [
+        { label: 'Отмена', value: 'cancel' },
+        { label: 'Взять облачную', value: 'remote' },
+        { label: 'Оставить местную', kind: 'btn-primary', value: 'local' }
+      ]
+    }).then(function (v) { return v || 'cancel'; });
+  }
 
   function openSituation(id) {
     var s = Storage.getSituation(id);
@@ -1888,19 +2528,40 @@ var App = (function () {
       if (ev.type === 'error') Toast.show('Данные не сохранились: ' + (ev.error && ev.error.message ? ev.error.message : 'ошибка базы'), 'err');
       if (ev.type === 'external') render();
     });
+    Cloud.subscribe(function (state) { updateCloudIndicator(state); });
+    Cloud.onConflict(conflictDialog);
 
+    /* Четыре точки обмена, раздел 9.2 ТЗ. Фонового опроса нет. */
     document.addEventListener('visibilitychange', function () {
-      if (document.visibilityState === 'hidden') Storage.flush().catch(function () {});
+      if (document.visibilityState === 'hidden') {
+        Storage.flush().catch(function () {});
+        Cloud.flushNow('hide');
+      } else {
+        Cloud.sync('focus');
+      }
     });
     window.addEventListener('pagehide', function () { Storage.flush().catch(function () {}); });
     window.addEventListener('beforeunload', function (e) {
       if (Storage.hasPending()) { e.preventDefault(); e.returnValue = ''; }
     });
+    window.addEventListener('online', function () { Cloud.sync('focus'); });
 
     Storage.load().then(function (r) {
       root = r;
       Theme.apply(root.settings.theme);
+      if (root.settings.cloud.connected) useCloudAdapter(true);
       render();
+
+      // вход прошел без отдельного окна: разбираем возврат и сразу синхронизируем
+      if (OAUTH_RETURN) {
+        GoogleAuth.accept(OAUTH_RETURN);
+        OAUTH_RETURN = null;
+        if (GoogleAuth.has() && !root.settings.cloud.connected) {
+          Storage.setSetting('cloud.connected', true);
+          useCloudAdapter(true);
+        }
+      }
+      if (root.settings.cloud.connected) Cloud.sync('open');
     }).catch(function (e) {
       fatal(e && e.message ? e.message : String(e));
     });
@@ -1916,12 +2577,17 @@ var App = (function () {
 
 /* Точка входа. Отладочная ручка PP нужна для проверки в консоли,
    на работу приложения не влияет. */
-window.PP = { C: C, U: U, Schema: Schema, Storage: Storage, Roles: Roles, Archive: Archive, App: App };
+window.PP = {
+  C: C, U: U, Schema: Schema, Storage: Storage, Roles: Roles, Archive: Archive,
+  Cloud: Cloud, GoogleAuth: GoogleAuth, Drive: Drive, App: App
+};
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', App.start);
-} else {
-  App.start();
+if (!IS_OAUTH_POPUP) {
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', App.start);
+  } else {
+    App.start();
+  }
 }
 </script>
 </body>
