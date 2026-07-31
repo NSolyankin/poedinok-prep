@@ -1,0 +1,1928 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16181a" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="data:,">
+<title>Подготовка к поединку</title>
+<style>
+:root{
+  --bg:#f4f4f1; --surface:#ffffff; --surface2:#ecece7;
+  --text:#191b1a; --muted:#5f6462; --line:#dcdcd5;
+  --accent:#26584a; --accent-soft:#dfeae5; --on-accent:#ffffff;
+  --warn:#8a5a05; --warn-soft:#fbf0d8;
+  --danger:#9e2f2f; --danger-soft:#f8e3e3;
+  --focus:#26584a;
+  --tap:44px; --r:10px; --gap:14px;
+  --shadow:0 1px 2px rgba(0,0,0,.06),0 4px 14px rgba(0,0,0,.05);
+  --ff:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+html[data-theme="dark"]{
+  --bg:#15181a; --surface:#1d2124; --surface2:#252a2e;
+  --text:#e9eae8; --muted:#9aa2a0; --line:#333a3e;
+  --accent:#79c0aa; --accent-soft:#20302c; --on-accent:#0e1513;
+  --warn:#e0ae52; --warn-soft:#31291a;
+  --danger:#e59090; --danger-soft:#33201f;
+  --focus:#79c0aa;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
+}
+@media (prefers-color-scheme: dark){
+  html[data-theme="auto"]{
+    --bg:#15181a; --surface:#1d2124; --surface2:#252a2e;
+    --text:#e9eae8; --muted:#9aa2a0; --line:#333a3e;
+    --accent:#79c0aa; --accent-soft:#20302c; --on-accent:#0e1513;
+    --warn:#e0ae52; --warn-soft:#31291a;
+    --danger:#e59090; --danger-soft:#33201f;
+    --focus:#79c0aa;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 4px 14px rgba(0,0,0,.3);
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--text); font-family:var(--ff);
+  font-size:16px; line-height:1.5;
+  -webkit-text-size-adjust:100%;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+h1,h2,h3{margin:0; font-weight:600; line-height:1.25}
+h1{font-size:19px}
+h2{font-size:17px}
+h3{font-size:15px}
+p{margin:0 0 10px}
+svg{display:block; flex:none}
+:focus-visible{outline:2px solid var(--focus); outline-offset:2px}
+
+/* ---------- каркас ---------- */
+.wrap{max-width:780px; margin:0 auto; padding:0 12px 96px}
+.hdr{
+  position:sticky; top:0; z-index:30; background:var(--bg);
+  border-bottom:1px solid var(--line);
+  padding-top:env(safe-area-inset-top);
+}
+.hdr-in{max-width:780px; margin:0 auto; padding:6px 12px; display:flex; align-items:center; gap:8px; min-height:52px}
+.hdr-title{flex:1 1 auto; min-width:0}
+.hdr-title h1{white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.hdr-sub{font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+
+/* ---------- кнопки ---------- */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  min-height:var(--tap); min-width:var(--tap); padding:8px 14px;
+  border:1px solid var(--line); border-radius:var(--r);
+  background:var(--surface); color:var(--text);
+  font:inherit; font-size:15px; cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.btn:hover{background:var(--surface2)}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.45; cursor:default; transform:none}
+.btn-primary{background:var(--accent); border-color:var(--accent); color:var(--on-accent)}
+.btn-primary:hover{background:var(--accent); filter:brightness(1.07)}
+.btn-danger{color:var(--danger); border-color:var(--line)}
+.btn-danger:hover{background:var(--danger-soft)}
+.btn-ghost{background:transparent; border-color:transparent}
+.btn-ghost:hover{background:var(--surface2)}
+.btn-sm{min-height:36px; padding:4px 10px; font-size:14px}
+.btn-icon{padding:8px}
+.row{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+.row-end{justify-content:flex-end}
+.spacer{flex:1 1 auto}
+
+/* ---------- карточки и поля ---------- */
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--r);
+  padding:14px; margin:0 0 var(--gap);
+}
+.card-tap{cursor:pointer}
+.card-tap:hover{border-color:var(--accent)}
+.muted{color:var(--muted); font-size:13px}
+.field{margin:0 0 16px}
+.field:last-child{margin-bottom:0}
+.label{display:block; font-size:14px; font-weight:600; margin:0 0 6px}
+.hint{font-size:13px; color:var(--muted); margin:-2px 0 6px}
+input[type=text], textarea, select{
+  width:100%; font:inherit; font-size:16px; color:var(--text);
+  background:var(--surface); border:1px solid var(--line); border-radius:8px;
+  padding:10px 12px; min-height:var(--tap);
+}
+textarea{resize:vertical; overflow:hidden; line-height:1.5}
+input[type=text]:focus, textarea:focus{border-color:var(--accent); outline:2px solid var(--focus); outline-offset:-1px}
+.counter{display:flex; align-items:center; gap:10px; font-size:12px; color:var(--muted); margin-top:4px; min-height:18px}
+.counter.warn{color:var(--warn); font-weight:600}
+.counter.full{color:var(--danger); font-weight:600}
+.chk{
+  display:inline-flex; align-items:center; gap:7px; min-height:var(--tap);
+  padding:0 10px 0 8px; border:1px solid var(--line); border-radius:999px;
+  cursor:pointer; font-size:14px; background:var(--surface);
+}
+.chk input{width:20px; height:20px; margin:0; accent-color:var(--accent)}
+.chk.on{background:var(--accent-soft); border-color:var(--accent)}
+
+/* ---------- список ситуаций ---------- */
+.sit-card{display:flex; align-items:flex-start; gap:10px}
+.sit-main{flex:1 1 auto; min-width:0}
+.sit-title{font-weight:600; font-size:16px; word-break:break-word}
+.empty{text-align:center; color:var(--muted); padding:40px 12px}
+
+/* ---------- аккордеон шагов ---------- */
+.acc{border:1px solid var(--line); border-radius:var(--r); background:var(--surface); margin:0 0 var(--gap); overflow:hidden}
+.acc-h{
+  display:flex; align-items:center; gap:10px; width:100%;
+  min-height:var(--tap); padding:12px 14px; background:transparent;
+  border:0; border-radius:0; font:inherit; color:var(--text); text-align:left; cursor:pointer;
+}
+.acc-h:hover{background:var(--surface2)}
+.acc-num{
+  flex:none; width:26px; height:26px; border-radius:7px; background:var(--surface2);
+  display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; color:var(--muted);
+}
+.acc.open .acc-num{background:var(--accent); color:var(--on-accent)}
+.acc-t{flex:1 1 auto; font-weight:600; font-size:15px}
+.acc-b{padding:0 14px 16px; border-top:1px solid var(--line); padding-top:14px}
+.acc .chev{transition:transform .15s ease}
+.acc.open .chev{transform:rotate(90deg)}
+
+/* ---------- переключатель роли ---------- */
+.roles-bar{
+  display:flex; gap:6px; overflow-x:auto; padding:8px 0 10px; margin:0 0 4px;
+  -webkit-overflow-scrolling:touch; scrollbar-width:thin;
+}
+.role-tab{
+  flex:none; min-height:var(--tap); padding:6px 12px; border-radius:999px;
+  border:1px solid var(--line); background:var(--surface); color:var(--text);
+  font:inherit; font-size:14px; cursor:pointer; display:inline-flex; align-items:center; gap:6px;
+  white-space:nowrap; max-width:60vw;
+}
+.role-tab .nm{overflow:hidden; text-overflow:ellipsis}
+.role-tab.on{background:var(--accent); border-color:var(--accent); color:var(--on-accent)}
+.role-tab .dot{width:7px; height:7px; border-radius:50%; background:var(--line); flex:none}
+.role-tab .dot.filled{background:var(--accent)}
+.role-tab.on .dot{background:rgba(255,255,255,.4)}
+.role-tab.on .dot.filled{background:var(--on-accent)}
+.tag-hard{
+  font-size:11px; padding:1px 6px; border-radius:999px;
+  background:var(--warn-soft); color:var(--warn); font-weight:600; border:1px solid transparent;
+}
+.role-tab.on .tag-hard{background:rgba(255,255,255,.22); color:var(--on-accent)}
+
+/* ---------- роли ---------- */
+.role-row{border:1px solid var(--line); border-radius:var(--r); padding:12px; margin:0 0 10px; background:var(--surface)}
+.role-head{display:flex; gap:8px; align-items:center}
+.role-head .short{width:64px; flex:none; text-align:center}
+.ord{display:flex; flex-direction:column; gap:2px}
+.ord .btn{min-height:22px; height:22px; padding:0 6px}
+
+/* ---------- вводные шага 3 ---------- */
+.asm{border:1px solid var(--line); border-radius:var(--r); padding:10px; margin:0 0 10px; background:var(--surface)}
+.asm.susp{border-color:var(--warn); background:var(--warn-soft)}
+.asm-warn{display:flex; gap:6px; align-items:center; font-size:12px; color:var(--warn); font-weight:600; margin-top:8px}
+
+/* ---------- индикатор сохранения ---------- */
+.save{display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--muted); white-space:nowrap}
+.save .d{width:8px; height:8px; border-radius:50%; background:var(--muted)}
+.save.dirty .d{background:var(--warn)}
+.save.saving .d{background:var(--accent); animation:pulse 1s infinite}
+.save.saved .d{background:var(--accent)}
+@keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+
+/* ---------- модалка ---------- */
+.modal{position:fixed; inset:0; z-index:100; display:flex; align-items:center; justify-content:center; padding:16px}
+.modal-bg{position:absolute; inset:0; background:rgba(0,0,0,.45)}
+.modal-w{
+  position:relative; background:var(--surface); border-radius:14px; box-shadow:var(--shadow);
+  max-width:560px; width:100%; max-height:86vh; overflow:auto; padding:18px;
+}
+.modal-w h2{margin:0 0 10px}
+.modal-acts{display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end; margin-top:16px}
+
+/* ---------- тосты ---------- */
+.toasts{position:fixed; left:0; right:0; bottom:16px; z-index:200; display:flex; flex-direction:column; align-items:center; gap:8px; pointer-events:none}
+.toast{
+  background:var(--text); color:var(--bg); padding:10px 16px; border-radius:999px;
+  font-size:14px; box-shadow:var(--shadow); max-width:90vw;
+}
+.toast.err{background:var(--danger); color:#fff}
+
+/* ---------- прочее ---------- */
+.det{border:1px solid var(--line); border-radius:var(--r); padding:0; margin:0 0 16px; background:var(--surface2)}
+.det>summary{min-height:var(--tap); display:flex; align-items:center; padding:10px 12px; cursor:pointer; font-size:14px; font-weight:600; list-style:none}
+.det>summary::-webkit-details-marker{display:none}
+.det>summary::before{content:"+"; margin-right:8px; color:var(--muted); font-weight:700}
+.det[open]>summary::before{content:"\2212"}
+.det-b{padding:0 12px 12px; font-size:14px; color:var(--muted)}
+.sep{height:1px; background:var(--line); margin:18px 0}
+.pre{white-space:pre-wrap; word-break:break-word; font-size:14px}
+.nowrap{white-space:nowrap}
+@media (min-width:640px){
+  .role-head .short{width:80px}
+}
+@media (max-width:400px){
+  .btn{padding:8px 10px}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div class="toasts" id="toasts"></div>
+<script>
+/* =====================================================================
+   Подготовка к поединку. Версия клиента 0.1
+   Один файл, ни одной внешней зависимости, ни одного сетевого запроса.
+   Хранение: только IndexedDB, никаких ключ-значение хранилищ браузера.
+   ===================================================================== */
+'use strict';
+
+/* ---------------------------------------------------------------------
+   1. КОНСТАНТЫ. Все пороги ТЗ собраны здесь и больше нигде не повторяются.
+   --------------------------------------------------------------------- */
+var C = {
+  APP_VERSION: '0.1',
+  SCHEMA: 2,                 // версия схемы данных, раздел 5 ТЗ
+  DB_NAME: 'poedinok-prep',  // раздел 3 ТЗ
+  DB_VERSION: 1,
+
+  ROLES_MIN: 3,              // раздел 5.1 ТЗ
+  ROLES_MAX: 6,
+
+  RETELL_COUNT: 3,           // раздел 5.2 ТЗ
+  RETELL_MAX: 300,
+
+  PHRASE_WARN: 300,          // раздел 5.9 ТЗ
+  PHRASE_MAX: 400,
+  SPEECH_CPS: 15,            // знаков в секунду, темп спокойной русской речи
+
+  AUTOSAVE_MS: 400,          // раздел 11 ТЗ
+  HISTORY_PER_SITUATION: 200,// раздел 11 ТЗ
+
+  SHORT_MAX: 3,              // длина короткой метки роли
+  TITLE_DEFAULT: 'Без названия'
+};
+
+/* ---------------------------------------------------------------------
+   2. МЕЛКИЕ УТИЛИТЫ
+   --------------------------------------------------------------------- */
+var U = {
+  id: function (prefix) {
+    return prefix + Math.random().toString(36).slice(2, 7) + Date.now().toString(36).slice(-3);
+  },
+  now: function () { return Date.now(); },
+
+  esc: function (s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  },
+
+  // длина в символах с учетом суррогатных пар
+  len: function (s) { return Array.from(String(s || '')).length; },
+  cut: function (s, max) {
+    var a = Array.from(String(s || ''));
+    return a.length <= max ? String(s || '') : a.slice(0, max).join('');
+  },
+
+  clone: function (v) { return v === undefined ? v : JSON.parse(JSON.stringify(v)); },
+  same: function (a, b) { return JSON.stringify(a === undefined ? null : a) === JSON.stringify(b === undefined ? null : b); },
+
+  // чтение и запись поля по пути вида step8.byRole.r2.firstPhrase
+  getPath: function (obj, path) {
+    if (!path) return obj;
+    var p = String(path).split('.'), cur = obj;
+    for (var i = 0; i < p.length; i++) {
+      if (cur == null || typeof cur !== 'object') return undefined;
+      cur = cur[p[i]];
+    }
+    return cur;
+  },
+  setPath: function (obj, path, value) {
+    var p = String(path).split('.'), cur = obj;
+    for (var i = 0; i < p.length - 1; i++) {
+      var k = p[i];
+      if (cur[k] == null || typeof cur[k] !== 'object') cur[k] = {};
+      cur = cur[k];
+    }
+    cur[p[p.length - 1]] = value;
+    return obj;
+  },
+
+  dateShort: function (ts) {
+    if (!ts) return '';
+    var d = new Date(ts);
+    var p = function (n) { return (n < 10 ? '0' : '') + n; };
+    return p(d.getDate()) + '.' + p(d.getMonth() + 1) + '.' + d.getFullYear();
+  },
+  dateFile: function (ts) {
+    var d = new Date(ts || Date.now());
+    var p = function (n) { return (n < 10 ? '0' : '') + n; };
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+  },
+  seconds: function (chars) { return Math.round(chars / C.SPEECH_CPS); },
+
+  debounce: function (fn, ms) {
+    var t = null;
+    var f = function () {
+      var args = arguments;
+      if (t) clearTimeout(t);
+      t = setTimeout(function () { t = null; fn.apply(null, args); }, ms);
+    };
+    f.cancel = function () { if (t) { clearTimeout(t); t = null; } };
+    f.pending = function () { return t !== null; };
+    return f;
+  }
+};
+
+/* ---------------------------------------------------------------------
+   3. СХЕМА ДАННЫХ. Фабрики и миграция. Раздел 5 ТЗ.
+   Имена полей менять нельзя: на них завязаны экспорт, импорт и будущие версии.
+   --------------------------------------------------------------------- */
+var Schema = {
+  newSettings: function () {
+    return {
+      roundsCount: 2,
+      roundMinutes: 5,
+      theme: 'auto',
+      expressMode: false,
+      cloud: { provider: 'google', connected: false, lastSync: 0 }
+    };
+  },
+
+  newRoot: function () {
+    return { schema: C.SCHEMA, settings: Schema.newSettings(), situations: [], formulaLibrary: [] };
+  },
+
+  newRole: function (name, order, interest) {
+    var n = String(name || '');
+    return {
+      id: U.id('r_'),
+      name: n,
+      short: Schema.shortOf(n),
+      order: order || 1,
+      hard: false,
+      interest: interest || ''   // отступление от раздела 5.1 ТЗ, см. CHANGELOG
+    };
+  },
+
+  shortOf: function (name) {
+    var s = String(name || '').trim();
+    if (!s) return '';
+    return U.cut(s, 1).toUpperCase();
+  },
+
+  newSituation: function (title) {
+    var ts = U.now();
+    var roles = [];
+    for (var i = 1; i <= C.ROLES_MIN; i++) roles.push(Schema.newRole('Роль ' + i, i));
+    return {
+      id: U.id('s_'),
+      title: title || C.TITLE_DEFAULT,
+      sourceText: '',
+      context: '',
+      createdAt: ts,
+      updatedAt: ts,
+      roles: roles,
+      step1: { fabula: '', plot: '', essence: '', retell: ['', '', ''] },
+      step2: {},
+      step3: { byRole: {} },
+      step4: {},
+      step5: {},
+      step6: {},
+      step7: {},
+      step8: { byRole: {} },
+      step9: {},
+      secondQuestions: [],
+      comments: [],
+      afterNotes: ''
+    };
+  },
+
+  newAssumption: function () {
+    return { id: U.id('a_'), text: '', necessary: false, sufficient: false };
+  },
+
+  step3ForRole: function (sit, roleId) {
+    if (!sit.step3) sit.step3 = { byRole: {} };
+    if (!sit.step3.byRole) sit.step3.byRole = {};
+    if (!sit.step3.byRole[roleId]) sit.step3.byRole[roleId] = { heroVersion: '', assumptions: [] };
+    return sit.step3.byRole[roleId];
+  },
+  step8ForRole: function (sit, roleId) {
+    if (!sit.step8) sit.step8 = { byRole: {} };
+    if (!sit.step8.byRole) sit.step8.byRole = {};
+    if (!sit.step8.byRole[roleId]) sit.step8.byRole[roleId] = { firstPhrase: '', roleAssignment: '', roundGoal: '' };
+    return sit.step8.byRole[roleId];
+  },
+
+  /* Приведение ситуации к полной схеме. Вызывается для всего, что пришло
+     снаружи: из базы, из импортированного архива. Ничего не удаляет:
+     разделы будущих версий переживают чтение старым клиентом. */
+  normalizeSituation: function (s) {
+    if (!s || typeof s !== 'object') return null;
+    var base = Schema.newSituation();
+    var out = {};
+    var k;
+    for (k in base) if (Object.prototype.hasOwnProperty.call(base, k)) out[k] = base[k];
+    for (k in s) if (Object.prototype.hasOwnProperty.call(s, k)) out[k] = s[k];
+
+    out.id = String(out.id || U.id('s_'));
+    out.title = String(out.title == null ? C.TITLE_DEFAULT : out.title);
+    out.sourceText = String(out.sourceText || '');
+    out.context = String(out.context || '');
+    out.createdAt = Number(out.createdAt) || U.now();
+    out.updatedAt = Number(out.updatedAt) || out.createdAt;
+    out.afterNotes = String(out.afterNotes || '');
+    if (!Array.isArray(out.secondQuestions)) out.secondQuestions = [];
+    if (!Array.isArray(out.comments)) out.comments = [];
+
+    if (!Array.isArray(out.roles)) out.roles = [];
+    out.roles = out.roles.filter(function (r) { return r && typeof r === 'object'; }).map(function (r, i) {
+      return {
+        id: String(r.id || U.id('r_')),
+        name: String(r.name || ''),
+        short: String(r.short || Schema.shortOf(r.name)),
+        order: Number(r.order) || (i + 1),
+        hard: !!r.hard,
+        interest: String(r.interest || '')
+      };
+    });
+    while (out.roles.length < C.ROLES_MIN) {
+      out.roles.push(Schema.newRole('Роль ' + (out.roles.length + 1), out.roles.length + 1));
+    }
+    if (out.roles.length > C.ROLES_MAX) out.roles = out.roles.slice(0, C.ROLES_MAX);
+
+    // шаг 1
+    var s1 = (out.step1 && typeof out.step1 === 'object') ? out.step1 : {};
+    out.step1 = {
+      fabula: String(s1.fabula || ''),
+      plot: String(s1.plot || ''),
+      essence: String(s1.essence || ''),
+      retell: Array.isArray(s1.retell) ? s1.retell.slice(0, C.RETELL_COUNT).map(function (t) { return String(t || ''); }) : []
+    };
+    while (out.step1.retell.length < C.RETELL_COUNT) out.step1.retell.push('');
+
+    // разделы будущих версий держим объектами, чтобы схема была стабильной
+    ['step2', 'step4', 'step5', 'step6', 'step7', 'step9'].forEach(function (key) {
+      if (!out[key] || typeof out[key] !== 'object') out[key] = {};
+    });
+
+    // шаг 3
+    if (!out.step3 || typeof out.step3 !== 'object') out.step3 = {};
+    if (!out.step3.byRole || typeof out.step3.byRole !== 'object') out.step3.byRole = {};
+    // шаг 8
+    if (!out.step8 || typeof out.step8 !== 'object') out.step8 = {};
+    if (!out.step8.byRole || typeof out.step8.byRole !== 'object') out.step8.byRole = {};
+
+    out.roles.forEach(function (r) {
+      var a = out.step3.byRole[r.id];
+      out.step3.byRole[r.id] = {
+        heroVersion: String((a && a.heroVersion) || ''),
+        assumptions: (a && Array.isArray(a.assumptions) ? a.assumptions : []).map(function (x) {
+          return {
+            id: String((x && x.id) || U.id('a_')),
+            text: String((x && x.text) || ''),
+            necessary: !!(x && x.necessary),
+            sufficient: !!(x && x.sufficient)
+          };
+        })
+      };
+      var b = out.step8.byRole[r.id];
+      out.step8.byRole[r.id] = {
+        firstPhrase: U.cut(String((b && b.firstPhrase) || ''), C.PHRASE_MAX),
+        roleAssignment: String((b && b.roleAssignment) || ''),
+        roundGoal: String((b && b.roundGoal) || '')
+      };
+    });
+    return out;
+  },
+
+  /* Миграция корня. Раздел 11 ТЗ: понижение версии - отказ.
+     Написана заранее, хотя мигрировать пока не с чего. */
+  migrate: function (raw) {
+    if (!raw || typeof raw !== 'object' || Array.isArray(raw)) {
+      var e0 = new Error('Файл не похож на архив приложения');
+      e0.code = 'bad-file';
+      throw e0;
+    }
+    var v = Number(raw.schema) || 1;
+    if (v > C.SCHEMA) {
+      var e1 = new Error('Данные сохранены более новой версией приложения (схема ' + v +
+        ', эта версия понимает ' + C.SCHEMA + '). Открывать их нельзя: часть полей будет потеряна.');
+      e1.code = 'schema-too-new';
+      throw e1;
+    }
+    var root = U.clone(raw);
+    if (v < 2) {
+      // 1 -> 2: в первой схеме не было отдельного слоя настроек облака
+      root.settings = root.settings || {};
+      root.schema = 2;
+    }
+    root.schema = C.SCHEMA;
+
+    var def = Schema.newSettings();
+    var st = (root.settings && typeof root.settings === 'object') ? root.settings : {};
+    root.settings = {
+      roundsCount: Number(st.roundsCount) || def.roundsCount,
+      roundMinutes: Number(st.roundMinutes) || def.roundMinutes,
+      theme: (['auto', 'light', 'dark'].indexOf(st.theme) >= 0) ? st.theme : def.theme,
+      expressMode: !!st.expressMode,
+      cloud: {
+        provider: String((st.cloud && st.cloud.provider) || def.cloud.provider),
+        connected: !!(st.cloud && st.cloud.connected),
+        lastSync: Number(st.cloud && st.cloud.lastSync) || 0
+      }
+    };
+
+    if (!Array.isArray(root.situations)) root.situations = [];
+    root.situations = root.situations.map(Schema.normalizeSituation).filter(Boolean);
+    if (!Array.isArray(root.formulaLibrary)) root.formulaLibrary = [];
+    return root;
+  }
+};
+/* ---------------------------------------------------------------------
+   4. IDB. Единственное место в файле, где приложение обращается к базе
+   браузера напрямую. Если такое обращение нашлось где-то еще - слой протек.
+   --------------------------------------------------------------------- */
+var IDB = (function () {
+  var db = null;
+
+  function open() {
+    return new Promise(function (resolve, reject) {
+      if (db) return resolve(db);
+      var req;
+      try {
+        req = indexedDB.open(C.DB_NAME, C.DB_VERSION);
+      } catch (e) {
+        return reject(e);
+      }
+      req.onupgradeneeded = function (ev) {
+        var d = ev.target.result;
+        if (!d.objectStoreNames.contains('situations')) d.createObjectStore('situations', { keyPath: 'id' });
+        if (!d.objectStoreNames.contains('meta')) d.createObjectStore('meta', { keyPath: 'key' });
+        if (!d.objectStoreNames.contains('formulas')) d.createObjectStore('formulas', { keyPath: 'id' });
+        if (!d.objectStoreNames.contains('history')) {
+          var h = d.createObjectStore('history', { keyPath: 'seq', autoIncrement: true });
+          h.createIndex('bySituation', 'situationId', { unique: false });
+        }
+      };
+      req.onsuccess = function () {
+        db = req.result;
+        db.onversionchange = function () { try { db.close(); } catch (e) {} db = null; };
+        resolve(db);
+      };
+      req.onerror = function () { reject(req.error || new Error('Не удалось открыть базу данных')); };
+      req.onblocked = function () { reject(new Error('База занята другой вкладкой приложения')); };
+    });
+  }
+
+  function run(stores, mode, body) {
+    return open().then(function (d) {
+      return new Promise(function (resolve, reject) {
+        var tx = d.transaction(stores, mode);
+        var out;
+        tx.oncomplete = function () { resolve(out); };
+        tx.onerror = function () { reject(tx.error || new Error('Ошибка записи в базу')); };
+        tx.onabort = function () { reject(tx.error || new Error('Запись отменена')); };
+        try {
+          out = body(tx);
+        } catch (e) {
+          try { tx.abort(); } catch (e2) {}
+          reject(e);
+        }
+      });
+    });
+  }
+
+  return {
+    open: open,
+
+    // прочитать все хранилища разом
+    readAll: function () {
+      var res = { situations: [], meta: [], formulas: [] };
+      return run(['situations', 'meta', 'formulas'], 'readonly', function (tx) {
+        var a = tx.objectStore('situations').getAll();
+        a.onsuccess = function () { res.situations = a.result || []; };
+        var b = tx.objectStore('meta').getAll();
+        b.onsuccess = function () { res.meta = b.result || []; };
+        var f = tx.objectStore('formulas').getAll();
+        f.onsuccess = function () { res.formulas = f.result || []; };
+      }).then(function () { return res; });
+    },
+
+    /* Одна транзакция на всю пачку правок: либо записалось все, либо ничего.
+       batch = { situations:[], removed:[id], meta:[{key,value}], history:[], trim:[sid] } */
+    write: function (batch) {
+      return run(['situations', 'meta', 'history'], 'readwrite', function (tx) {
+        var sSit = tx.objectStore('situations');
+        var sMeta = tx.objectStore('meta');
+        var sHist = tx.objectStore('history');
+
+        (batch.situations || []).forEach(function (s) { sSit.put(s); });
+        (batch.removed || []).forEach(function (id) { sSit.delete(id); });
+        (batch.meta || []).forEach(function (m) { sMeta.put(m); });
+        (batch.history || []).forEach(function (h) { sHist.add(h); });
+
+        // журнал: не больше C.HISTORY_PER_SITUATION записей на ситуацию
+        (batch.trim || []).forEach(function (sid) {
+          var idx = sHist.index('bySituation');
+          var keys = [];
+          var cur = idx.openCursor(IDBKeyRange.only(sid));
+          cur.onsuccess = function (ev) {
+            var c = ev.target.result;
+            if (c) { keys.push(c.primaryKey); c.continue(); return; }
+            var extra = keys.length - C.HISTORY_PER_SITUATION;
+            for (var i = 0; i < extra; i++) sHist.delete(keys[i]);
+          };
+        });
+
+        // журнал удаленной ситуации не нужен
+        (batch.removed || []).forEach(function (sid) {
+          var idx2 = sHist.index('bySituation');
+          var cur2 = idx2.openCursor(IDBKeyRange.only(sid));
+          cur2.onsuccess = function (ev) {
+            var c = ev.target.result;
+            if (c) { sHist.delete(c.primaryKey); c.continue(); }
+          };
+        });
+      });
+    },
+
+    // полная замена содержимого: импорт архива
+    replaceAll: function (situations, meta, formulas) {
+      return run(['situations', 'meta', 'formulas', 'history'], 'readwrite', function (tx) {
+        tx.objectStore('situations').clear();
+        tx.objectStore('meta').clear();
+        tx.objectStore('formulas').clear();
+        tx.objectStore('history').clear();
+        situations.forEach(function (s) { tx.objectStore('situations').put(s); });
+        meta.forEach(function (m) { tx.objectStore('meta').put(m); });
+        (formulas || []).forEach(function (f) { tx.objectStore('formulas').put(f); });
+      });
+    },
+
+    historyOf: function (situationId) {
+      var out = [];
+      return run(['history'], 'readonly', function (tx) {
+        var idx = tx.objectStore('history').index('bySituation');
+        var cur = idx.openCursor(IDBKeyRange.only(situationId));
+        cur.onsuccess = function (ev) {
+          var c = ev.target.result;
+          if (c) { out.push(c.value); c.continue(); }
+        };
+      }).then(function () { return out; });
+    }
+  };
+})();
+
+/* ---------------------------------------------------------------------
+   5. LocalAdapter. Реализация хранения поверх IDB.
+   Позже рядом встанет CloudAdapter с тем же набором методов,
+   и приложение об этом не узнает.
+   --------------------------------------------------------------------- */
+var LocalAdapter = {
+  name: 'local',
+
+  init: function () {
+    return IDB.readAll().then(function (raw) {
+      var metaMap = {};
+      raw.meta.forEach(function (m) { metaMap[m.key] = m.value; });
+      var root = Schema.migrate({
+        schema: metaMap.schema || C.SCHEMA,
+        settings: metaMap.settings || Schema.newSettings(),
+        situations: raw.situations || [],
+        formulaLibrary: raw.formulas || []
+      });
+      // первый запуск или база без служебных записей: доводим ее до порядка сразу,
+      // чтобы версия схемы лежала в базе, а не подразумевалась
+      if (metaMap.schema !== root.schema || !metaMap.settings) {
+        return IDB.write({
+          meta: [{ key: 'schema', value: root.schema }, { key: 'settings', value: root.settings }]
+        }).then(function () { return root; });
+      }
+      return root;
+    });
+  },
+
+  write: function (batch) { return IDB.write(batch); },
+
+  replaceAll: function (root) {
+    var meta = [
+      { key: 'schema', value: root.schema },
+      { key: 'settings', value: root.settings }
+    ];
+    return IDB.replaceAll(root.situations, meta, root.formulaLibrary);
+  },
+
+  status: function () { return 'local'; }
+};
+
+/* ---------------------------------------------------------------------
+   6. Storage. Единственная дверь к данным для всего интерфейса.
+   Раздел 4 ТЗ: load, getSituation, patch, remove, subscribe, status.
+   Добавлено в 0.1: create, setSetting, replaceAll (см. CHANGELOG).
+   --------------------------------------------------------------------- */
+var Storage = (function () {
+  var adapter = LocalAdapter;
+  var root = null;              // кеш состояния, живет все время работы
+  var loading = null;
+  var subs = [];
+  var saveState = 'saved';      // saved | dirty | saving
+
+  var dirtySits = Object.create(null);   // id -> true
+  var removedSits = Object.create(null); // id -> true
+  var dirtySettings = false;
+  var histPending = Object.create(null); // "sid|path" -> запись журнала
+  var writing = false;
+  var rewriteAfter = false;
+
+  function emit(ev) { subs.forEach(function (fn) { try { fn(ev); } catch (e) {} }); }
+
+  function setState(s) {
+    if (saveState === s) return;
+    saveState = s;
+    emit({ type: 'save', state: s });
+  }
+
+  function markDirty() {
+    setState('dirty');
+    schedule();
+  }
+
+  var schedule = U.debounce(function () { flush().catch(function () {}); }, C.AUTOSAVE_MS);
+
+  function collect() {
+    var batch = { situations: [], removed: [], meta: [], history: [], trim: [] };
+    var id;
+    for (id in removedSits) batch.removed.push(id);
+    for (id in dirtySits) {
+      if (removedSits[id]) continue;
+      var s = find(id);
+      if (s) batch.situations.push(U.clone(s));
+    }
+    if (dirtySettings) {
+      batch.meta.push({ key: 'settings', value: U.clone(root.settings) });
+      batch.meta.push({ key: 'schema', value: root.schema });
+    }
+    var seen = Object.create(null);
+    for (var k in histPending) {
+      var h = histPending[k];
+      if (removedSits[h.situationId]) continue;
+      batch.history.push(h);
+      if (!seen[h.situationId]) { seen[h.situationId] = true; batch.trim.push(h.situationId); }
+    }
+    return batch;
+  }
+
+  function flush() {
+    schedule.cancel();
+    if (writing) { rewriteAfter = true; return Promise.resolve(); }
+    var batch = collect();
+    var empty = !batch.situations.length && !batch.removed.length && !batch.meta.length && !batch.history.length;
+    if (empty) { setState('saved'); return Promise.resolve(); }
+
+    dirtySits = Object.create(null);
+    removedSits = Object.create(null);
+    dirtySettings = false;
+    histPending = Object.create(null);
+
+    writing = true;
+    setState('saving');
+    return adapter.write(batch).then(function () {
+      writing = false;
+      if (rewriteAfter) { rewriteAfter = false; return flush(); }
+      setState(hasPending() ? 'dirty' : 'saved');
+    }).catch(function (err) {
+      writing = false;
+      // правки не выброшены: возвращаем их в очередь и говорим об этом вслух
+      batch.situations.forEach(function (s) { dirtySits[s.id] = true; });
+      batch.removed.forEach(function (id) { removedSits[id] = true; });
+      if (batch.meta.length) dirtySettings = true;
+      batch.history.forEach(function (h) { histPending[h.situationId + '|' + h.path] = h; });
+      setState('dirty');
+      emit({ type: 'error', error: err });
+      throw err;
+    });
+  }
+
+  function hasPending() {
+    for (var a in dirtySits) return true;
+    for (var b in removedSits) return true;
+    for (var c in histPending) return true;
+    return dirtySettings;
+  }
+
+  function find(id) {
+    if (!root) return null;
+    for (var i = 0; i < root.situations.length; i++) if (root.situations[i].id === id) return root.situations[i];
+    return null;
+  }
+
+  return {
+    /* ---- раздел 4 ТЗ ---- */
+
+    load: function () {
+      if (root) return Promise.resolve(root);
+      if (!loading) {
+        loading = adapter.init().then(function (r) {
+          root = r;
+          loading = null;
+          return root;
+        }, function (e) { loading = null; throw e; });
+      }
+      return loading;
+    },
+
+    getSituation: function (id) { return find(id); },
+
+    /* Точечное изменение поля с меткой времени.
+       Путь адресует поле внутри ситуации: step8.byRole.r2.firstPhrase */
+    patch: function (situationId, path, value) {
+      var s = find(situationId);
+      if (!s) return false;
+      var old = U.getPath(s, path);
+      if (U.same(old, value)) return false;
+
+      U.setPath(s, path, value);
+      s.updatedAt = U.now();
+      dirtySits[s.id] = true;
+
+      // журнал: правки одного поля подряд склеиваются в одну запись
+      var key = s.id + '|' + path;
+      var prev = histPending[key];
+      histPending[key] = {
+        situationId: s.id,
+        path: path,
+        oldValue: prev ? prev.oldValue : U.clone(old === undefined ? null : old),
+        newValue: U.clone(value),
+        ts: U.now()
+      };
+      markDirty();
+      return true;
+    },
+
+    remove: function (id) {
+      if (!root) return false;
+      var i = root.situations.findIndex(function (s) { return s.id === id; });
+      if (i < 0) return false;
+      root.situations.splice(i, 1);
+      removedSits[id] = true;
+      delete dirtySits[id];
+      markDirty();
+      return true;
+    },
+
+    subscribe: function (fn) {
+      subs.push(fn);
+      return function () {
+        var i = subs.indexOf(fn);
+        if (i >= 0) subs.splice(i, 1);
+      };
+    },
+
+    status: function () { return adapter.status(); },
+
+    /* ---- добавлено в 0.1 ---- */
+
+    create: function (situation) {
+      if (!root) return null;
+      var s = Schema.normalizeSituation(situation || Schema.newSituation());
+      root.situations.push(s);
+      dirtySits[s.id] = true;
+      markDirty();
+      return s;
+    },
+
+    setSetting: function (path, value) {
+      if (!root) return false;
+      var old = U.getPath(root.settings, path);
+      if (U.same(old, value)) return false;
+      U.setPath(root.settings, path, value);
+      dirtySettings = true;
+      markDirty();
+      return true;
+    },
+
+    // импорт архива и, в будущем, ответ "взять облачную" из раздела 9.4 ТЗ
+    replaceAll: function (nextRoot) {
+      var next = Schema.migrate(nextRoot);
+      schedule.cancel();
+      dirtySits = Object.create(null);
+      removedSits = Object.create(null);
+      histPending = Object.create(null);
+      dirtySettings = false;
+      // корень меняется по месту: ссылки, которые держит интерфейс, остаются живыми
+      root.schema = next.schema;
+      root.settings = next.settings;
+      root.situations.length = 0;
+      next.situations.forEach(function (s) { root.situations.push(s); });
+      root.formulaLibrary.length = 0;
+      next.formulaLibrary.forEach(function (f) { root.formulaLibrary.push(f); });
+
+      setState('saving');
+      return adapter.replaceAll(root).then(function () {
+        setState('saved');
+        emit({ type: 'external' });
+        return root;
+      }).catch(function (err) {
+        setState('dirty');
+        emit({ type: 'error', error: err });
+        throw err;
+      });
+    },
+
+    /* ---- служебное ---- */
+    flush: flush,
+    saveState: function () { return saveState; },
+    hasPending: hasPending,
+    historyOf: function (id) { return IDB.historyOf(id); },
+    useAdapter: function (a) { adapter = a; }
+  };
+})();
+/* ---------------------------------------------------------------------
+   7. Иконки. Только inline SVG, эмодзи в интерфейсе не используются.
+   --------------------------------------------------------------------- */
+var Icons = (function () {
+  var P = {
+    back: '<path d="M15 5l-7 7 7 7"/>',
+    chev: '<path d="M9 5l7 7-7 7"/>',
+    plus: '<path d="M12 5v14M5 12h14"/>',
+    trash: '<path d="M4 7h16M9 7V5h6v2M6 7l1 13h10l1-13"/>',
+    up: '<path d="M12 19V6M6 12l6-6 6 6"/>',
+    down: '<path d="M12 5v13M6 12l6 6 6-6"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19"/>',
+    moon: '<path d="M20 14A8 8 0 0110 4a8 8 0 1010 10z"/>',
+    auto: '<circle cx="12" cy="12" r="8"/><path d="M12 4v16" /><path d="M12 4a8 8 0 010 16" fill="currentColor" stroke="none"/>',
+    down_tray: '<path d="M12 3v12M7 11l5 5 5-5M4 20h16"/>',
+    up_tray: '<path d="M12 21V9M7 13l5-5 5 5M4 4h16"/>',
+    alert: '<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.5"/>',
+    pencil: '<path d="M4 20h4L20 8l-4-4L4 16z"/>',
+    check: '<path d="M4 12l5 5L20 6"/>',
+    close: '<path d="M6 6l12 12M18 6L6 18"/>',
+    doc: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/>',
+    wand: '<path d="M5 19l9-9M14 5l1.5 1.5M19 10l1.5 1.5M15 4l-1 2 2-1zM19 14l-1 2 2-1z"/>'
+  };
+  return function (name, size) {
+    var s = size || 20;
+    return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" ' +
+      'stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" ' +
+      'aria-hidden="true">' + (P[name] || '') + '</svg>';
+  };
+})();
+
+/* ---------------------------------------------------------------------
+   8. Мелочи интерфейса: тосты, модальные окна, тема
+   --------------------------------------------------------------------- */
+var Toast = {
+  show: function (text, kind) {
+    var box = document.getElementById('toasts');
+    var d = document.createElement('div');
+    d.className = 'toast' + (kind === 'err' ? ' err' : '');
+    d.setAttribute('role', 'status');
+    d.textContent = text;
+    box.appendChild(d);
+    setTimeout(function () {
+      d.style.transition = 'opacity .3s';
+      d.style.opacity = '0';
+      setTimeout(function () { if (d.parentNode) d.parentNode.removeChild(d); }, 320);
+    }, kind === 'err' ? 5200 : 2600);
+  }
+};
+
+var Modal = (function () {
+  var node = null, lastFocus = null;
+
+  function close() {
+    if (!node) return;
+    if (node.parentNode) node.parentNode.removeChild(node);
+    node = null;
+    document.removeEventListener('keydown', onKey, true);
+    if (lastFocus && lastFocus.focus) { try { lastFocus.focus(); } catch (e) {} }
+  }
+  function onKey(e) {
+    if (e.key === 'Escape') { e.preventDefault(); close(); if (cur && cur.onCancel) cur.onCancel(); }
+  }
+  var cur = null;
+
+  /* opts = { title, html, actions:[{label, kind, value}], onCancel }
+     Возвращает промис со значением нажатой кнопки или null. */
+  function open(opts) {
+    close();
+    cur = opts;
+    lastFocus = document.activeElement;
+    return new Promise(function (resolve) {
+      node = document.createElement('div');
+      node.className = 'modal';
+      node.setAttribute('role', 'dialog');
+      node.setAttribute('aria-modal', 'true');
+      var acts = (opts.actions || []).map(function (a, i) {
+        return '<button class="btn ' + (a.kind || '') + '" data-i="' + i + '">' + U.esc(a.label) + '</button>';
+      }).join('');
+      node.innerHTML =
+        '<div class="modal-bg" data-close="1"></div>' +
+        '<div class="modal-w">' +
+        (opts.title ? '<h2>' + U.esc(opts.title) + '</h2>' : '') +
+        '<div class="modal-body">' + (opts.html || '') + '</div>' +
+        '<div class="modal-acts">' + acts + '</div>' +
+        '</div>';
+      document.body.appendChild(node);
+      document.addEventListener('keydown', onKey, true);
+
+      node.addEventListener('click', function (e) {
+        var t = e.target;
+        if (t.closest && t.closest('[data-close]')) { close(); resolve(null); return; }
+        var b = t.closest ? t.closest('[data-i]') : null;
+        if (b) {
+          var a = opts.actions[Number(b.getAttribute('data-i'))];
+          var val = a.value;
+          if (a.collect) val = a.collect(node);
+          close();
+          resolve(val === undefined ? null : val);
+        }
+      });
+      var first = node.querySelector('.modal-w input, .modal-w textarea, .modal-w button');
+      if (first) setTimeout(function () { try { first.focus(); } catch (e) {} }, 30);
+    });
+  }
+
+  return {
+    open: open,
+    close: close,
+    /* Подтверждение деструктивного действия с названием объекта. Раздел 11 ТЗ. */
+    confirm: function (title, text, okLabel) {
+      return open({
+        title: title,
+        html: '<p class="pre">' + U.esc(text) + '</p>',
+        actions: [
+          { label: 'Отмена', value: false },
+          { label: okLabel || 'Удалить', kind: 'btn-danger', value: true }
+        ]
+      }).then(function (v) { return v === true; });
+    },
+    prompt: function (title, label, value, okLabel) {
+      return open({
+        title: title,
+        html: '<div class="field"><label class="label" for="m-inp">' + U.esc(label) + '</label>' +
+          '<input type="text" id="m-inp" value="' + U.esc(value || '') + '"></div>',
+        actions: [
+          { label: 'Отмена', value: null },
+          {
+            label: okLabel || 'Сохранить', kind: 'btn-primary',
+            collect: function (n) { return n.querySelector('#m-inp').value.trim(); }
+          }
+        ]
+      });
+    }
+  };
+})();
+
+var Theme = {
+  order: ['auto', 'light', 'dark'],
+  label: { auto: 'Тема: системная', light: 'Тема: светлая', dark: 'Тема: темная' },
+  icon: { auto: 'auto', light: 'sun', dark: 'moon' },
+  apply: function (v) {
+    document.documentElement.setAttribute('data-theme', this.order.indexOf(v) >= 0 ? v : 'auto');
+  },
+  next: function (v) {
+    var i = this.order.indexOf(v);
+    return this.order[(i + 1) % this.order.length];
+  }
+};
+
+/* ---------------------------------------------------------------------
+   9. Роли: порядок и разбор из текста ситуации
+   --------------------------------------------------------------------- */
+var Roles = {
+  /* Порядок показа: трудные роли первыми, остальные по полю order.
+     Раздел 5.4 ТЗ: если положительного героя не удается найти именно
+     в трудной роли, вся подготовка стоит на песке. */
+  sorted: function (roles) {
+    return (roles || []).slice().sort(function (a, b) {
+      if (!!a.hard !== !!b.hard) return a.hard ? -1 : 1;
+      return (a.order || 0) - (b.order || 0);
+    });
+  },
+
+  renumber: function (roles) {
+    roles.forEach(function (r, i) { r.order = i + 1; });
+    return roles;
+  },
+
+  nameOf: function (r) {
+    return (r && String(r.name || '').trim()) || 'Роль без названия';
+  },
+
+  /* Разбор блока ролей из вставленного текста ситуации.
+     Формат исходников: строка со словом "Роли", ниже по строке на роль,
+     название и интересы разделены тире или двоеточием.
+     Результат всегда показывается на правку и никогда не применяется молча. */
+  parse: function (text) {
+    var lines = String(text || '').split(/\r?\n/);
+    var start = -1;
+    for (var i = 0; i < lines.length; i++) {
+      // граница слова тут не годится: в JS она считается только по латинице
+      if (/^\s*роли(\s|:|$)/i.test(lines[i])) { start = i + 1; break; }
+    }
+    if (start < 0) return { found: false, roles: [] };
+
+    var out = [];
+    for (var j = start; j < lines.length; j++) {
+      var t = lines[j].trim();
+      if (!t) { if (out.length) break; else continue; }
+      // – короткое тире, — длинное тире: в исходниках ситуаций встречаются оба
+      t = t.replace(/^[•*]+\s*/, '').replace(/^\d+[.)]\s*/, '').replace(/^[-–—]\s+/, '');
+      if (!t) continue;
+      var m = t.match(/^(.{1,90}?)\s*[—–:]\s*(.+)$/) || t.match(/^(.{1,90}?)\s+-\s+(.+)$/);
+      var name = m ? m[1].trim() : t;
+      var interest = m ? m[2].trim() : '';
+      name = name.replace(/[.,;:]+$/, '').trim();
+      if (!name) continue;
+      out.push({ name: name, interest: interest });
+      if (out.length >= 40) break;
+    }
+    return { found: out.length > 0, roles: out };
+  }
+};
+
+/* ---------------------------------------------------------------------
+   10. Архив: сборка файла, слияние при импорте
+   --------------------------------------------------------------------- */
+var Archive = {
+  fileName: function () { return 'poedinok-prep-' + U.dateFile() + '.json'; },
+
+  download: function (root) {
+    var text = JSON.stringify(root, null, 2);
+    var blob = new Blob([text], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = Archive.fileName();
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 400);
+  },
+
+  /* Слияние: настройки остаются местными, совпадающие id получают новые.
+     Раздел 8 ТЗ. Чистая функция: хранилище о слиянии не знает. */
+  merge: function (current, incoming) {
+    var out = U.clone(current);
+    var usedS = {};
+    out.situations.forEach(function (s) { usedS[s.id] = 1; });
+    var usedF = {};
+    out.formulaLibrary.forEach(function (f) { usedF[f.id] = 1; });
+
+    incoming.situations.forEach(function (s) {
+      var c = U.clone(s);
+      if (usedS[c.id]) c.id = U.id('s_');
+      usedS[c.id] = 1;
+      out.situations.push(c);
+    });
+    (incoming.formulaLibrary || []).forEach(function (f) {
+      var c = U.clone(f);
+      if (usedF[c.id]) c.id = U.id('f_');
+      usedF[c.id] = 1;
+      out.formulaLibrary.push(c);
+    });
+    return out;
+  },
+
+  readFile: function (file) {
+    return new Promise(function (resolve, reject) {
+      var fr = new FileReader();
+      fr.onload = function () {
+        try { resolve(JSON.parse(String(fr.result))); }
+        catch (e) { reject(new Error('Файл не является корректным JSON')); }
+      };
+      fr.onerror = function () { reject(new Error('Не удалось прочитать файл')); };
+      fr.readAsText(file);
+    });
+  }
+};
+/* ---------------------------------------------------------------------
+   11. Отрисовка. Никакого фреймворка: строки HTML плюс делегирование
+   событий. Поле, в котором стоит курсор, при вводе не перерисовывается.
+   --------------------------------------------------------------------- */
+var View = (function () {
+
+  function saveIndicator(state) {
+    var txt = state === 'saving' ? 'Сохранение' : (state === 'dirty' ? 'Не сохранено' : 'Сохранено');
+    return '<span class="save ' + state + '" id="save-ind" title="' + txt + '"><span class="d"></span>' +
+      '<span class="t">' + txt + '</span></span>';
+  }
+
+  function themeBtn(theme) {
+    return '<button class="btn btn-ghost btn-icon" data-act="theme" title="' + U.esc(Theme.label[theme]) +
+      '" aria-label="' + U.esc(Theme.label[theme]) + '">' + Icons(Theme.icon[theme]) + '</button>';
+  }
+
+  function counter(id, len, max, withTime) {
+    var cls = 'counter';
+    if (len >= max) cls += ' full';
+    else if (max === C.PHRASE_MAX && len > C.PHRASE_WARN) cls += ' warn';
+    var t = '<span>' + len + ' из ' + max + '</span>';
+    if (withTime) t += '<span>около ' + U.seconds(len) + ' с речи</span>';
+    return '<div class="' + cls + '" data-counter-for="' + id + '" data-max="' + max + '"' +
+      (withTime ? ' data-time="1"' : '') + '>' + t + '</div>';
+  }
+
+  function textarea(o) {
+    // o = {id, path, value, rows, max, time, placeholder}
+    var v = String(o.value || '');
+    return '<textarea id="' + o.id + '" rows="' + (o.rows || 3) + '" data-field="' + o.path + '"' +
+      (o.max ? ' data-max="' + o.max + '" maxlength="' + o.max + '"' : '') +
+      (o.placeholder ? ' placeholder="' + U.esc(o.placeholder) + '"' : '') +
+      '>' + U.esc(v) + '</textarea>' +
+      (o.max ? counter(o.id, U.len(v), o.max, !!o.time) : '');
+  }
+
+  function field(label, hint, inner) {
+    return '<div class="field"><span class="label">' + U.esc(label) + '</span>' +
+      (hint ? '<div class="hint">' + U.esc(hint) + '</div>' : '') + inner + '</div>';
+  }
+
+  /* ---------------- экран 1: список ситуаций ---------------- */
+
+  function screenList(root, state) {
+    var list = root.situations.slice().sort(function (a, b) { return (b.updatedAt || 0) - (a.updatedAt || 0); });
+    var cards = list.map(function (s) {
+      var roles = s.roles.length;
+      return '<div class="card sit-card">' +
+        '<div class="sit-main" data-act="open-sit" data-id="' + s.id + '" role="button" tabindex="0">' +
+        '<div class="sit-title">' + U.esc(s.title || C.TITLE_DEFAULT) + '</div>' +
+        (s.context ? '<div class="muted">' + U.esc(s.context) + '</div>' : '') +
+        '<div class="muted">' + roles + ' ' + plural(roles, 'роль', 'роли', 'ролей') +
+        ' &middot; изменена ' + U.dateShort(s.updatedAt) + '</div>' +
+        '</div>' +
+        '<button class="btn btn-ghost btn-icon" data-act="rename-sit" data-id="' + s.id + '" title="Переименовать" aria-label="Переименовать">' + Icons('pencil') + '</button>' +
+        '<button class="btn btn-ghost btn-icon" data-act="del-sit" data-id="' + s.id + '" title="Удалить" aria-label="Удалить">' + Icons('trash') + '</button>' +
+        '</div>';
+    }).join('');
+
+    return '<header class="hdr"><div class="hdr-in">' +
+      '<div class="hdr-title"><h1>Подготовка к поединку</h1>' +
+      '<div class="hdr-sub">Версия ' + C.APP_VERSION + '</div></div>' +
+      saveIndicator(state) + themeBtn(root.settings.theme) +
+      '</div></header>' +
+      '<div class="wrap">' +
+      '<div class="row" style="margin:16px 0">' +
+      '<button class="btn btn-primary" data-act="new-sit">' + Icons('plus') + 'Новая ситуация</button>' +
+      '</div>' +
+      (cards || '<div class="empty">Ситуаций пока нет.<br>Начните с кнопки «Новая ситуация».</div>') +
+      '<div class="sep"></div>' +
+      '<div class="card">' +
+      '<h3 style="margin-bottom:6px">Архив</h3>' +
+      '<div class="muted" style="margin-bottom:12px">Выгруженный файл переносит все ситуации на другое устройство и служит резервной копией. Синхронизации пока нет, поэтому копия - единственная страховка.</div>' +
+      '<div class="row">' +
+      '<button class="btn" data-act="export">' + Icons('down_tray') + 'Выгрузить архив</button>' +
+      '<button class="btn" data-act="import">' + Icons('up_tray') + 'Загрузить архив</button>' +
+      '</div></div>' +
+      '<div class="muted" style="text-align:center;margin-top:20px">Данные хранятся только в этом браузере.</div>' +
+      '</div>';
+  }
+
+  function plural(n, one, few, many) {
+    var n10 = n % 10, n100 = n % 100;
+    if (n10 === 1 && n100 !== 11) return one;
+    if (n10 >= 2 && n10 <= 4 && (n100 < 10 || n100 >= 20)) return few;
+    return many;
+  }
+
+  /* ---------------- экран 2: ситуация ---------------- */
+
+  function roleBar(sit, activeId, step) {
+    var tabs = Roles.sorted(sit.roles).map(function (r) {
+      var filled = step === 's3'
+        ? !!(sit.step3.byRole[r.id] && String(sit.step3.byRole[r.id].heroVersion || '').trim())
+        : !!(sit.step8.byRole[r.id] && String(sit.step8.byRole[r.id].firstPhrase || '').trim());
+      return '<button class="role-tab' + (r.id === activeId ? ' on' : '') + '" data-act="role" data-id="' + r.id + '">' +
+        '<span class="dot' + (filled ? ' filled' : '') + '"></span>' +
+        '<span class="nm">' + U.esc(Roles.nameOf(r)) + '</span>' +
+        (r.hard ? '<span class="tag-hard">трудная</span>' : '') +
+        '</button>';
+    }).join('');
+    return '<div class="roles-bar" role="tablist" aria-label="Активная роль">' + tabs + '</div>';
+  }
+
+  function accordion(num, title, open, sec, body) {
+    return '<section class="acc' + (open ? ' open' : '') + '">' +
+      '<button class="acc-h" data-act="acc" data-sec="' + sec + '" aria-expanded="' + (open ? 'true' : 'false') + '">' +
+      '<span class="acc-num">' + num + '</span>' +
+      '<span class="acc-t">' + U.esc(title) + '</span>' +
+      '<span class="chev">' + Icons('chev', 18) + '</span>' +
+      '</button>' +
+      (open ? '<div class="acc-b">' + body + '</div>' : '') +
+      '</section>';
+  }
+
+  function setupBody(sit) {
+    var rolesHtml = sit.roles.map(function (r, i) {
+      var canDel = sit.roles.length > C.ROLES_MIN;
+      return '<div class="role-row">' +
+        '<div class="role-head">' +
+        '<div class="ord">' +
+        '<button class="btn btn-sm btn-icon" data-act="move-role" data-id="' + r.id + '" data-dir="up" title="Выше" aria-label="Выше"' + (i === 0 ? ' disabled' : '') + '>' + Icons('up', 14) + '</button>' +
+        '<button class="btn btn-sm btn-icon" data-act="move-role" data-id="' + r.id + '" data-dir="down" title="Ниже" aria-label="Ниже"' + (i === sit.roles.length - 1 ? ' disabled' : '') + '>' + Icons('down', 14) + '</button>' +
+        '</div>' +
+        '<input type="text" data-field="roles.' + i + '.name" value="' + U.esc(r.name) + '" placeholder="Название роли" aria-label="Название роли">' +
+        '<input type="text" class="short" data-field="roles.' + i + '.short" data-max="' + C.SHORT_MAX + '" maxlength="' + C.SHORT_MAX + '" value="' + U.esc(r.short) + '" placeholder="метка" aria-label="Короткая метка">' +
+        '<button class="btn btn-ghost btn-icon" data-act="del-role" data-id="' + r.id + '" title="Удалить роль" aria-label="Удалить роль"' + (canDel ? '' : ' disabled') + '>' + Icons('trash') + '</button>' +
+        '</div>' +
+        '<div style="margin-top:8px">' +
+        '<textarea rows="2" data-field="roles.' + i + '.interest" placeholder="Интересы роли">' + U.esc(r.interest) + '</textarea>' +
+        '</div>' +
+        '<div style="margin-top:8px">' +
+        '<label class="chk' + (r.hard ? ' on' : '') + '"><input type="checkbox" data-check="hard" data-i="' + i + '"' + (r.hard ? ' checked' : '') + '>' +
+        'трудная роль</label>' +
+        '</div>' +
+        '</div>';
+    }).join('');
+
+    return field('Название ситуации', '', '<input type="text" data-field="title" value="' + U.esc(sit.title) + '" placeholder="' + C.TITLE_DEFAULT + '">') +
+      field('Турнир и дата', 'Например: турнир «Наполеон», 26.07.2026', '<input type="text" data-field="context" value="' + U.esc(sit.context) + '" placeholder="Не заполнено">') +
+      field('Текст ситуации', 'Вставьте текст целиком, вместе с блоком ролей',
+        '<textarea rows="8" data-field="sourceText" placeholder="Вставьте сюда текст ситуации">' + U.esc(sit.sourceText) + '</textarea>') +
+      '<div class="row" style="margin:-6px 0 18px">' +
+      '<button class="btn btn-sm" data-act="parse-roles">' + Icons('wand', 16) + 'Разобрать роли из текста</button>' +
+      '</div>' +
+      '<div class="sep"></div>' +
+      '<div class="row" style="margin-bottom:10px"><h3>Роли</h3><span class="spacer"></span>' +
+      '<span class="muted">' + sit.roles.length + ' из ' + C.ROLES_MAX + '</span></div>' +
+      '<div class="hint">Готовиться нужно ко всем ролям: соперник вправе назначить любую. Отметка «трудная» ставит роль первой в шагах 3 и 8.</div>' +
+      rolesHtml +
+      '<div class="row"><button class="btn" data-act="add-role"' + (sit.roles.length >= C.ROLES_MAX ? ' disabled' : '') + '>' +
+      Icons('plus') + 'Добавить роль</button></div>';
+  }
+
+  function step1Body(sit) {
+    var s1 = sit.step1;
+    var ret = '';
+    for (var i = 0; i < C.RETELL_COUNT; i++) {
+      ret += '<div class="field">' +
+        '<span class="label">Предложение ' + (i + 1) + '</span>' +
+        textarea({ id: 'rt' + i, path: 'step1.retell.' + i, value: s1.retell[i], rows: 2, max: C.RETELL_MAX }) +
+        '</div>';
+    }
+    return '<details class="det"><summary>Что такое фабула, сюжет и суть</summary><div class="det-b">' +
+      '<p><b>Фабула</b> («что произошло» как набор фактов по времени): кто что сделал и когда, без режиссуры рассказа. Отвечает на вопрос «что было дальше?».</p>' +
+      '<p><b>Сюжет</b> («как это рассказывают или организуют»): последовательность и связь описания событий, обычно с причинно-следственными переходами и акцентами. Отвечает на вопрос «как и почему это подано именно так?».</p>' +
+      '<p><b>Суть</b> («в чем главный смысл, конфликт или проблема»): смысловое ядро, главный конфликт, интересы сторон, ключевая проблема и критерий, по которому ситуация будет оценена. Часто формируется одной фразой: «это спор о...», «это история про...», «центральный вопрос: ...».</p>' +
+      '</div></details>' +
+      field('Фабула', '', '<textarea rows="4" data-field="step1.fabula" placeholder="Кто что сделал и когда">' + U.esc(s1.fabula) + '</textarea>') +
+      field('Сюжет', '', '<textarea rows="4" data-field="step1.plot" placeholder="Как и почему это подано именно так">' + U.esc(s1.plot) + '</textarea>') +
+      field('Суть', '', '<textarea rows="3" data-field="step1.essence" placeholder="Это спор о...">' + U.esc(s1.essence) + '</textarea>') +
+      '<div class="sep"></div>' +
+      '<h3 style="margin-bottom:4px">Пересказ в трех предложениях</h3>' +
+      '<div class="hint">По ' + C.RETELL_MAX + ' символов на предложение.</div>' +
+      ret;
+  }
+
+  function step3Body(sit, role) {
+    var d = Schema.step3ForRole(sit, role.id);
+    var asms = d.assumptions.map(function (a, i) {
+      var susp = !a.necessary && !a.sufficient;
+      return '<div class="asm' + (susp ? ' susp' : '') + '" data-asm="' + a.id + '">' +
+        '<div class="row" style="flex-wrap:nowrap;align-items:flex-start">' +
+        '<textarea rows="2" data-field="step3.byRole.' + role.id + '.assumptions.' + i + '.text" placeholder="Минимальная вводная">' + U.esc(a.text) + '</textarea>' +
+        '<button class="btn btn-ghost btn-icon" data-act="del-asm" data-id="' + a.id + '" title="Удалить вводную" aria-label="Удалить вводную">' + Icons('trash') + '</button>' +
+        '</div>' +
+        '<div class="row" style="margin-top:8px">' +
+        '<label class="chk' + (a.necessary ? ' on' : '') + '"><input type="checkbox" data-check="necessary" data-i="' + i + '"' + (a.necessary ? ' checked' : '') + '>необходима</label>' +
+        '<label class="chk' + (a.sufficient ? ' on' : '') + '"><input type="checkbox" data-check="sufficient" data-i="' + i + '"' + (a.sufficient ? ' checked' : '') + '>достаточна</label>' +
+        '</div>' +
+        '<div class="asm-warn"' + (susp ? '' : ' hidden') + '>' + Icons('alert', 15) + 'Ни одной отметки: вводная подозрительна</div>' +
+        '</div>';
+    }).join('');
+
+    return (role.interest ? '<div class="det-b" style="padding:0 0 12px"><b>Интересы роли:</b> ' + U.esc(role.interest) + '</div>' : '') +
+      field('Как эта роль выглядит положительным героем', '',
+        '<textarea rows="5" data-field="step3.byRole.' + role.id + '.heroVersion" placeholder="Положительный герой в этой роли">' + U.esc(d.heroVersion) + '</textarea>') +
+      '<div class="sep"></div>' +
+      '<h3 style="margin-bottom:4px">Вводные</h3>' +
+      '<div class="hint">Минимальные, необходимые и достаточные. Вводная без обеих отметок помечается как подозрительная.</div>' +
+      (asms || '<div class="muted" style="margin-bottom:12px">Вводных пока нет.</div>') +
+      '<div class="row"><button class="btn" data-act="add-asm">' + Icons('plus') + 'Добавить вводную</button></div>';
+  }
+
+  function step8Body(sit, role) {
+    var d = Schema.step8ForRole(sit, role.id);
+    return field('Первая фраза', 'Не длиннее ' + C.PHRASE_MAX + ' символов, это примерно ' + U.seconds(C.PHRASE_MAX) + ' секунд речи.',
+      textarea({ id: 'fp', path: 'step8.byRole.' + role.id + '.firstPhrase', value: d.firstPhrase, rows: 5, max: C.PHRASE_MAX, time: true, placeholder: 'С чего начинаю' })) +
+      field('Какие задать роли', '',
+        '<textarea rows="3" data-field="step8.byRole.' + role.id + '.roleAssignment" placeholder="Кем называю себя и соперника">' + U.esc(d.roleAssignment) + '</textarea>') +
+      field('Цель на раунд', '',
+        '<textarea rows="3" data-field="step8.byRole.' + role.id + '.roundGoal" placeholder="Чего добиваюсь в этом раунде">' + U.esc(d.roundGoal) + '</textarea>');
+  }
+
+  function screenSituation(root, state, view) {
+    var sit = Storage.getSituation(view.sitId);
+    if (!sit) return screenList(root, state);
+    var roles = Roles.sorted(sit.roles);
+    var role = null, i;
+    for (i = 0; i < roles.length; i++) if (roles[i].id === view.roleId) role = roles[i];
+    if (!role) role = roles[0];
+
+    var open = view.open;
+    var body = '';
+    body += accordion(Icons('doc', 16), 'Текст и роли', open === 'setup', 'setup', open === 'setup' ? setupBody(sit) : '');
+    body += accordion('1', 'Понять ситуацию', open === 's1', 's1', open === 's1' ? step1Body(sit) : '');
+    body += accordion('3', 'Вытащить роль на положительного героя', open === 's3', 's3',
+      open === 's3' ? (roleBar(sit, role.id, 's3') + step3Body(sit, role)) : '');
+    body += accordion('8', 'Первая фраза', open === 's8', 's8',
+      open === 's8' ? (roleBar(sit, role.id, 's8') + step8Body(sit, role)) : '');
+
+    return '<header class="hdr"><div class="hdr-in">' +
+      '<button class="btn btn-ghost btn-icon" data-act="back" title="К списку" aria-label="К списку">' + Icons('back') + '</button>' +
+      '<div class="hdr-title"><h1 id="sit-title">' + U.esc(sit.title || C.TITLE_DEFAULT) + '</h1>' +
+      (sit.context ? '<div class="hdr-sub">' + U.esc(sit.context) + '</div>' : '') + '</div>' +
+      saveIndicator(state) + themeBtn(root.settings.theme) +
+      '</div></header>' +
+      '<div class="wrap"><div style="height:14px"></div>' + body +
+      '<div class="muted" style="text-align:center;margin-top:8px">Шаги 2, 4, 5, 6, 7 и 9 появятся в следующих версиях.</div>' +
+      '</div>';
+  }
+
+  return {
+    list: screenList,
+    situation: screenSituation,
+    saveIndicator: saveIndicator,
+    counter: counter,
+    plural: plural
+  };
+})();
+/* ---------------------------------------------------------------------
+   12. Приложение: состояние экрана, события, действия
+   --------------------------------------------------------------------- */
+var App = (function () {
+  var root = null;
+  var view = { screen: 'list', sitId: null, roleId: null, open: 'setup' };
+  var mount = null;
+
+  /* ---------- отрисовка ---------- */
+
+  function render() {
+    var state = Storage.saveState();
+    mount.innerHTML = (view.screen === 'situation')
+      ? View.situation(root, state, view)
+      : View.list(root, state);
+    growAll();
+  }
+
+  function growAll() {
+    var list = mount.querySelectorAll('textarea');
+    for (var i = 0; i < list.length; i++) grow(list[i]);
+  }
+  function grow(t) {
+    if (!t || t.tagName !== 'TEXTAREA') return;
+    t.style.height = 'auto';
+    t.style.height = (t.scrollHeight + 2) + 'px';
+  }
+
+  function updateSaveIndicator(state) {
+    var n = document.getElementById('save-ind');
+    if (!n) return;
+    var txt = state === 'saving' ? 'Сохранение' : (state === 'dirty' ? 'Не сохранено' : 'Сохранено');
+    n.className = 'save ' + state;
+    n.setAttribute('title', txt);
+    var t = n.querySelector('.t');
+    if (t) t.textContent = txt;
+  }
+
+  function updateCounter(input) {
+    var id = input.id;
+    if (!id) return;
+    var c = mount.querySelector('[data-counter-for="' + id + '"]');
+    if (!c) return;
+    var max = Number(c.getAttribute('data-max')) || 0;
+    var len = U.len(input.value);
+    var cls = 'counter';
+    if (len >= max) cls += ' full';
+    else if (max === C.PHRASE_MAX && len > C.PHRASE_WARN) cls += ' warn';
+    c.className = cls;
+    var html = '<span>' + len + ' из ' + max + '</span>';
+    if (c.getAttribute('data-time')) html += '<span>около ' + U.seconds(len) + ' с речи</span>';
+    c.innerHTML = html;
+  }
+
+  function sit() { return Storage.getSituation(view.sitId); }
+
+  /* Пока роль не выбрана руками, активной считается первая по порядку показа,
+     то есть трудная. Как только роль выбрана явно, она держится. */
+  function activeRole() {
+    var s = sit();
+    if (!s) return null;
+    var rs = Roles.sorted(s.roles);
+    for (var i = 0; i < rs.length; i++) if (rs[i].id === view.roleId) return rs[i];
+    return rs[0] || null;
+  }
+
+  /* ---------- события ввода ---------- */
+
+  function onInput(e) {
+    var t = e.target;
+    if (!t || !t.getAttribute) return;
+    var path = t.getAttribute('data-field');
+    if (!path || !view.sitId) return;
+
+    var max = Number(t.getAttribute('data-max')) || 0;
+    var v = t.value;
+    if (max && U.len(v) > max) {
+      var pos = t.selectionStart;
+      v = U.cut(v, max);
+      t.value = v;
+      try { t.setSelectionRange(Math.min(pos, v.length), Math.min(pos, v.length)); } catch (err) {}
+    }
+    Storage.patch(view.sitId, path, v);
+    if (t.tagName === 'TEXTAREA') grow(t);
+    if (max) updateCounter(t);
+    if (path === 'title') {
+      var h = document.getElementById('sit-title');
+      if (h) h.textContent = v || C.TITLE_DEFAULT;
+    }
+  }
+
+  function onChange(e) {
+    var t = e.target;
+    if (!t || t.type !== 'checkbox') return;
+    var kind = t.getAttribute('data-check');
+    if (!kind || !view.sitId) return;
+    var i = Number(t.getAttribute('data-i'));
+    var lab = t.closest('.chk');
+    if (lab) lab.classList.toggle('on', t.checked);
+
+    if (kind === 'hard') {
+      Storage.patch(view.sitId, 'roles.' + i + '.hard', t.checked);
+      return;
+    }
+    var role = activeRole();
+    if (!role) return;
+    Storage.patch(view.sitId, 'step3.byRole.' + role.id + '.assumptions.' + i + '.' + kind, t.checked);
+    // подозрительность вводной пересчитывается на месте, без перерисовки
+    var box = t.closest('.asm');
+    if (box) {
+      var a = U.getPath(sit(), 'step3.byRole.' + role.id + '.assumptions.' + i);
+      var susp = a && !a.necessary && !a.sufficient;
+      box.classList.toggle('susp', !!susp);
+      var w = box.querySelector('.asm-warn');
+      if (w) w.hidden = !susp;
+    }
+  }
+
+  /* ---------- действия ---------- */
+
+  function onClick(e) {
+    var b = e.target.closest ? e.target.closest('[data-act]') : null;
+    if (!b) return;
+    var act = b.getAttribute('data-act');
+    var id = b.getAttribute('data-id');
+    e.preventDefault();
+    ACT[act] && ACT[act](id, b);
+  }
+
+  var ACT = {
+    theme: function () {
+      var next = Theme.next(root.settings.theme);
+      Theme.apply(next);
+      Storage.setSetting('theme', next);
+      render();
+    },
+
+    'new-sit': function () {
+      Modal.prompt('Новая ситуация', 'Название', '', 'Создать').then(function (name) {
+        if (name === null) return;
+        var s = Storage.create(Schema.newSituation(name || C.TITLE_DEFAULT));
+        openSituation(s.id);
+      });
+    },
+
+    'open-sit': function (id) { openSituation(id); },
+
+    'rename-sit': function (id) {
+      var s = Storage.getSituation(id);
+      if (!s) return;
+      Modal.prompt('Переименовать ситуацию', 'Название', s.title).then(function (name) {
+        if (name === null) return;
+        Storage.patch(id, 'title', name || C.TITLE_DEFAULT);
+        render();
+      });
+    },
+
+    'del-sit': function (id) {
+      var s = Storage.getSituation(id);
+      if (!s) return;
+      Modal.confirm('Удалить ситуацию',
+        'Ситуация «' + (s.title || C.TITLE_DEFAULT) + '» будет удалена вместе со всеми заполненными шагами. Восстановить ее можно будет только из выгруженного архива.'
+      ).then(function (ok) {
+        if (!ok) return;
+        Storage.remove(id);
+        Toast.show('Ситуация удалена');
+        render();
+      });
+    },
+
+    back: function () {
+      Storage.flush().catch(function () {});
+      view.screen = 'list';
+      view.sitId = null;
+      render();
+    },
+
+    acc: function (_id, b) {
+      var sec = b.getAttribute('data-sec');
+      view.open = (view.open === sec) ? null : sec;
+      render();
+    },
+
+    role: function (id) {
+      view.roleId = id;
+      render();
+    },
+
+    'add-role': function () {
+      var s = sit();
+      if (!s || s.roles.length >= C.ROLES_MAX) return;
+      var next = s.roles.slice();
+      next.push(Schema.newRole('Роль ' + (next.length + 1), next.length + 1));
+      Storage.patch(s.id, 'roles', Roles.renumber(next));
+      render();
+    },
+
+    'del-role': function (id) {
+      var s = sit();
+      if (!s || s.roles.length <= C.ROLES_MIN) return;
+      var r = null, i;
+      for (i = 0; i < s.roles.length; i++) if (s.roles[i].id === id) r = s.roles[i];
+      if (!r) return;
+      var d3 = s.step3.byRole[id], d8 = s.step8.byRole[id];
+      var hasData = !!(d3 && (String(d3.heroVersion || '').trim() || (d3.assumptions || []).length)) ||
+        !!(d8 && (String(d8.firstPhrase || '').trim() || String(d8.roleAssignment || '').trim() || String(d8.roundGoal || '').trim()));
+      var text = 'Роль «' + Roles.nameOf(r) + '» будет удалена.' +
+        (hasData ? ' Вместе с ней пропадет все, что заполнено по этой роли в шагах 3 и 8.' : '');
+      Modal.confirm('Удалить роль', text).then(function (ok) {
+        if (!ok) return;
+        var next = s.roles.filter(function (x) { return x.id !== id; });
+        Storage.patch(s.id, 'roles', Roles.renumber(next));
+        var b3 = {}, b8 = {}, k;
+        for (k in s.step3.byRole) if (k !== id) b3[k] = s.step3.byRole[k];
+        for (k in s.step8.byRole) if (k !== id) b8[k] = s.step8.byRole[k];
+        Storage.patch(s.id, 'step3.byRole', b3);
+        Storage.patch(s.id, 'step8.byRole', b8);
+        if (view.roleId === id) view.roleId = null;
+        render();
+      });
+    },
+
+    'move-role': function (id, b) {
+      var s = sit();
+      if (!s) return;
+      var dir = b.getAttribute('data-dir') === 'up' ? -1 : 1;
+      var next = s.roles.slice();
+      var i = next.findIndex(function (x) { return x.id === id; });
+      var j = i + dir;
+      if (i < 0 || j < 0 || j >= next.length) return;
+      var tmp = next[i]; next[i] = next[j]; next[j] = tmp;
+      Storage.patch(s.id, 'roles', Roles.renumber(next));
+      render();
+    },
+
+    'parse-roles': function () { parseRoles(); },
+
+    'add-asm': function () {
+      var s = sit(), role = activeRole();
+      if (!s || !role) return;
+      var d = Schema.step3ForRole(s, role.id);
+      var next = d.assumptions.slice();
+      next.push(Schema.newAssumption());
+      Storage.patch(s.id, 'step3.byRole.' + role.id + '.assumptions', next);
+      render();
+      var boxes = mount.querySelectorAll('.asm textarea');
+      if (boxes.length) { var last = boxes[boxes.length - 1]; last.focus(); }
+    },
+
+    'del-asm': function (id) {
+      var s = sit(), role = activeRole();
+      if (!s || !role) return;
+      var d = Schema.step3ForRole(s, role.id);
+      var next = d.assumptions.filter(function (a) { return a.id !== id; });
+      Storage.patch(s.id, 'step3.byRole.' + role.id + '.assumptions', next);
+      render();
+    },
+
+    export: function () { doExport(); },
+    import: function () { doImport(); }
+  };
+
+  function openSituation(id) {
+    var s = Storage.getSituation(id);
+    if (!s) return;
+    view.screen = 'situation';
+    view.sitId = id;
+    view.roleId = null; // роль не выбрана: активной будет трудная
+    view.open = String(s.sourceText || '').trim() ? 's1' : 'setup';
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------- разбор ролей из текста ---------- */
+
+  function parseRoles() {
+    var s = sit();
+    if (!s) return;
+    var res = Roles.parse(s.sourceText);
+    if (!res.found) {
+      Modal.open({
+        title: 'Роли в тексте не найдены',
+        html: '<p>Приложение ищет строку, которая начинается со слова «Роли», и берет следующие за ней строки. ' +
+          'В каждой строке название роли отделяется от интересов тире или двоеточием.</p>' +
+          '<p class="muted">Если в вашем тексте блока ролей нет, заполните роли вручную ниже.</p>',
+        actions: [{ label: 'Понятно', kind: 'btn-primary', value: null }]
+      });
+      return;
+    }
+    var found = res.roles;
+    var take = found.slice(0, C.ROLES_MAX);
+    var rows = take.map(function (r) {
+      return '<div class="role-row"><b>' + U.esc(r.name) + '</b>' +
+        (r.interest ? '<div class="muted">' + U.esc(r.interest) + '</div>' : '<div class="muted">интересы не распознаны</div>') +
+        '</div>';
+    }).join('');
+
+    var warn = '';
+    if (found.length > C.ROLES_MAX) {
+      warn += '<p class="muted">Найдено ролей: ' + found.length + '. Взять можно не больше ' + C.ROLES_MAX +
+        ', остальные придется добавить или поправить вручную.</p>';
+    }
+    if (take.length < C.ROLES_MIN) {
+      warn += '<p class="muted">Ролей меньше ' + C.ROLES_MIN + ', поэтому недостающие будут добавлены пустыми.</p>';
+    }
+    var hasData = s.roles.some(function (r) {
+      var d3 = s.step3.byRole[r.id], d8 = s.step8.byRole[r.id];
+      return !!(d3 && (String(d3.heroVersion || '').trim() || (d3.assumptions || []).length)) ||
+        !!(d8 && String(d8.firstPhrase || '').trim());
+    });
+    if (hasData) {
+      warn += '<p style="color:var(--warn)"><b>Внимание.</b> По текущим ролям уже что-то заполнено в шагах 3 и 8. ' +
+        'Замена ролей это сотрет.</p>';
+    }
+
+    Modal.open({
+      title: 'Найденные роли',
+      html: rows + warn + '<p class="muted">Названия и интересы можно поправить после замены.</p>',
+      actions: [
+        { label: 'Отмена', value: false },
+        { label: 'Заменить роли', kind: 'btn-primary', value: true }
+      ]
+    }).then(function (ok) {
+      if (!ok) return;
+      var next = take.map(function (r, i) { return Schema.newRole(r.name, i + 1, r.interest); });
+      while (next.length < C.ROLES_MIN) next.push(Schema.newRole('Роль ' + (next.length + 1), next.length + 1));
+      Storage.patch(s.id, 'roles', Roles.renumber(next));
+      Storage.patch(s.id, 'step3.byRole', {});
+      Storage.patch(s.id, 'step8.byRole', {});
+      view.roleId = null;
+      Toast.show('Ролей записано: ' + next.length);
+      render();
+    });
+  }
+
+  /* ---------- архив ---------- */
+
+  function doExport() {
+    Storage.flush().catch(function () {}).then(function () {
+      try {
+        Archive.download(root);
+        Toast.show('Архив выгружен');
+      } catch (e) {
+        Toast.show('Не удалось выгрузить архив: ' + e.message, 'err');
+      }
+    });
+  }
+
+  function doImport() {
+    var inp = document.createElement('input');
+    inp.type = 'file';
+    inp.accept = 'application/json,.json';
+    inp.style.display = 'none';
+    document.body.appendChild(inp);
+    inp.addEventListener('change', function () {
+      var f = inp.files && inp.files[0];
+      document.body.removeChild(inp);
+      if (!f) return;
+      Archive.readFile(f).then(function (raw) {
+        var incoming = Schema.migrate(raw); // тут же отсекается схема из будущего
+        var n = incoming.situations.length;
+        Modal.open({
+          title: 'Загрузка архива',
+          html: '<p>В файле ситуаций: <b>' + n + '</b>. Сейчас в приложении: <b>' + root.situations.length + '</b>.</p>' +
+            '<p><b>Заменить</b> - выбросить текущие данные и оставить только файл.<br>' +
+            '<b>Слить</b> - добавить ситуации из файла к текущим. Совпадающие получат новые внутренние номера, ничего не перезапишется.</p>',
+          actions: [
+            { label: 'Отмена', value: null },
+            { label: 'Слить', value: 'merge' },
+            { label: 'Заменить', kind: 'btn-danger', value: 'replace' }
+          ]
+        }).then(function (mode) {
+          if (!mode) return;
+          if (mode === 'replace') {
+            return Modal.confirm('Заменить все данные',
+              'Текущие ситуации (' + root.situations.length + ') будут удалены и заменены содержимым файла. Отменить это нельзя.',
+              'Заменить'
+            ).then(function (ok) {
+              if (!ok) return;
+              return apply(incoming, 'Архив загружен, данные заменены');
+            });
+          }
+          var merged = Archive.merge(root, incoming);
+          return apply(merged, 'Архив загружен, ситуаций добавлено: ' + n);
+        });
+      }).catch(function (e) {
+        Modal.open({
+          title: 'Файл не подошел',
+          html: '<p class="pre">' + U.esc(e.message || String(e)) + '</p>',
+          actions: [{ label: 'Понятно', kind: 'btn-primary', value: null }]
+        });
+      });
+    });
+    inp.click();
+  }
+
+  function apply(nextRoot, okText) {
+    return Storage.replaceAll(nextRoot).then(function () {
+      view.screen = 'list';
+      view.sitId = null;
+      Theme.apply(root.settings.theme);
+      Toast.show(okText);
+      render();
+    }).catch(function (e) {
+      Toast.show('Не удалось записать данные: ' + (e.message || e), 'err');
+    });
+  }
+
+  /* ---------- запуск ---------- */
+
+  function fatal(msg) {
+    document.getElementById('root').innerHTML =
+      '<div class="wrap"><div class="card" style="margin-top:40px">' +
+      '<h2 style="margin-bottom:8px">Приложение не может работать</h2>' +
+      '<p class="pre">' + U.esc(msg) + '</p>' +
+      '<p class="muted">Данные хранятся в базе IndexedDB этого браузера. Если браузер работает в приватном режиме или запрещает сайту хранилище, приложение открыть не получится.</p>' +
+      '</div></div>';
+  }
+
+  function start() {
+    mount = document.getElementById('root');
+    mount.addEventListener('click', onClick);
+    mount.addEventListener('input', onInput);
+    mount.addEventListener('change', onChange);
+    mount.addEventListener('keydown', function (e) {
+      if ((e.key === 'Enter' || e.key === ' ') && e.target.getAttribute && e.target.getAttribute('data-act') === 'open-sit') {
+        e.preventDefault();
+        openSituation(e.target.getAttribute('data-id'));
+      }
+    });
+
+    Storage.subscribe(function (ev) {
+      if (ev.type === 'save') updateSaveIndicator(ev.state);
+      if (ev.type === 'error') Toast.show('Данные не сохранились: ' + (ev.error && ev.error.message ? ev.error.message : 'ошибка базы'), 'err');
+      if (ev.type === 'external') render();
+    });
+
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') Storage.flush().catch(function () {});
+    });
+    window.addEventListener('pagehide', function () { Storage.flush().catch(function () {}); });
+    window.addEventListener('beforeunload', function (e) {
+      if (Storage.hasPending()) { e.preventDefault(); e.returnValue = ''; }
+    });
+
+    Storage.load().then(function (r) {
+      root = r;
+      Theme.apply(root.settings.theme);
+      render();
+    }).catch(function (e) {
+      fatal(e && e.message ? e.message : String(e));
+    });
+  }
+
+  return {
+    start: start,
+    render: render,
+    view: function () { return view; },
+    data: function () { return root; }
+  };
+})();
+
+/* Точка входа. Отладочная ручка PP нужна для проверки в консоли,
+   на работу приложения не влияет. */
+window.PP = { C: C, U: U, Schema: Schema, Storage: Storage, Roles: Roles, Archive: Archive, App: App };
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', App.start);
+} else {
+  App.start();
+}
+</script>
+</body>
+</html>
