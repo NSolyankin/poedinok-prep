@@ -201,6 +201,16 @@ input[type=text]:focus, textarea:focus{border-color:var(--accent); outline:2px s
   content:attr(data-n); font-size:10px; color:var(--accent); font-weight:700;
   vertical-align:super; padding:0 2px; -webkit-user-select:none; user-select:none;
 }
+.selbtn{
+  position:fixed; z-index:80; display:none; align-items:center; gap:8px;
+  min-height:44px; padding:8px 16px; border-radius:999px; cursor:pointer;
+  background:var(--accent); color:var(--on-accent); border:0; font:inherit; font-size:15px; font-weight:600;
+  box-shadow:0 4px 16px rgba(0,0,0,.28);
+  -webkit-user-select:none; user-select:none;
+}
+.selbtn.show{display:inline-flex}
+.selhint{font-size:13px; color:var(--muted); margin:8px 0 0; min-height:19px}
+.selhint b{color:var(--text); font-weight:600}
 .tabs{display:flex; gap:6px; margin:14px 0 12px; flex-wrap:wrap}
 .tab{
   min-height:var(--tap); padding:6px 14px; border-radius:999px; cursor:pointer;
@@ -2111,11 +2121,13 @@ var View = (function () {
     var head =
       '<details class="det" open><summary>Текст ситуации</summary><div class="det-b">' +
       '<div class="src" id="src-text">' + src.html + '</div>' +
-      '<div class="hint" style="margin-top:10px">Выделите кусок текста и нажмите «В разбор». Разобранное подсвечивается и нумеруется.</div>' +
+      '<div class="hint" style="margin-top:10px">Выделите кусок текста: кнопка «В разбор» появится прямо у выделения. Разобранное подсвечивается и нумеруется.</div>' +
+      '<div class="selhint" id="sel-hint"></div>' +
       '<div class="row">' +
       '<button class="btn btn-sm" data-act="to-analysis">' + Icons('plus', 16) + 'В разбор</button>' +
       '<button class="btn btn-sm" data-act="add-phrase">Добавить фразу вручную</button>' +
       '</div></div></details>' +
+      '<button class="selbtn" id="sel-btn" data-act="to-analysis">' + Icons('plus', 18) + 'В разбор</button>' +
       '<div class="tabs">' +
       '<button class="tab' + (tab !== 'matrix' ? ' on' : '') + '" data-act="s2tab" data-tab="phrases">Фразы (' + s2.phrases.length + ')</button>' +
       '<button class="tab' + (tab === 'matrix' ? ' on' : '') + '" data-act="s2tab" data-tab="matrix">Матрица слоев</button>' +
@@ -2575,8 +2587,10 @@ var App = (function () {
         Toast.show('Сначала выделите кусок текста ситуации');
         return;
       }
+      hideSelButton();
       addPhrase(s, q);
       lastSelection = '';
+      try { if (window.getSelection) window.getSelection().removeAllRanges(); } catch (e) {}
     },
 
     'add-phrase': function () {
@@ -2757,6 +2771,57 @@ var App = (function () {
     }).then(function (v) { return v || 'cancel'; });
   }
 
+  /* ---------- выделение текста ситуации ---------- */
+
+  var hideTimer = null;
+
+  function onSelection() {
+    var box = document.getElementById('src-text');
+    if (!box) return;
+    var sel = window.getSelection && window.getSelection();
+    if (!sel || !sel.rangeCount || sel.isCollapsed ||
+      !sel.anchorNode || !sel.focusNode ||
+      !box.contains(sel.anchorNode) || !box.contains(sel.focusNode)) {
+      // не стираем запомненное сразу: нажатие на кнопку само снимает выделение
+      if (hideTimer) clearTimeout(hideTimer);
+      hideTimer = setTimeout(hideSelButton, 250);
+      return;
+    }
+    var t = String(sel.toString() || '').replace(/\s+/g, ' ').trim();
+    if (!t) return;
+    lastSelection = t;
+    if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+    showSelButton(sel);
+    showSelHint(t);
+  }
+
+  function showSelButton(sel) {
+    var b = document.getElementById('sel-btn');
+    if (!b) return;
+    var r;
+    try { r = sel.getRangeAt(0).getBoundingClientRect(); } catch (e) { return; }
+    if (!r || (!r.width && !r.height)) return;
+    b.classList.add('show');
+    var w = b.offsetWidth || 140, h = b.offsetHeight || 44;
+    var vw = window.innerWidth, vh = window.innerHeight;
+    var left = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), vw - w - 8);
+    var top = r.bottom + 10;                       // под выделением
+    if (top + h > vh - 8) top = Math.max(8, r.top - h - 10);  // не влезло - над ним
+    b.style.left = Math.round(left) + 'px';
+    b.style.top = Math.round(top) + 'px';
+  }
+
+  function hideSelButton() {
+    var b = document.getElementById('sel-btn');
+    if (b) b.classList.remove('show');
+  }
+
+  function showSelHint(t) {
+    var n = document.getElementById('sel-hint');
+    if (!n) return;
+    n.innerHTML = 'Выделено: <b>' + U.esc(U.cut(t, 60)) + (U.len(t) > 60 ? '...' : '') + '</b>';
+  }
+
   function addPhrase(s, quote) {
     var next = s.step2.phrases.concat([Schema.newPhrase(quote)]);
     Storage.patch(s.id, 'step2.phrases', next);
@@ -2932,19 +2997,18 @@ var App = (function () {
   function start() {
     mount = document.getElementById('root');
     mount.addEventListener('click', onClick);
+    // нажатие на всплывающую кнопку не должно снимать выделение до срабатывания
+    mount.addEventListener('mousedown', function (e) {
+      if (e.target.closest && e.target.closest('#sel-btn')) e.preventDefault();
+    });
     mount.addEventListener('input', onInput);
     mount.addEventListener('change', onChange);
-    /* Запоминаем выделенный кусок текста ситуации: на телефоне нажатие
-       на кнопку снимает выделение, поэтому берем его заранее. */
-    document.addEventListener('selectionchange', function () {
-      var sel = window.getSelection && window.getSelection();
-      if (!sel || sel.isCollapsed) return;
-      var box = document.getElementById('src-text');
-      if (!box || !sel.anchorNode || !sel.focusNode) return;
-      if (!box.contains(sel.anchorNode) || !box.contains(sel.focusNode)) return;
-      var t = String(sel.toString() || '').trim();
-      if (t) lastSelection = t;
-    });
+    /* Выделение в тексте ситуации. Кусок запоминаем заранее: нажатие на
+       кнопку снимает выделение, особенно на телефоне. Кнопка всплывает
+       у самого выделения, иначе ее просто не находят. */
+    document.addEventListener('selectionchange', onSelection);
+    window.addEventListener('resize', function () { hideSelButton(); });
+    document.addEventListener('scroll', function () { hideSelButton(); }, true);
 
     mount.addEventListener('keydown', function (e) {
       if ((e.key === 'Enter' || e.key === ' ') && e.target.getAttribute && e.target.getAttribute('data-act') === 'open-sit') {
