@@ -233,6 +233,15 @@ select.lsel{
   display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; margin-top:9px;
 }
 .reading{border-left:2px solid var(--line); padding:0 0 0 10px; margin:0 0 10px}
+.pq{font-size:15px; line-height:1.5; padding-top:3px}
+.pnum.done{background:var(--accent); color:var(--on-accent)}
+.ph-silent{opacity:.55}
+.wtag{
+  flex:none; align-self:flex-start; margin-top:8px; padding:2px 10px; border-radius:999px;
+  background:var(--accent-soft); color:var(--accent); font-size:13px; font-weight:600; max-width:34vw;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+table.mx td.sil{color:var(--muted)}
 .btn.starred{color:var(--warn)}
 .mx-wrap{overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--line); border-radius:var(--r)}
 table.mx{border-collapse:collapse; width:100%; font-size:13px}
@@ -331,7 +340,7 @@ var IS_OAUTH_POPUP = false;
    1. КОНСТАНТЫ. Все пороги ТЗ собраны здесь и больше нигде не повторяются.
    --------------------------------------------------------------------- */
 var C = {
-  APP_VERSION: '0.2',
+  APP_VERSION: '0.2.1',
   SYNC_VERSION: '0.1',
   SCHEMA: 2,                 // версия схемы данных, раздел 5 ТЗ
   DB_NAME: 'poedinok-prep',  // раздел 3 ТЗ
@@ -535,19 +544,77 @@ var Schema = {
     return o;
   },
   newPhrase: function (quote) {
-    return { id: U.id('p_'), quote: String(quote || ''), purpose: '', readings: [], layers: [] };
+    return {
+      id: U.id('p_'), quote: String(quote || ''), purpose: '',
+      readings: [], layers: [],
+      wordMeanings: [],   // значения отдельных слов: { id, word, layer, text }
+      silent: []          // слои, в которых фраза осознанно "не звучит"
+    };
   },
-  newReading: function () {
-    return { id: U.id('rd_'), text: '', use: '', starred: false, layer: '' };
+  newReading: function (layer) {
+    return { id: U.id('rd_'), text: '', use: '', starred: false, layer: layer || '' };
+  },
+  newWordMeaning: function (word, layer) {
+    return { id: U.id('wm_'), word: String(word || ''), layer: layer || '', text: '' };
   },
 
   /* Слои фразы не отмечаются руками, а считаются: слой задействован,
-     если в нем есть хотя бы одна трактовка. Порядок как в списке слоев. */
+     если в нем есть трактовка фразы или значение слова. */
   layersOf: function (phrase) {
     var out = [];
     C.LAYERS.forEach(function (l) {
-      var has = (phrase.readings || []).some(function (r) { return r && r.layer === l.id; });
+      var has = (phrase.readings || []).some(function (r) { return r && r.layer === l.id && String(r.text || '').trim(); }) ||
+        (phrase.wordMeanings || []).some(function (m) { return m && m.layer === l.id && String(m.text || '').trim(); });
       if (has) out.push(l.id);
+    });
+    return out;
+  },
+
+  /* Фраза пройдена в слое, если в нем есть содержание или отметка "не звучит" */
+  passedInLayer: function (phrase, layerId) {
+    if ((phrase.silent || []).indexOf(layerId) >= 0) return true;
+    return Schema.layersOf(phrase).indexOf(layerId) >= 0;
+  },
+
+  /* Слова фразы для разбора: цитата без знаков, повторы убраны */
+  wordsOf: function (quote) {
+    var out = [], seen = {};
+    String(quote || '').split(/[^А-Яа-яЁёA-Za-z0-9\-]+/).forEach(function (w) {
+      w = w.replace(/^-+|-+$/g, '');
+      if (w.length < 2) return;
+      var k = w.toLowerCase();
+      if (seen[k]) return;
+      seen[k] = 1;
+      out.push(w);
+    });
+    return out;
+  },
+
+  /* Нарезка текста на фразы по предложениям, для первого прогона */
+  sentences: function (text) {
+    var t = String(text || '').replace(/\r/g, '');
+    var out = [];
+    t.split('\n').forEach(function (line) {
+      line = line.trim();
+      if (!line) return;
+      /* без lookbehind: Safari iOS младше 16.4 его не понимает */
+      var buf = '';
+      var parts = line.split(/(\s+)/);
+      for (var i = 0; i < parts.length; i++) {
+        var chunk = parts[i];
+        if (/^\s+$/.test(chunk)) {
+          var next = parts[i + 1] || '';
+          if (/[.!?]["»)]?$/.test(buf.trim()) && /^[А-ЯЁA-Z0-9«"]/.test(next)) {
+            if (buf.trim().length >= 2) out.push(buf.trim());
+            buf = '';
+          } else {
+            buf += chunk;
+          }
+        } else {
+          buf += chunk;
+        }
+      }
+      if (buf.trim().length >= 2) out.push(buf.trim());
     });
     return out;
   },
@@ -636,6 +703,16 @@ var Schema = {
                 layer: layerIds.indexOf(lay) >= 0 ? lay : ''
               };
             }),
+            wordMeanings: (Array.isArray(p.wordMeanings) ? p.wordMeanings : []).map(function (m) {
+              var lay2 = String((m && m.layer) || '');
+              return {
+                id: String((m && m.id) || U.id('wm_')),
+                word: String((m && m.word) || ''),
+                layer: layerIds.indexOf(lay2) >= 0 ? lay2 : '',
+                text: String((m && m.text) || '')
+              };
+            }).filter(function (m) { return m.word; }),
+            silent: (Array.isArray(p.silent) ? p.silent : []).filter(function (x) { return layerIds.indexOf(x) >= 0; }),
             layers: []
           };
           // поле layers производное, руками его больше не ставят
@@ -2146,29 +2223,32 @@ var View = (function () {
     return '<select class="lsel" data-sel="' + path + '">' + opts + '</select>';
   }
 
-  function step2Body(sit, tab) {
+  function step2Body(sit, tab, layerId) {
     var s2 = sit.step2;
     var src = markSource(sit.sourceText, s2.phrases);
 
     var head =
-      '<details class="det" open><summary>Текст ситуации</summary><div class="det-b">' +
+      '<details class="det"' + (tab !== 'pass' ? ' open' : '') + '><summary>Текст ситуации</summary><div class="det-b">' +
       '<div class="src" id="src-text">' + src.html + '</div>' +
       '<div class="hint" style="margin-top:10px">Выделите кусок текста: кнопка «В разбор» появится прямо у выделения. Разобранное подсвечивается и нумеруется.</div>' +
       '<div class="selhint" id="sel-hint"></div>' +
       '<div class="row">' +
       '<button class="btn btn-sm" data-act="to-analysis">' + Icons('plus', 16) + 'В разбор</button>' +
       '<button class="btn btn-sm" data-act="add-phrase">Добавить фразу вручную</button>' +
+      '<button class="btn btn-sm" data-act="slice-text">Нарезать текст на фразы</button>' +
       '</div></div></details>' +
       '<button class="selbtn" id="sel-btn" data-act="to-analysis">' + Icons('plus', 18) + 'В разбор</button>' +
       '<div class="tabs">' +
-      '<button class="tab' + (tab !== 'matrix' ? ' on' : '') + '" data-act="s2tab" data-tab="phrases">Фразы (' + s2.phrases.length + ')</button>' +
-      '<button class="tab' + (tab === 'matrix' ? ' on' : '') + '" data-act="s2tab" data-tab="matrix">Матрица слоев</button>' +
+      '<button class="tab' + (tab === 'pass' ? ' on' : '') + '" data-act="s2tab" data-tab="pass">Прогон по слоям</button>' +
+      '<button class="tab' + (tab === 'phrases' ? ' on' : '') + '" data-act="s2tab" data-tab="phrases">Фразы (' + s2.phrases.length + ')</button>' +
+      '<button class="tab' + (tab === 'matrix' ? ' on' : '') + '" data-act="s2tab" data-tab="matrix">Матрица</button>' +
       '</div>';
 
+    if (tab === 'pass') return head + step2Pass(s2, layerId);
     if (tab === 'matrix') return head + step2Matrix(s2);
 
     if (!s2.phrases.length) {
-      return head + '<div class="empty">Ни одной фразы пока не разобрано.<br>Выделите кусок текста выше и нажмите «В разбор».</div>';
+      return head + '<div class="empty">Ни одной фразы пока не разобрано.<br>Нажмите «Нарезать текст на фразы» или выделите кусок текста выше.</div>';
     }
 
     var body = s2.phrases.map(function (p, i) {
@@ -2210,6 +2290,89 @@ var View = (function () {
       '<div class="row"><button class="btn" data-act="add-phrase">' + Icons('plus') + 'Добавить фразу</button></div>';
   }
 
+  /* ---- прогон по слоям: главный режим шага 2 ----
+     Методика: весь текст прогоняется фраза за фразой сначала в одном слое,
+     потом в следующем, и в каждой фразе разбираются значения слов в этом слое. */
+  function step2Pass(s2, layerId) {
+    if (!s2.phrases.length) {
+      return '<div class="empty">Сначала нарежьте текст на фразы кнопкой выше:<br>прогон идет по всем фразам подряд.</div>';
+    }
+    var layer = C.LAYERS.filter(function (l) { return l.id === layerId; })[0] || C.LAYERS[0];
+
+    // лента слоев с прогрессом прохода
+    var tabsHtml = '<div class="roles-bar">' + C.LAYERS.map(function (l) {
+      var done = s2.phrases.filter(function (p) { return Schema.passedInLayer(p, l.id); }).length;
+      var full = done === s2.phrases.length;
+      return '<button class="role-tab' + (l.id === layer.id ? ' on' : '') + '" data-act="s2layer" data-id="' + l.id + '">' +
+        '<span class="dot' + (full ? ' filled' : '') + '"></span>' +
+        '<span class="nm">' + U.esc(l.name) + '</span>' +
+        '<span class="muted" style="font-size:11px">' + done + '/' + s2.phrases.length + '</span>' +
+        '</button>';
+    }).join('') + '</div>';
+
+    var cards = s2.phrases.map(function (p, i) {
+      var base = 'step2.phrases.' + i;
+      // трактовка фразы в текущем слое
+      var rIdx = -1;
+      p.readings.forEach(function (r, k) { if (rIdx < 0 && r.layer === layer.id) rIdx = k; });
+      var rd = rIdx >= 0 ? p.readings[rIdx] : null;
+      var silent = (p.silent || []).indexOf(layer.id) >= 0;
+      var passed = Schema.passedInLayer(p, layer.id);
+
+      // слова фразы, подсвечены те, у которых есть значение в этом слое
+      var chips = Schema.wordsOf(p.quote).map(function (w) {
+        var has = p.wordMeanings.some(function (m) {
+          return m.word.toLowerCase() === w.toLowerCase() && m.layer === layer.id && String(m.text || '').trim();
+        });
+        return '<button class="chip' + (has ? ' on' : '') + '" data-act="word" data-i="' + i + '" data-word="' + U.esc(w) + '">' + U.esc(w) + '</button>';
+      }).join('');
+
+      // уже записанные значения слов в этом слое
+      var wms = p.wordMeanings.map(function (m, k) {
+        if (m.layer !== layer.id) return '';
+        return '<div class="reading"><div class="row" style="flex-wrap:nowrap;align-items:flex-start">' +
+          '<span class="wtag">' + U.esc(m.word) + '</span>' +
+          '<textarea rows="1" data-field="' + base + '.wordMeanings.' + k + '.text" placeholder="Что значит это слово в слое «' + U.esc(layer.name) + '»">' + U.esc(m.text) + '</textarea>' +
+          '<button class="btn btn-ghost btn-icon" data-act="del-wm" data-i="' + i + '" data-k="' + k + '" title="Убрать" aria-label="Убрать">' + Icons('trash') + '</button>' +
+          '</div></div>';
+      }).join('');
+
+      return '<div class="card phrase' + (silent ? ' ph-silent' : '') + '">' +
+        '<div class="row" style="flex-wrap:nowrap;align-items:flex-start">' +
+        '<span class="pnum' + (passed ? ' done' : '') + '">' + (i + 1) + '</span>' +
+        '<div class="pq">' + U.esc(p.quote || 'фраза без цитаты') + '</div>' +
+        '</div>' +
+        (silent ? '' :
+          '<div class="field" style="margin:10px 0 8px">' +
+          '<textarea rows="2" ' + (rd ? 'data-field="' + base + '.readings.' + rIdx + '.text"' : 'data-pass="' + i + '" data-pass-kind="text"') +
+          ' placeholder="Как фраза читается в слое «' + U.esc(layer.name) + '»">' + U.esc(rd ? rd.text : '') + '</textarea>' +
+          '<textarea rows="1" ' + (rd ? 'data-field="' + base + '.readings.' + rIdx + '.use"' : 'data-pass="' + i + '" data-pass-kind="use"') +
+          ' placeholder="Что это дает в переговорах">' + U.esc(rd ? rd.use : '') + '</textarea>' +
+          '</div>' +
+          '<div class="label" style="font-weight:600">Слова</div>' +
+          '<div class="hint">Нажмите слово, чтобы записать его значение в этом слое.</div>' +
+          '<div class="chips" style="margin-bottom:6px">' + chips + '</div>' + wms) +
+        '<label class="chk' + (silent ? ' on' : '') + '" style="margin-top:8px"><input type="checkbox" data-check="silent" data-i="' + i + '"' + (silent ? ' checked' : '') + '>' +
+        'в этом слое фраза не звучит</label>' +
+        '</div>';
+    }).join('');
+
+    var doneCount = s2.phrases.filter(function (p) { return Schema.passedInLayer(p, layer.id); }).length;
+    var nextLayer = null;
+    for (var li = 0; li < C.LAYERS.length; li++) {
+      if (C.LAYERS[li].id !== layer.id &&
+        s2.phrases.some(function (p) { return !Schema.passedInLayer(p, C.LAYERS[li].id); })) { nextLayer = C.LAYERS[li]; break; }
+    }
+
+    return tabsHtml +
+      '<details class="det"><summary>Слой «' + U.esc(layer.name) + '»: что это</summary><div class="det-b">' + U.esc(layer.about) + '</div></details>' +
+      '<div class="muted" style="margin:0 0 10px">Пройдено фраз в этом слое: ' + doneCount + ' из ' + s2.phrases.length + '.</div>' +
+      cards +
+      (doneCount === s2.phrases.length && nextLayer
+        ? '<div class="row row-end"><button class="btn btn-primary" data-act="s2layer" data-id="' + nextLayer.id + '">Слой пройден, дальше: ' + U.esc(nextLayer.name) + '</button></div>'
+        : '');
+  }
+
   function step2Matrix(s2) {
     var usedCount = 0;
     var cols = C.LAYERS.map(function (l) {
@@ -2221,11 +2384,16 @@ var View = (function () {
     var rows = s2.phrases.map(function (p, i) {
       var q = String(p.quote || '').trim();
       var cells = C.LAYERS.map(function (l) {
-        var r = p.readings.filter(function (x) { return x.layer === l.id; });
-        var on = r.length > 0;
-        var tip = on ? r.map(function (x) { return String(x.text || 'трактовка без текста'); }).join(' | ') : '';
-        return '<td class="' + (on ? 'on' : '') + '"' + (tip ? ' title="' + U.esc(tip) + '"' : '') + '>' +
-          (on ? (r.length > 1 ? r.length : Icons('check', 14)) : '') + '</td>';
+        var r = p.readings.filter(function (x) { return x.layer === l.id && String(x.text || '').trim(); });
+        var wm = p.wordMeanings.filter(function (x) { return x.layer === l.id && String(x.text || '').trim(); });
+        var total = r.length + wm.length;
+        var silent = (p.silent || []).indexOf(l.id) >= 0;
+        var tip = r.map(function (x) { return x.text; })
+          .concat(wm.map(function (x) { return x.word + ': ' + x.text; })).join(' | ');
+        if (total > 0) {
+          return '<td class="on" title="' + U.esc(tip) + '">' + (total > 1 ? total : Icons('check', 14)) + '</td>';
+        }
+        return '<td' + (silent ? ' class="sil" title="Отмечено: в этом слое фраза не звучит"' : '') + '>' + (silent ? '&middot;' : '') + '</td>';
       }).join('');
       return '<tr><td class="qcell"><span class="pnum">' + (i + 1) + '</span> ' +
         U.esc(q.length > C.QUOTE_PREVIEW ? U.cut(q, C.QUOTE_PREVIEW) + '...' : (q || 'без цитаты')) + '</td>' + cells + '</tr>';
@@ -2296,7 +2464,7 @@ var View = (function () {
     var body = '';
     body += accordion(Icons('doc', 16), 'Текст и роли', open === 'setup', 'setup', open === 'setup' ? setupBody(sit) : '');
     body += accordion('1', 'Понять ситуацию', open === 's1', 's1', open === 's1' ? step1Body(sit) : '');
-    body += accordion('2', 'Разобрать текст на фразы и слова', open === 's2', 's2', open === 's2' ? step2Body(sit, view.s2tab) : '');
+    body += accordion('2', 'Разобрать текст на фразы и слова', open === 's2', 's2', open === 's2' ? step2Body(sit, view.s2tab, view.s2layer) : '');
     body += accordion('3', 'Вытащить роль на положительного героя', open === 's3', 's3',
       open === 's3' ? (roleBar(sit, role.id, 's3') + step3Body(sit, role)) : '');
     body += accordion('8', 'Первая фраза', open === 's8', 's8',
@@ -2358,7 +2526,7 @@ var View = (function () {
    --------------------------------------------------------------------- */
 var App = (function () {
   var root = null;
-  var view = { screen: 'list', sitId: null, roleId: null, open: 'setup', s2tab: 'phrases' };
+  var view = { screen: 'list', sitId: null, roleId: null, open: 'setup', s2tab: 'pass', s2layer: 'tech' };
   var mount = null;
   var lastSelection = '';   // кусок текста ситуации, выделенный пользователем
 
@@ -2433,6 +2601,28 @@ var App = (function () {
   function onInput(e) {
     var t = e.target;
     if (!t || !t.getAttribute) return;
+
+    /* Первый ввод трактовки в прогоне: записи для этого слоя еще нет,
+       создаем ее и дальше поле работает как обычное. */
+    if (t.getAttribute('data-pass') !== null && view.sitId) {
+      var pi = Number(t.getAttribute('data-pass'));
+      var kind = t.getAttribute('data-pass-kind') || 'text';
+      var ps = sit();
+      var pp = ps && ps.step2.phrases[pi];
+      if (!pp) return;
+      var ri = -1;
+      pp.readings.forEach(function (r, k) { if (ri < 0 && r.layer === view.s2layer) ri = k; });
+      if (ri < 0) {
+        Storage.patch(ps.id, 'step2.phrases.' + pi + '.readings', pp.readings.concat([Schema.newReading(view.s2layer)]));
+        ri = pp.readings.length - 1;
+      }
+      var fpath = 'step2.phrases.' + pi + '.readings.' + ri + '.' + kind;
+      t.removeAttribute('data-pass');
+      t.removeAttribute('data-pass-kind');
+      t.setAttribute('data-field', fpath);
+      // дальше проваливаемся в обычную обработку
+    }
+
     var path = t.getAttribute('data-field');
     if (!path || !view.sitId) return;
 
@@ -2450,6 +2640,12 @@ var App = (function () {
     if (path === 'title') {
       var h = document.getElementById('sit-title');
       if (h) h.textContent = v || C.TITLE_DEFAULT;
+    }
+    // производные отметки слоев пересчитываются при любой правке содержимого фразы
+    var pm = path.match(/^step2\.phrases\.(\d+)\./);
+    if (pm) {
+      var ph = U.getPath(sit(), 'step2.phrases.' + pm[1]);
+      if (ph) Storage.patch(view.sitId, 'step2.phrases.' + pm[1] + '.layers', Schema.layersOf(ph));
     }
     // правка цитаты меняет подсветку в тексте ситуации, но не трогает поле ввода
     if (/^step2\.phrases\.\d+\.quote$/.test(path)) refreshSource();
@@ -2475,6 +2671,16 @@ var App = (function () {
 
     if (kind === 'hard') {
       Storage.patch(view.sitId, 'roles.' + i + '.hard', t.checked);
+      return;
+    }
+    if (kind === 'silent') {
+      var sp = sit();
+      var phr = sp && sp.step2.phrases[i];
+      if (!phr) return;
+      var list = (phr.silent || []).filter(function (x) { return x !== view.s2layer; });
+      if (t.checked) list.push(view.s2layer);
+      Storage.patch(sp.id, 'step2.phrases.' + i + '.silent', list);
+      render();
       return;
     }
     var role = activeRole();
@@ -2629,7 +2835,103 @@ var App = (function () {
     /* ---- шаг 2 ---- */
 
     s2tab: function (_id, b) {
-      view.s2tab = b.getAttribute('data-tab') === 'matrix' ? 'matrix' : 'phrases';
+      var tb = b.getAttribute('data-tab');
+      view.s2tab = (tb === 'matrix' || tb === 'phrases' || tb === 'pass') ? tb : 'pass';
+      render();
+    },
+
+    s2layer: function (id) {
+      view.s2layer = id;
+      view.s2tab = 'pass';
+      render();
+      window.scrollTo(0, 0);
+    },
+
+    /* Нарезка текста на фразы по предложениям, с подтверждением */
+    'slice-text': function () {
+      var s = sit();
+      if (!s) return;
+      var sents = Schema.sentences(s.sourceText);
+      if (!sents.length) {
+        Toast.show('Текст ситуации пуст, резать нечего');
+        return;
+      }
+      var existing = {};
+      s.step2.phrases.forEach(function (p) { existing[String(p.quote || '').trim()] = 1; });
+      var fresh = sents.filter(function (x) { return !existing[x]; });
+      if (!fresh.length) {
+        Toast.show('Все предложения уже в разборе');
+        return;
+      }
+      var rows = fresh.map(function (x, k) {
+        return '<label class="chk" style="display:flex;margin-bottom:6px;text-align:left">' +
+          '<input type="checkbox" data-slice="' + k + '" checked>' +
+          '<span style="font-size:13px">' + U.esc(x) + '</span></label>';
+      }).join('');
+      Modal.open({
+        title: 'Нарезка на фразы',
+        html: '<p class="muted">Найдено предложений: ' + fresh.length +
+          (s.step2.phrases.length ? ' (уже разобранные пропущены)' : '') +
+          '. Снимите отметку с тех, что резать не нужно. Границы фраз потом можно править на вкладке «Фразы».</p>' + rows,
+        actions: [
+          { label: 'Отмена', value: null },
+          {
+            label: 'Создать фразы', kind: 'btn-primary',
+            collect: function (n) {
+              var take = [];
+              fresh.forEach(function (x, k) {
+                var cb = n.querySelector('[data-slice="' + k + '"]');
+                if (cb && cb.checked) take.push(x);
+              });
+              return take;
+            }
+          }
+        ]
+      }).then(function (take) {
+        if (!take || !take.length) return;
+        var next = s.step2.phrases.concat(take.map(function (x) { return Schema.newPhrase(x); }));
+        Storage.patch(s.id, 'step2.phrases', next);
+        view.s2tab = 'pass';
+        Toast.show('Фраз создано: ' + take.length);
+        render();
+      });
+    },
+
+    /* Слово в прогоне: заводим значение слова в текущем слое */
+    word: function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var i = Number(b.getAttribute('data-i'));
+      var w = b.getAttribute('data-word');
+      var p = s.step2.phrases[i];
+      if (!p || !w) return;
+      var exists = p.wordMeanings.some(function (m) {
+        return m.word.toLowerCase() === w.toLowerCase() && m.layer === view.s2layer;
+      });
+      if (!exists) {
+        Storage.patch(s.id, 'step2.phrases.' + i + '.wordMeanings',
+          p.wordMeanings.concat([Schema.newWordMeaning(w, view.s2layer)]));
+      }
+      render();
+      // курсор в поле значения этого слова
+      var cards = mount.querySelectorAll('.phrase');
+      var card = cards[i];
+      if (card) {
+        var tas = card.querySelectorAll('textarea[data-field*="wordMeanings"]');
+        var last = tas[tas.length - 1];
+        if (last && !exists) last.focus();
+      }
+    },
+
+    'del-wm': function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var i = Number(b.getAttribute('data-i')), k = Number(b.getAttribute('data-k'));
+      var p = s.step2.phrases[i];
+      if (!p) return;
+      var next = p.wordMeanings.filter(function (x, idx) { return idx !== k; });
+      Storage.patch(s.id, 'step2.phrases.' + i + '.wordMeanings', next);
+      Storage.patch(s.id, 'step2.phrases.' + i + '.layers', Schema.layersOf({ readings: p.readings, wordMeanings: next }));
       render();
     },
 
