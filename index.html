@@ -189,6 +189,49 @@ input[type=text]:focus, textarea:focus{border-color:var(--accent); outline:2px s
 .save.saved .d{background:var(--accent)}
 @keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
 
+/* ---------- шаг 2: разбор текста ---------- */
+.src{
+  white-space:pre-wrap; word-break:break-word; font-size:15px; line-height:1.6;
+  max-height:46vh; overflow:auto; padding:10px; border-radius:8px;
+  background:var(--surface); border:1px solid var(--line);
+  -webkit-user-select:text; user-select:text;
+}
+.src mark.q{background:var(--accent-soft); color:inherit; border-radius:3px; padding:1px 0; box-shadow:0 1px 0 var(--accent)}
+.src mark.q::after{
+  content:attr(data-n); font-size:10px; color:var(--accent); font-weight:700;
+  vertical-align:super; padding:0 2px; -webkit-user-select:none; user-select:none;
+}
+.tabs{display:flex; gap:6px; margin:14px 0 12px; flex-wrap:wrap}
+.tab{
+  min-height:var(--tap); padding:6px 14px; border-radius:999px; cursor:pointer;
+  border:1px solid var(--line); background:var(--surface); color:var(--text); font:inherit; font-size:14px;
+}
+.tab.on{background:var(--accent); border-color:var(--accent); color:var(--on-accent)}
+.chips{display:flex; flex-wrap:wrap; gap:6px}
+.chip{
+  min-height:36px; padding:4px 12px; border-radius:999px; cursor:pointer;
+  border:1px solid var(--line); background:var(--surface); color:var(--muted); font:inherit; font-size:13px;
+}
+.chip.on{background:var(--accent-soft); border-color:var(--accent); color:var(--accent); font-weight:600}
+.phrase .pnum{
+  flex:none; width:24px; height:24px; border-radius:6px; background:var(--accent-soft); color:var(--accent);
+  display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; margin-top:9px;
+}
+.reading{border-left:2px solid var(--line); padding:0 0 0 10px; margin:0 0 10px}
+.btn.starred{color:var(--warn)}
+.mx-wrap{overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--line); border-radius:var(--r)}
+table.mx{border-collapse:collapse; width:100%; font-size:13px}
+table.mx th, table.mx td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:8px 6px; text-align:center}
+table.mx th{background:var(--surface2); font-weight:600; white-space:nowrap}
+table.mx th.idle{color:var(--muted); background:transparent}
+table.mx .qcell{text-align:left; min-width:190px; max-width:320px}
+table.mx td.on{color:var(--accent); background:var(--accent-soft)}
+table.mx td.on svg{margin:0 auto}
+table.mx .pnum{
+  display:inline-flex; width:20px; height:20px; border-radius:5px; background:var(--accent-soft); color:var(--accent);
+  align-items:center; justify-content:center; font-size:11px; font-weight:700; vertical-align:middle;
+}
+
 /* ---------- значок синхронизации ---------- */
 .cloud-btn.muted{color:var(--muted)}
 .cloud-btn.ok{color:var(--accent)}
@@ -294,6 +337,18 @@ var C = {
 
   SHORT_MAX: 3,              // длина короткой метки роли
   TITLE_DEFAULT: 'Без названия',
+
+  /* Семь слоев ситуации, раздел 5.3 ТЗ и шаблон. Порядок фиксирован. */
+  LAYERS: [
+    { id: 'tech', short: 'Тех', name: 'технический', about: 'Материальные, предметные условия.' },
+    { id: 'techno', short: 'Тхн', name: 'технологический', about: 'Методы, процессы и средства реализации.' },
+    { id: 'psy', short: 'Пси', name: 'психологический', about: 'Внутренняя жизнь человека, психика.' },
+    { id: 'eco', short: 'Экн', name: 'экономический', about: 'Производственно-хозяйственные, денежные отношения.' },
+    { id: 'aesth', short: 'Эст', name: 'эстетический', about: 'Чувственное восприятие прекрасного.' },
+    { id: 'ethic', short: 'Эти', name: 'этический', about: 'Нормы морали и нравственности.' },
+    { id: 'law', short: 'Прв', name: 'правовой', about: 'Правовое регулирование отношений участников.' }
+  ],
+  QUOTE_PREVIEW: 60,         // сколько знаков цитаты показывать в матрице
 
   /* Синхронизация, раздел 9 ТЗ. Единственные адреса, к которым
      приложение вообще обращается. */
@@ -441,7 +496,7 @@ var Schema = {
       updatedAt: ts,
       roles: roles,
       step1: { fabula: '', plot: '', essence: '', retell: ['', '', ''] },
-      step2: {},
+      step2: { phrases: [], layerNotes: Schema.emptyLayerNotes() },
       step3: { byRole: {} },
       step4: {},
       step5: {},
@@ -457,6 +512,18 @@ var Schema = {
 
   newAssumption: function () {
     return { id: U.id('a_'), text: '', necessary: false, sufficient: false };
+  },
+
+  emptyLayerNotes: function () {
+    var o = {};
+    C.LAYERS.forEach(function (l) { o[l.id] = ''; });
+    return o;
+  },
+  newPhrase: function (quote) {
+    return { id: U.id('p_'), quote: String(quote || ''), purpose: '', readings: [], layers: [] };
+  },
+  newReading: function () {
+    return { id: U.id('rd_'), text: '', use: '', starred: false };
   },
 
   step3ForRole: function (sit, roleId) {
@@ -519,8 +586,36 @@ var Schema = {
     };
     while (out.step1.retell.length < C.RETELL_COUNT) out.step1.retell.push('');
 
+    // шаг 2
+    var s2 = (out.step2 && typeof out.step2 === 'object') ? out.step2 : {};
+    var notes = Schema.emptyLayerNotes();
+    if (s2.layerNotes && typeof s2.layerNotes === 'object') {
+      C.LAYERS.forEach(function (l) { notes[l.id] = String(s2.layerNotes[l.id] || ''); });
+    }
+    var layerIds = C.LAYERS.map(function (l) { return l.id; });
+    out.step2 = {
+      phrases: (Array.isArray(s2.phrases) ? s2.phrases : []).filter(function (p) { return p && typeof p === 'object'; })
+        .map(function (p) {
+          return {
+            id: String(p.id || U.id('p_')),
+            quote: String(p.quote || ''),
+            purpose: String(p.purpose || ''),
+            readings: (Array.isArray(p.readings) ? p.readings : []).map(function (r) {
+              return {
+                id: String((r && r.id) || U.id('rd_')),
+                text: String((r && r.text) || ''),
+                use: String((r && r.use) || ''),
+                starred: !!(r && r.starred)
+              };
+            }),
+            layers: (Array.isArray(p.layers) ? p.layers : []).filter(function (x) { return layerIds.indexOf(x) >= 0; })
+          };
+        }),
+      layerNotes: notes
+    };
+
     // разделы будущих версий держим объектами, чтобы схема была стабильной
-    ['step2', 'step4', 'step5', 'step6', 'step7', 'step9'].forEach(function (key) {
+    ['step4', 'step5', 'step6', 'step7', 'step9'].forEach(function (key) {
       if (!out[key] || typeof out[key] !== 'object') out[key] = {};
     });
 
@@ -1529,7 +1624,9 @@ var Icons = (function () {
     cloud_ok: '<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.5-1A3.9 3.9 0 0121 13a4 4 0 01-4 5z"/><path d="M9.5 14l2 2 3.5-4"/>',
     cloud_off: '<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.5-1A3.9 3.9 0 0121 13a4 4 0 01-4 5z"/><path d="M4 3l16 18"/>',
     cloud_sync: '<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.5-1A3.9 3.9 0 0121 13a4 4 0 01-4 5z"/><path d="M10 14.5h3.5M13 12.5l1.5 2-1.5 2"/>',
-    cloud_alert: '<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.5-1A3.9 3.9 0 0121 13a4 4 0 01-4 5z"/><path d="M12 11v3M12 16.5v.5"/>'
+    cloud_alert: '<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.5-1A3.9 3.9 0 0121 13a4 4 0 01-4 5z"/><path d="M12 11v3M12 16.5v.5"/>',
+    star: '<path d="M12 4l2.3 4.9 5.2.7-3.8 3.7.9 5.3-4.6-2.6-4.6 2.6.9-5.3L4.5 9.6l5.2-.7z"/>',
+    star_on: '<path d="M12 4l2.3 4.9 5.2.7-3.8 3.7.9 5.3-4.6-2.6-4.6 2.6.9-5.3L4.5 9.6l5.2-.7z" fill="currentColor"/>'
   };
   return function (name, size) {
     var s = size || 20;
@@ -1965,6 +2062,142 @@ var View = (function () {
       ret;
   }
 
+  /* ---- шаг 2 ---- */
+
+  /* Подсветка разобранных кусков прямо в тексте ситуации.
+     Ищем первое незанятое вхождение цитаты: так видно, чего вы не трогали. */
+  function markSource(text, phrases) {
+    var t = String(text || '');
+    var used = [], missing = {};
+    phrases.forEach(function (p, i) {
+      var q = String(p.quote || '').trim();
+      if (!q) { missing[p.id] = true; return; }
+      var from = 0, pos = -1;
+      while (true) {
+        pos = t.indexOf(q, from);
+        if (pos < 0) break;
+        var end = pos + q.length;
+        var busy = used.some(function (r) { return pos < r.end && end > r.start; });
+        if (!busy) break;
+        from = pos + 1;
+      }
+      if (pos < 0) { missing[p.id] = true; return; }
+      used.push({ start: pos, end: pos + q.length, n: i + 1 });
+    });
+    used.sort(function (a, b) { return a.start - b.start; });
+    var html = '', at = 0;
+    used.forEach(function (r) {
+      html += U.esc(t.slice(at, r.start));
+      // номер рисуется средствами стиля: иначе он попадал бы в выделение мышью
+      html += '<mark class="q" data-n="' + r.n + '">' + U.esc(t.slice(r.start, r.end)) + '</mark>';
+      at = r.end;
+    });
+    html += U.esc(t.slice(at));
+    return { html: html || '<span class="muted">Текст ситуации пуст. Вставьте его в разделе «Текст и роли».</span>', missing: missing };
+  }
+
+  function layerChips(phraseIndex, layers) {
+    return '<div class="chips">' + C.LAYERS.map(function (l) {
+      var on = layers.indexOf(l.id) >= 0;
+      return '<button class="chip' + (on ? ' on' : '') + '" data-act="layer" data-i="' + phraseIndex +
+        '" data-layer="' + l.id + '" title="' + U.esc(l.about) + '">' + U.esc(l.name) + '</button>';
+    }).join('') + '</div>';
+  }
+
+  function step2Body(sit, tab) {
+    var s2 = sit.step2;
+    var src = markSource(sit.sourceText, s2.phrases);
+
+    var head =
+      '<details class="det" open><summary>Текст ситуации</summary><div class="det-b">' +
+      '<div class="src" id="src-text">' + src.html + '</div>' +
+      '<div class="hint" style="margin-top:10px">Выделите кусок текста и нажмите «В разбор». Разобранное подсвечивается и нумеруется.</div>' +
+      '<div class="row">' +
+      '<button class="btn btn-sm" data-act="to-analysis">' + Icons('plus', 16) + 'В разбор</button>' +
+      '<button class="btn btn-sm" data-act="add-phrase">Добавить фразу вручную</button>' +
+      '</div></div></details>' +
+      '<div class="tabs">' +
+      '<button class="tab' + (tab !== 'matrix' ? ' on' : '') + '" data-act="s2tab" data-tab="phrases">Фразы (' + s2.phrases.length + ')</button>' +
+      '<button class="tab' + (tab === 'matrix' ? ' on' : '') + '" data-act="s2tab" data-tab="matrix">Матрица слоев</button>' +
+      '</div>';
+
+    if (tab === 'matrix') return head + step2Matrix(s2);
+
+    if (!s2.phrases.length) {
+      return head + '<div class="empty">Ни одной фразы пока не разобрано.<br>Выделите кусок текста выше и нажмите «В разбор».</div>';
+    }
+
+    var body = s2.phrases.map(function (p, i) {
+      var base = 'step2.phrases.' + i;
+      var readings = p.readings.map(function (r, j) {
+        var rb = base + '.readings.' + j;
+        return '<div class="reading">' +
+          '<div class="row" style="flex-wrap:nowrap;align-items:flex-start">' +
+          '<textarea rows="2" data-field="' + rb + '.text" placeholder="Трактовка">' + U.esc(r.text) + '</textarea>' +
+          '<button class="btn btn-ghost btn-icon' + (r.starred ? ' starred' : '') + '" data-act="star" data-i="' + i + '" data-j="' + j +
+          '" title="Отметить главной" aria-label="Отметить главной">' + Icons(r.starred ? 'star_on' : 'star') + '</button>' +
+          '<button class="btn btn-ghost btn-icon" data-act="del-reading" data-i="' + i + '" data-j="' + j +
+          '" title="Удалить трактовку" aria-label="Удалить трактовку">' + Icons('trash') + '</button>' +
+          '</div>' +
+          '<textarea rows="2" data-field="' + rb + '.use" placeholder="Что это дает в переговорах">' + U.esc(r.use) + '</textarea>' +
+          '</div>';
+      }).join('');
+
+      return '<div class="card phrase">' +
+        '<div class="row" style="flex-wrap:nowrap;align-items:flex-start">' +
+        '<span class="pnum">' + (i + 1) + '</span>' +
+        '<textarea rows="2" data-field="' + base + '.quote" placeholder="Фрагмент текста ситуации">' + U.esc(p.quote) + '</textarea>' +
+        '<button class="btn btn-ghost btn-icon" data-act="del-phrase" data-i="' + i + '" title="Удалить фразу" aria-label="Удалить фразу">' + Icons('trash') + '</button>' +
+        '</div>' +
+        (src.missing[p.id] ? '<div class="asm-warn">' + Icons('alert', 15) + 'Этого куска в тексте ситуации нет: текст правили после разбора</div>' : '') +
+        '<div class="field" style="margin-top:12px"><span class="label">Зачем эта фраза в тексте</span>' +
+        '<textarea rows="2" data-field="' + base + '.purpose" placeholder="Смысл и причина существования фразы">' + U.esc(p.purpose) + '</textarea></div>' +
+        '<div class="label">Трактовки</div>' +
+        (readings || '<div class="muted" style="margin-bottom:8px">Ни одной трактовки. Их полезно иметь хотя бы две.</div>') +
+        '<div class="row"><button class="btn btn-sm" data-act="add-reading" data-i="' + i + '">' + Icons('plus', 16) + 'Добавить трактовку</button></div>' +
+        '<div class="label" style="margin-top:14px">Слои</div>' +
+        layerChips(i, p.layers) +
+        '</div>';
+    }).join('');
+
+    return head + body +
+      '<div class="row"><button class="btn" data-act="add-phrase">' + Icons('plus') + 'Добавить фразу</button></div>';
+  }
+
+  function step2Matrix(s2) {
+    var usedCount = 0;
+    var cols = C.LAYERS.map(function (l) {
+      var used = s2.phrases.some(function (p) { return p.layers.indexOf(l.id) >= 0; });
+      if (used) usedCount++;
+      return '<th class="' + (used ? '' : 'idle') + '" title="' + U.esc(l.name) + '">' + U.esc(l.short) + '</th>';
+    }).join('');
+
+    var rows = s2.phrases.map(function (p, i) {
+      var q = String(p.quote || '').trim();
+      var cells = C.LAYERS.map(function (l) {
+        var on = p.layers.indexOf(l.id) >= 0;
+        return '<td class="' + (on ? 'on' : '') + '">' + (on ? Icons('check', 14) : '') + '</td>';
+      }).join('');
+      return '<tr><td class="qcell"><span class="pnum">' + (i + 1) + '</span> ' +
+        U.esc(q.length > C.QUOTE_PREVIEW ? U.cut(q, C.QUOTE_PREVIEW) + '...' : (q || 'без цитаты')) + '</td>' + cells + '</tr>';
+    }).join('');
+
+    var notes = C.LAYERS.map(function (l) {
+      return '<div class="field">' +
+        '<details class="det"><summary>' + U.esc(l.name) + '</summary><div class="det-b">' + U.esc(l.about) + '</div></details>' +
+        '<textarea rows="2" data-field="step2.layerNotes.' + l.id + '" placeholder="Что в этой ситуации относится к слою">' +
+        U.esc(s2.layerNotes[l.id]) + '</textarea></div>';
+    }).join('');
+
+    return '<div class="muted" style="margin:4px 0 10px">Задействовано слоев: ' + usedCount + ' из ' + C.LAYERS.length +
+      '. Пустой столбец означает слой, который вы не тронули ни разу.</div>' +
+      (s2.phrases.length
+        ? '<div class="mx-wrap"><table class="mx"><thead><tr><th class="qcell">Фраза</th>' + cols + '</tr></thead><tbody>' + rows + '</tbody></table></div>'
+        : '<div class="empty">Фраз пока нет, матрица пуста.</div>') +
+      '<div class="sep"></div><h3 style="margin-bottom:4px">Заметки по слоям</h3>' +
+      '<div class="hint">Нажмите на название слоя, чтобы увидеть, что он означает.</div>' + notes;
+  }
+
   function step3Body(sit, role) {
     var d = Schema.step3ForRole(sit, role.id);
     var asms = d.assumptions.map(function (a, i) {
@@ -2014,6 +2247,7 @@ var View = (function () {
     var body = '';
     body += accordion(Icons('doc', 16), 'Текст и роли', open === 'setup', 'setup', open === 'setup' ? setupBody(sit) : '');
     body += accordion('1', 'Понять ситуацию', open === 's1', 's1', open === 's1' ? step1Body(sit) : '');
+    body += accordion('2', 'Разобрать текст на фразы и слова', open === 's2', 's2', open === 's2' ? step2Body(sit, view.s2tab) : '');
     body += accordion('3', 'Вытащить роль на положительного героя', open === 's3', 's3',
       open === 's3' ? (roleBar(sit, role.id, 's3') + step3Body(sit, role)) : '');
     body += accordion('8', 'Первая фраза', open === 's8', 's8',
@@ -2026,7 +2260,7 @@ var View = (function () {
       saveIndicator(state) + cloudBtn(Cloud.state()) + themeBtn(root.settings.theme) +
       '</div></header>' +
       '<div class="wrap"><div style="height:14px"></div>' + body +
-      '<div class="muted" style="text-align:center;margin-top:8px">Шаги 2, 4, 5, 6, 7 и 9 появятся в следующих версиях.</div>' +
+      '<div class="muted" style="text-align:center;margin-top:8px">Шаги 4, 5, 6, 7 и 9 появятся в следующих версиях.</div>' +
       '</div>';
   }
 
@@ -2062,6 +2296,7 @@ var View = (function () {
     list: screenList,
     situation: screenSituation,
     saveIndicator: saveIndicator,
+    markSource: markSource,
     cloudBtn: cloudBtn,
     cloudLook: CLOUD_LOOK,
     cloudDialogHtml: cloudDialogHtml,
@@ -2074,8 +2309,9 @@ var View = (function () {
    --------------------------------------------------------------------- */
 var App = (function () {
   var root = null;
-  var view = { screen: 'list', sitId: null, roleId: null, open: 'setup' };
+  var view = { screen: 'list', sitId: null, roleId: null, open: 'setup', s2tab: 'phrases' };
   var mount = null;
+  var lastSelection = '';   // кусок текста ситуации, выделенный пользователем
 
   /* ---------- отрисовка ---------- */
 
@@ -2166,6 +2402,16 @@ var App = (function () {
       var h = document.getElementById('sit-title');
       if (h) h.textContent = v || C.TITLE_DEFAULT;
     }
+    // правка цитаты меняет подсветку в тексте ситуации, но не трогает поле ввода
+    if (/^step2\.phrases\.\d+\.quote$/.test(path)) refreshSource();
+    if (path === 'sourceText' && document.getElementById('src-text')) refreshSource();
+  }
+
+  function refreshSource() {
+    var box = document.getElementById('src-text');
+    var s = sit();
+    if (!box || !s) return;
+    box.innerHTML = View.markSource(s.sourceText, s.step2.phrases).html;
   }
 
   function onChange(e) {
@@ -2314,6 +2560,100 @@ var App = (function () {
 
     'parse-roles': function () { parseRoles(); },
 
+    /* ---- шаг 2 ---- */
+
+    s2tab: function (_id, b) {
+      view.s2tab = b.getAttribute('data-tab') === 'matrix' ? 'matrix' : 'phrases';
+      render();
+    },
+
+    'to-analysis': function () {
+      var s = sit();
+      if (!s) return;
+      var q = String(lastSelection || '').replace(/\s+/g, ' ').trim();
+      if (!q) {
+        Toast.show('Сначала выделите кусок текста ситуации');
+        return;
+      }
+      addPhrase(s, q);
+      lastSelection = '';
+    },
+
+    'add-phrase': function () {
+      var s = sit();
+      if (s) addPhrase(s, '');
+    },
+
+    'del-phrase': function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var i = Number(b.getAttribute('data-i'));
+      var p = s.step2.phrases[i];
+      if (!p) return;
+      var q = String(p.quote || '').trim();
+      Modal.confirm('Удалить фразу',
+        'Фраза ' + (i + 1) + (q ? ' «' + U.cut(q, 80) + (U.len(q) > 80 ? '...' : '') + '»' : '') +
+        ' будет удалена вместе со всеми трактовками и отметками слоев.'
+      ).then(function (ok) {
+        if (!ok) return;
+        var next = s.step2.phrases.filter(function (x, j) { return j !== i; });
+        Storage.patch(s.id, 'step2.phrases', next);
+        render();
+      });
+    },
+
+    'add-reading': function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var i = Number(b.getAttribute('data-i'));
+      var p = s.step2.phrases[i];
+      if (!p) return;
+      Storage.patch(s.id, 'step2.phrases.' + i + '.readings', p.readings.concat([Schema.newReading()]));
+      render();
+      var boxes = mount.querySelectorAll('.phrase:nth-of-type(1) textarea');
+      var last = mount.querySelectorAll('.reading textarea');
+      if (last.length) last[Math.max(0, last.length - 2)].focus();
+      if (!last.length && boxes.length) boxes[0].focus();
+    },
+
+    'del-reading': function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var i = Number(b.getAttribute('data-i')), j = Number(b.getAttribute('data-j'));
+      var p = s.step2.phrases[i];
+      if (!p) return;
+      Storage.patch(s.id, 'step2.phrases.' + i + '.readings', p.readings.filter(function (x, k) { return k !== j; }));
+      render();
+    },
+
+    star: function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var i = Number(b.getAttribute('data-i')), j = Number(b.getAttribute('data-j'));
+      var r = U.getPath(s, 'step2.phrases.' + i + '.readings.' + j);
+      if (!r) return;
+      Storage.patch(s.id, 'step2.phrases.' + i + '.readings.' + j + '.starred', !r.starred);
+      render();
+    },
+
+    layer: function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var i = Number(b.getAttribute('data-i'));
+      var id = b.getAttribute('data-layer');
+      var p = s.step2.phrases[i];
+      if (!p) return;
+      var has = p.layers.indexOf(id) >= 0;
+      var next = has ? p.layers.filter(function (x) { return x !== id; }) : p.layers.concat([id]);
+      // порядок слоев держим как в списке, чтобы матрица не прыгала
+      next.sort(function (a, c) {
+        return C.LAYERS.findIndex(function (l) { return l.id === a; }) -
+          C.LAYERS.findIndex(function (l) { return l.id === c; });
+      });
+      Storage.patch(s.id, 'step2.phrases.' + i + '.layers', next);
+      b.classList.toggle('on', !has);
+    },
+
     'add-asm': function () {
       var s = sit(), role = activeRole();
       if (!s || !role) return;
@@ -2415,6 +2755,21 @@ var App = (function () {
         { label: 'Оставить местную', kind: 'btn-primary', value: 'local' }
       ]
     }).then(function (v) { return v || 'cancel'; });
+  }
+
+  function addPhrase(s, quote) {
+    var next = s.step2.phrases.concat([Schema.newPhrase(quote)]);
+    Storage.patch(s.id, 'step2.phrases', next);
+    view.s2tab = 'phrases';
+    render();
+    var cards = mount.querySelectorAll('.phrase');
+    if (cards.length) {
+      var card = cards[cards.length - 1];
+      if (card.scrollIntoView) { try { card.scrollIntoView({ block: 'center' }); } catch (e) {} }
+      var ta = card.querySelector('textarea');
+      if (ta && !quote) ta.focus();
+    }
+    Toast.show(quote ? 'Фраза добавлена в разбор' : 'Пустая фраза добавлена');
   }
 
   function openSituation(id) {
@@ -2579,6 +2934,18 @@ var App = (function () {
     mount.addEventListener('click', onClick);
     mount.addEventListener('input', onInput);
     mount.addEventListener('change', onChange);
+    /* Запоминаем выделенный кусок текста ситуации: на телефоне нажатие
+       на кнопку снимает выделение, поэтому берем его заранее. */
+    document.addEventListener('selectionchange', function () {
+      var sel = window.getSelection && window.getSelection();
+      if (!sel || sel.isCollapsed) return;
+      var box = document.getElementById('src-text');
+      if (!box || !sel.anchorNode || !sel.focusNode) return;
+      if (!box.contains(sel.anchorNode) || !box.contains(sel.focusNode)) return;
+      var t = String(sel.toString() || '').trim();
+      if (t) lastSelection = t;
+    });
+
     mount.addEventListener('keydown', function (e) {
       if ((e.key === 'Enter' || e.key === ' ') && e.target.getAttribute && e.target.getAttribute('data-act') === 'open-sit') {
         e.preventDefault();
