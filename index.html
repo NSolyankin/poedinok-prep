@@ -722,6 +722,21 @@ var IDB = (function () {
       });
     },
 
+    // служебные записи устройства: в облако не уходят, в модель данных не входят
+    getMeta: function (key) {
+      var out = null;
+      return run(['meta'], 'readonly', function (tx) {
+        var r = tx.objectStore('meta').get(key);
+        r.onsuccess = function () { out = r.result ? r.result.value : null; };
+      }).then(function () { return out; });
+    },
+    putMeta: function (key, value) {
+      return run(['meta'], 'readwrite', function (tx) {
+        if (value === null || value === undefined) tx.objectStore('meta').delete(key);
+        else tx.objectStore('meta').put({ key: key, value: value });
+      });
+    },
+
     historyOf: function (situationId) {
       var out = [];
       return run(['history'], 'readonly', function (tx) {
@@ -766,6 +781,9 @@ var LocalAdapter = {
   },
 
   write: function (batch) { return IDB.write(batch); },
+
+  readLocal: function (key) { return IDB.getMeta('local.' + key); },
+  writeLocal: function (key, value) { return IDB.putMeta('local.' + key, value); },
 
   replaceAll: function (root) {
     var meta = [
@@ -994,6 +1012,12 @@ var Storage = (function () {
 
     /* ---- служебное ---- */
     current: function () { return root; },   // кеш без промиса, для тех, кто уже дождался load
+
+    /* Записи, привязанные к устройству: в модель данных не входят,
+       в архив не попадают, в облако не уходят. */
+    readLocal: function (key) { return adapter.readLocal ? adapter.readLocal(key) : Promise.resolve(null); },
+    writeLocal: function (key, value) { return adapter.writeLocal ? adapter.writeLocal(key, value) : Promise.resolve(); },
+
     flush: flush,
     saveState: function () { return saveState; },
     hasPending: hasPending,
@@ -1046,6 +1070,9 @@ var GoogleAuth = (function () {
       value: p.access_token,
       exp: U.now() + (Number(p.expires_in) || 3600) * 1000 - 60000
     };
+    // кладем в базу устройства: Safari на iPhone выгружает страницу из памяти
+    // при каждом переключении приложений, и без этого вход просили бы заново
+    Storage.writeLocal('auth', token).catch(function () {});
     finish(token, null);
   }
 
@@ -1070,7 +1097,20 @@ var GoogleAuth = (function () {
 
     has: function () { return !!token && token.exp > U.now(); },
     value: function () { return token ? token.value : ''; },
-    drop: function () { token = null; },
+    drop: function () {
+      token = null;
+      Storage.writeLocal('auth', null).catch(function () {});
+    },
+    expiresIn: function () { return token ? Math.max(0, token.exp - U.now()) : 0; },
+
+    /* Поднять вход, переживший перезагрузку страницы. */
+    restore: function () {
+      return Storage.readLocal('auth').then(function (t) {
+        if (t && t.value && Number(t.exp) > U.now()) { token = t; return true; }
+        if (t) Storage.writeLocal('auth', null).catch(function () {});
+        return false;
+      }).catch(function () { return false; });
+    },
 
     /* Вход. Вызывается только по нажатию кнопки: без жеста браузер
        не даст открыть окно. Если окно заблокировано, уходим на вход
@@ -1117,13 +1157,20 @@ var Drive = (function () {
     opts.headers.Authorization = 'Bearer ' + GoogleAuth.value();
     if (!navigator.onLine) return Promise.reject(mkErr('offline', 'Нет связи'));
     return fetch(url, opts).then(function (r) {
-      if (r.status === 401 || r.status === 403) {
+      if (r.status === 401) {
         GoogleAuth.drop();
         return Promise.reject(mkErr('needauth', 'Доступ к Диску потерян, нужен вход заново'));
       }
       if (!r.ok) {
         return r.text().then(function (t) {
-          return Promise.reject(mkErr('api', 'Диск ответил ' + r.status + '. ' + String(t).slice(0, 160)));
+          var body = String(t);
+          /* 403 у Google означает и потерю доступа, и превышение частоты запросов.
+             Вход сбрасываем только в первом случае, иначе значок желтел бы на ровном месте. */
+          if (r.status === 403 && /authError|insufficientPermissions|Invalid Credentials|invalid_token/i.test(body)) {
+            GoogleAuth.drop();
+            return Promise.reject(mkErr('needauth', 'Доступ к Диску потерян, нужен вход заново'));
+          }
+          return Promise.reject(mkErr('api', 'Диск ответил ' + r.status + '. ' + body.slice(0, 160)));
         });
       }
       return r;
@@ -1391,6 +1438,15 @@ var Cloud = (function () {
       return GoogleAuth.signIn().then(function () { return sync('manual'); });
     },
 
+    /* Поднять вход после перезагрузки страницы и, если он жив, сразу обменяться. */
+    resume: function () {
+      return GoogleAuth.restore().then(function (alive) {
+        if (!cfg().connected) { set('off'); return 'off'; }
+        if (!alive) { set('needauth'); return 'needauth'; }
+        return sync('open');
+      });
+    },
+
     disconnect: function () {
       GoogleAuth.drop();
       Storage.setSetting('cloud.connected', false);
@@ -1429,6 +1485,8 @@ function makeCloudAdapter(base) {
   return {
     name: 'cloud',
     init: function () { return base.init(); },
+    readLocal: function (k) { return base.readLocal(k); },
+    writeLocal: function (k, v) { return base.writeLocal(k, v); },
     write: function (batch) {
       return base.write(batch).then(function (r) {
         var onlyCloudMeta = !batch.situations.length && !batch.removed.length && !batch.history.length;
@@ -1990,8 +2048,13 @@ var View = (function () {
         '<p class="muted">Это дает две вещи: одинаковые данные на ноутбуке, iPhone и iPad, и резервную копию, ' +
         'которая переживет очистку данных браузера.</p>';
     }
-    h += '<p class="muted">Вход в Google живет час. После перезагрузки страницы значок попросит войти заново: ' +
-      'одно нажатие, окно закроется само. Правки при этом не теряются, они лежат на устройстве.</p>';
+    if (c.connected) {
+      var left = Math.round(GoogleAuth.expiresIn() / 60000);
+      h += '<p class="muted">' + (left > 0
+        ? ('Вход в Google действует еще примерно ' + left + ' ' + plural(left, 'минуту', 'минуты', 'минут') + '. Перезагрузку страницы он переживает.')
+        : 'Вход в Google истек. Одно нажатие, окно откроется и закроется само.') +
+        ' Правки не теряются в любом случае: они лежат на устройстве.</p>';
+    }
     return h;
   }
 
@@ -2561,7 +2624,8 @@ var App = (function () {
           useCloudAdapter(true);
         }
       }
-      if (root.settings.cloud.connected) Cloud.sync('open');
+      // вход мог пережить перезагрузку: поднимаем его и сразу обмениваемся
+      if (root.settings.cloud.connected) Cloud.resume();
     }).catch(function (e) {
       fatal(e && e.message ? e.message : String(e));
     });
