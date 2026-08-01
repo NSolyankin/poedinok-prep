@@ -223,6 +223,11 @@ input[type=text]:focus, textarea:focus{border-color:var(--accent); outline:2px s
   border:1px solid var(--line); background:var(--surface); color:var(--muted); font:inherit; font-size:13px;
 }
 .chip.on{background:var(--accent-soft); border-color:var(--accent); color:var(--accent); font-weight:600}
+span.chip{display:inline-flex; align-items:center; cursor:default}
+select.lsel{
+  width:auto; min-width:190px; max-width:100%; min-height:40px; font-size:15px;
+  padding:6px 10px; border-radius:999px; background:var(--surface2);
+}
 .phrase .pnum{
   flex:none; width:24px; height:24px; border-radius:6px; background:var(--accent-soft); color:var(--accent);
   display:inline-flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; margin-top:9px;
@@ -533,7 +538,18 @@ var Schema = {
     return { id: U.id('p_'), quote: String(quote || ''), purpose: '', readings: [], layers: [] };
   },
   newReading: function () {
-    return { id: U.id('rd_'), text: '', use: '', starred: false };
+    return { id: U.id('rd_'), text: '', use: '', starred: false, layer: '' };
+  },
+
+  /* Слои фразы не отмечаются руками, а считаются: слой задействован,
+     если в нем есть хотя бы одна трактовка. Порядок как в списке слоев. */
+  layersOf: function (phrase) {
+    var out = [];
+    C.LAYERS.forEach(function (l) {
+      var has = (phrase.readings || []).some(function (r) { return r && r.layer === l.id; });
+      if (has) out.push(l.id);
+    });
+    return out;
   },
 
   step3ForRole: function (sit, roleId) {
@@ -606,20 +622,25 @@ var Schema = {
     out.step2 = {
       phrases: (Array.isArray(s2.phrases) ? s2.phrases : []).filter(function (p) { return p && typeof p === 'object'; })
         .map(function (p) {
-          return {
+          var out2 = {
             id: String(p.id || U.id('p_')),
             quote: String(p.quote || ''),
             purpose: String(p.purpose || ''),
             readings: (Array.isArray(p.readings) ? p.readings : []).map(function (r) {
+              var lay = String((r && r.layer) || '');
               return {
                 id: String((r && r.id) || U.id('rd_')),
                 text: String((r && r.text) || ''),
                 use: String((r && r.use) || ''),
-                starred: !!(r && r.starred)
+                starred: !!(r && r.starred),
+                layer: layerIds.indexOf(lay) >= 0 ? lay : ''
               };
             }),
-            layers: (Array.isArray(p.layers) ? p.layers : []).filter(function (x) { return layerIds.indexOf(x) >= 0; })
+            layers: []
           };
+          // поле layers производное, руками его больше не ставят
+          out2.layers = Schema.layersOf(out2);
+          return out2;
         }),
       layerNotes: notes
     };
@@ -2106,12 +2127,23 @@ var View = (function () {
     return { html: html || '<span class="muted">Текст ситуации пуст. Вставьте его в разделе «Текст и роли».</span>', missing: missing };
   }
 
-  function layerChips(phraseIndex, layers) {
-    return '<div class="chips">' + C.LAYERS.map(function (l) {
-      var on = layers.indexOf(l.id) >= 0;
-      return '<button class="chip' + (on ? ' on' : '') + '" data-act="layer" data-i="' + phraseIndex +
-        '" data-layer="' + l.id + '" title="' + U.esc(l.about) + '">' + U.esc(l.name) + '</button>';
+  /* Слои фразы не нажимаются: они показывают, в каких оптиках у нее
+     уже есть толкование. Выбор слоя живет у трактовки. */
+  function layerTags(layers) {
+    if (!layers.length) {
+      return '<div class="muted">Ни одной. Слой появится, когда у трактовки будет выбран слой.</div>';
+    }
+    return '<div class="chips">' + layers.map(function (id) {
+      var l = C.LAYERS.filter(function (x) { return x.id === id; })[0];
+      return '<span class="chip on" title="' + U.esc(l.about) + '">' + U.esc(l.name) + '</span>';
     }).join('') + '</div>';
+  }
+
+  function layerSelect(path, value) {
+    var opts = '<option value="">слой не выбран</option>' + C.LAYERS.map(function (l) {
+      return '<option value="' + l.id + '"' + (value === l.id ? ' selected' : '') + '>' + U.esc(l.name) + '</option>';
+    }).join('');
+    return '<select class="lsel" data-sel="' + path + '">' + opts + '</select>';
   }
 
   function step2Body(sit, tab) {
@@ -2144,8 +2176,9 @@ var View = (function () {
       var readings = p.readings.map(function (r, j) {
         var rb = base + '.readings.' + j;
         return '<div class="reading">' +
+          '<div class="row" style="margin-bottom:6px">' + layerSelect(rb + '.layer', r.layer) + '</div>' +
           '<div class="row" style="flex-wrap:nowrap;align-items:flex-start">' +
-          '<textarea rows="2" data-field="' + rb + '.text" placeholder="Трактовка">' + U.esc(r.text) + '</textarea>' +
+          '<textarea rows="2" data-field="' + rb + '.text" placeholder="Как фраза читается в этом слое">' + U.esc(r.text) + '</textarea>' +
           '<button class="btn btn-ghost btn-icon' + (r.starred ? ' starred' : '') + '" data-act="star" data-i="' + i + '" data-j="' + j +
           '" title="Отметить главной" aria-label="Отметить главной">' + Icons(r.starred ? 'star_on' : 'star') + '</button>' +
           '<button class="btn btn-ghost btn-icon" data-act="del-reading" data-i="' + i + '" data-j="' + j +
@@ -2165,10 +2198,11 @@ var View = (function () {
         '<div class="field" style="margin-top:12px"><span class="label">Зачем эта фраза в тексте</span>' +
         '<textarea rows="2" data-field="' + base + '.purpose" placeholder="Смысл и причина существования фразы">' + U.esc(p.purpose) + '</textarea></div>' +
         '<div class="label">Трактовки</div>' +
+        '<div class="hint">Одна и та же фраза в разных слоях читается по-разному. У каждой трактовки свой слой.</div>' +
         (readings || '<div class="muted" style="margin-bottom:8px">Ни одной трактовки. Их полезно иметь хотя бы две.</div>') +
         '<div class="row"><button class="btn btn-sm" data-act="add-reading" data-i="' + i + '">' + Icons('plus', 16) + 'Добавить трактовку</button></div>' +
-        '<div class="label" style="margin-top:14px">Слои</div>' +
-        layerChips(i, p.layers) +
+        '<div class="label" style="margin-top:14px">Задействованные слои</div>' +
+        layerTags(p.layers) +
         '</div>';
     }).join('');
 
@@ -2187,8 +2221,11 @@ var View = (function () {
     var rows = s2.phrases.map(function (p, i) {
       var q = String(p.quote || '').trim();
       var cells = C.LAYERS.map(function (l) {
-        var on = p.layers.indexOf(l.id) >= 0;
-        return '<td class="' + (on ? 'on' : '') + '">' + (on ? Icons('check', 14) : '') + '</td>';
+        var r = p.readings.filter(function (x) { return x.layer === l.id; });
+        var on = r.length > 0;
+        var tip = on ? r.map(function (x) { return String(x.text || 'трактовка без текста'); }).join(' | ') : '';
+        return '<td class="' + (on ? 'on' : '') + '"' + (tip ? ' title="' + U.esc(tip) + '"' : '') + '>' +
+          (on ? (r.length > 1 ? r.length : Icons('check', 14)) : '') + '</td>';
       }).join('');
       return '<tr><td class="qcell"><span class="pnum">' + (i + 1) + '</span> ' +
         U.esc(q.length > C.QUOTE_PREVIEW ? U.cut(q, C.QUOTE_PREVIEW) + '...' : (q || 'без цитаты')) + '</td>' + cells + '</tr>';
@@ -2428,6 +2465,7 @@ var App = (function () {
 
   function onChange(e) {
     var t = e.target;
+    if (t && t.tagName === 'SELECT' && t.getAttribute('data-sel')) { onLayerPick(t); return; }
     if (!t || t.type !== 'checkbox') return;
     var kind = t.getAttribute('data-check');
     if (!kind || !view.sitId) return;
@@ -2451,6 +2489,22 @@ var App = (function () {
       var w = box.querySelector('.asm-warn');
       if (w) w.hidden = !susp;
     }
+  }
+
+  /* Выбор слоя у трактовки. Отметки слоев на фразе после этого
+     пересчитываются: руками их больше никто не ставит. */
+  function onLayerPick(sel) {
+    var s = sit();
+    if (!s) return;
+    var path = sel.getAttribute('data-sel');
+    Storage.patch(view.sitId, path, sel.value);
+    var m = path.match(/^step2\.phrases\.(\d+)\./);
+    if (!m) return;
+    var i = Number(m[1]);
+    var p = s.step2.phrases[i];
+    if (!p) return;
+    Storage.patch(view.sitId, 'step2.phrases.' + i + '.layers', Schema.layersOf(p));
+    render();
   }
 
   /* ---------- действия ---------- */
@@ -2636,7 +2690,9 @@ var App = (function () {
       var i = Number(b.getAttribute('data-i')), j = Number(b.getAttribute('data-j'));
       var p = s.step2.phrases[i];
       if (!p) return;
-      Storage.patch(s.id, 'step2.phrases.' + i + '.readings', p.readings.filter(function (x, k) { return k !== j; }));
+      var left = p.readings.filter(function (x, k) { return k !== j; });
+      Storage.patch(s.id, 'step2.phrases.' + i + '.readings', left);
+      Storage.patch(s.id, 'step2.phrases.' + i + '.layers', Schema.layersOf({ readings: left }));
       render();
     },
 
@@ -2648,24 +2704,6 @@ var App = (function () {
       if (!r) return;
       Storage.patch(s.id, 'step2.phrases.' + i + '.readings.' + j + '.starred', !r.starred);
       render();
-    },
-
-    layer: function (_id, b) {
-      var s = sit();
-      if (!s) return;
-      var i = Number(b.getAttribute('data-i'));
-      var id = b.getAttribute('data-layer');
-      var p = s.step2.phrases[i];
-      if (!p) return;
-      var has = p.layers.indexOf(id) >= 0;
-      var next = has ? p.layers.filter(function (x) { return x !== id; }) : p.layers.concat([id]);
-      // порядок слоев держим как в списке, чтобы матрица не прыгала
-      next.sort(function (a, c) {
-        return C.LAYERS.findIndex(function (l) { return l.id === a; }) -
-          C.LAYERS.findIndex(function (l) { return l.id === c; });
-      });
-      Storage.patch(s.id, 'step2.phrases.' + i + '.layers', next);
-      b.classList.toggle('on', !has);
     },
 
     'add-asm': function () {
