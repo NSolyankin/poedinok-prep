@@ -243,6 +243,115 @@ select.lsel{
 }
 table.mx td.sil{color:var(--muted)}
 .btn.starred{color:var(--warn)}
+
+/* ---------- шаг 7 и копилка формул ---------- */
+.fm{border:1px solid var(--line); border-radius:var(--r); padding:12px; margin:0 0 10px; background:var(--surface)}
+.fm-h{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px}
+.fm-o{font-size:12px; color:var(--muted); padding:2px 8px; border-radius:999px; border:1px dashed var(--line)}
+.lib-card{border:1px solid var(--line); border-radius:var(--r); padding:12px; margin:0 0 12px; background:var(--surface)}
+.tags{display:flex; flex-wrap:wrap; gap:5px; margin-top:6px}
+.tag{font-size:12px; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent)}
+.lib-bar{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:0 0 12px}
+
+/* ---------- шаги 4 и 6 ---------- */
+.thr{border:1px solid var(--line); border-radius:var(--r); padding:12px; margin:0 0 10px; background:var(--surface)}
+.thr.thr-c{background:var(--surface2)}
+.thr-h{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin-bottom:8px}
+.thr-st{font-size:12px; padding:2px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent)}
+.thr-st.no{background:var(--warn-soft); color:var(--warn)}
+.thr-sub{font-size:13px; color:var(--muted); margin:8px 0 4px}
+table.mx td.cell{cursor:pointer; min-width:44px; height:40px; font-size:15px; font-weight:700}
+table.mx td.cell.st-played{color:var(--accent); background:var(--accent-soft)}
+table.mx td.cell.st-same{color:var(--muted); background:var(--surface2)}
+table.mx td.cell.sel{outline:2px solid var(--accent); outline-offset:-2px}
+table.mx td.diag{background:var(--surface2); color:var(--muted)}
+.cellbox{border:1px solid var(--accent); border-radius:var(--r); padding:12px; margin:12px 0 0; background:var(--surface)}
+.cellbox h4{margin:0 0 8px; font-size:15px}
+
+/* ---------- шаг 5: дерево последствий ---------- */
+.csq{border:1px solid var(--line); border-radius:var(--r); padding:10px; margin:0 0 8px; background:var(--surface)}
+.csq.plus{border-left:3px solid var(--ok, #2E7D52)}
+.csq.minus{border-left:3px solid var(--danger)}
+.csq-h{display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin-bottom:6px}
+.csq-s{
+  flex:none; width:26px; height:26px; border-radius:7px; font-size:15px; font-weight:700;
+  display:inline-flex; align-items:center; justify-content:center; border:1px solid var(--line);
+  background:var(--surface2); cursor:pointer;
+}
+.csq-s.plus{color:#2E7D52} .csq-s.minus{color:var(--danger)}
+.csq-c{
+  flex:none; width:26px; height:26px; border-radius:999px; font-size:13px; font-weight:700;
+  display:inline-flex; align-items:center; justify-content:center;
+  border:1px solid var(--line); background:transparent; color:var(--muted); cursor:pointer;
+}
+.csq-c.on{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
+.csq-root{border:1px dashed var(--accent); background:var(--accent-soft); padding:10px; border-radius:var(--r); margin:0 0 10px}
+.tree-lvl{border-left:2px solid var(--line); padding-left:12px; margin-left:6px}
+.pm{border:1px solid var(--line); border-radius:var(--r); padding:10px; margin:0 0 8px; background:var(--surface)}
+.scheme{overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--line); border-radius:var(--r); background:var(--surface)}
+.scheme svg{display:block; max-width:none}
+
+/* ---------- шаг 9: лента раундов ---------- */
+.ribbon{display:flex; align-items:stretch; gap:0; overflow-x:auto; -webkit-overflow-scrolling:touch; padding:2px 0 8px}
+.rnd{
+  flex:none; width:150px; border:1px solid var(--line); border-radius:var(--r);
+  padding:8px 10px; background:var(--surface); cursor:pointer; text-align:left;
+}
+.rnd.on{border-color:var(--accent); background:var(--accent-soft)}
+.rnd .rn{font-size:12px; color:var(--muted)}
+.rnd .rg{font-size:13px; line-height:1.35; margin-top:2px}
+.rnd .rg.no{color:var(--warn)}
+.link{flex:none; width:34px; display:flex; align-items:center; justify-content:center; color:var(--accent)}
+.link.brk{color:var(--warn)}
+.qst{border:1px solid var(--line); border-radius:var(--r); padding:10px; margin:0 0 8px; background:var(--surface)}
+.qst.open{border-left:3px solid var(--warn)}
+.qst.ok{border-left:3px solid var(--accent)}
+
+/* ---------- светофор готовности ---------- */
+.lights{display:flex; gap:5px; flex-wrap:wrap; align-items:center}
+.lt{
+  display:inline-flex; align-items:center; gap:3px; padding:2px 7px 2px 5px; border-radius:999px;
+  border:1px solid var(--line); background:var(--surface); font-size:11px; color:var(--muted); cursor:pointer;
+}
+.lt .d{width:9px; height:9px; border-radius:50%; background:var(--line); flex:none}
+.lt.green .d{background:#2E7D52} .lt.yellow .d{background:var(--warn)} .lt.red .d{background:var(--danger)}
+.lt.green{border-color:#2E7D52} .lt.yellow{border-color:var(--warn)}
+.lt b{font-weight:700; color:var(--text)}
+.lights-mini{display:flex; gap:3px; margin-top:6px}
+.lights-mini i{width:8px; height:8px; border-radius:50%; background:var(--line); display:block}
+.lights-mini i.green{background:#2E7D52} .lights-mini i.yellow{background:var(--warn)} .lights-mini i.red{background:var(--danger)}
+.acc-bar{display:flex; gap:2px; margin-left:auto; flex:none}
+.acc-bar i{width:12px; height:4px; border-radius:2px; background:var(--line); display:block}
+.acc-bar i.on{background:var(--accent)}
+.botbar{position:sticky; bottom:0; z-index:20; background:var(--bg); border-top:1px solid var(--line); padding:8px 0 10px; margin-top:16px}
+.rd-row{display:flex; gap:10px; align-items:flex-start; padding:10px 0; border-bottom:1px solid var(--line); cursor:pointer}
+.rd-row:last-child{border-bottom:0}
+.rd-n{
+  flex:none; width:26px; height:26px; border-radius:7px; font-size:12px; font-weight:700;
+  display:inline-flex; align-items:center; justify-content:center; background:var(--surface2); color:var(--muted);
+}
+.rd-n.green{background:#2E7D52; color:#fff} .rd-n.yellow{background:var(--warn); color:#fff}
+.rd-n.red{background:var(--danger); color:#fff}
+
+/* ---------- комментарии к полям ---------- */
+.cmt-btn{
+  border:0; background:transparent; padding:0 4px; margin-left:6px; cursor:pointer;
+  color:var(--muted); font-size:12px; display:inline-flex; align-items:center; gap:4px; vertical-align:middle;
+}
+.cmt-btn .dot{width:8px; height:8px; border-radius:50%; background:var(--line); display:inline-block}
+.cmt-btn.has .dot{background:var(--warn)}
+.cmt-btn.has{color:var(--warn); font-weight:600}
+.cmt{border:1px solid var(--line); border-radius:var(--r); padding:10px; margin:0 0 8px; background:var(--surface)}
+.cmt.res{opacity:.55}
+.cmt-g{margin:0 0 14px}
+.cmt-g > .h{display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; margin-bottom:6px}
+.scheme .sch-b{fill:var(--surface2); stroke:var(--line)}
+.scheme .sch-b.p{stroke:#2E7D52} .scheme .sch-b.m{stroke:var(--danger)}
+.scheme .sch-root{fill:var(--accent-soft); stroke:var(--accent)}
+.scheme .sch-l{fill:none; stroke:var(--line); stroke-width:1.5}
+.scheme .sch-t{font:600 13px var(--ff); fill:var(--text)}
+.scheme .sch-s{font:400 11px var(--ff); fill:var(--muted)}
+.scheme .sch-g{font:700 11px var(--ff); fill:var(--accent)}
 .mx-wrap{overflow-x:auto; -webkit-overflow-scrolling:touch; border:1px solid var(--line); border-radius:var(--r)}
 table.mx{border-collapse:collapse; width:100%; font-size:13px}
 table.mx th, table.mx td{border-bottom:1px solid var(--line); border-right:1px solid var(--line); padding:8px 6px; text-align:center}
@@ -357,7 +466,7 @@ var IS_OAUTH_POPUP = false;
    1. КОНСТАНТЫ. Все пороги ТЗ собраны здесь и больше нигде не повторяются.
    --------------------------------------------------------------------- */
 var C = {
-  APP_VERSION: '0.2.2',
+  APP_VERSION: '0.7.1',
   SYNC_VERSION: '0.1',
   SCHEMA: 2,                 // версия схемы данных, раздел 5 ТЗ
   DB_NAME: 'poedinok-prep',  // раздел 3 ТЗ
@@ -390,6 +499,68 @@ var C = {
     { id: 'law', short: 'Прв', name: 'правовой', about: 'Правовое регулирование отношений участников.' }
   ],
   QUOTE_PREVIEW: 60,         // сколько знаков цитаты показывать в матрице
+
+  /* Типы формул, раздел 5.8 ТЗ. Порядок фиксирован: на нем стоит
+     счетчик закрытых типов и порядок в копилке. */
+  FORMULA_TYPES: [
+    { id: 'refusal', name: 'Отказ', about: 'Отказ, не разрывающий отношения.' },
+    { id: 'block', name: 'Защитный блок', about: 'Ответ на конкретную нежелательную вводную соперника.' },
+    { id: 'explain', name: 'Объяснение', about: 'Почему происходящее выглядит именно так.' },
+    { id: 'conscience', name: 'Взывание к совести', about: 'Обращение к тому, что человек сам считает правильным.' },
+    { id: 'other', name: 'Свое', about: 'Заготовка, не попавшая в четыре типа.' }
+  ],
+  /* Раздел 6 ТЗ: зеленый шаг 7 требует все четыре типа, считая общий уровень.
+     "Свое" в счет не идет. */
+  FORMULA_REQUIRED: ['refusal', 'block', 'explain', 'conscience'],
+  LIB_TAGS_MAX: 8,           // раздел 5.13 ТЗ: теги заготовки
+
+  /* Раздел 6 ТЗ: зеленый шаг 4 это две угрозы с блоками у каждой роли,
+     считая общий уровень. */
+  THREATS_PER_ROLE: 2,
+
+  /* Дерево последствий, раздел 5.6 ТЗ. Обозначения сверены с «А что потом?»
+     v1.17.1 буква в букву, как требует пункт 14.1 ТЗ: там координаты
+     называются сферами последствия и идут в этом же порядке, горизонта
+     два, знака два. Расхождение терминов между двумя инструментами
+     хуже, чем отсутствие функции. */
+  COORDS: [
+    { id: 'people', letter: 'Л', name: 'люди' },
+    { id: 'power', letter: 'В', name: 'власть' },
+    { id: 'matter', letter: 'Д', name: 'дело' }
+  ],
+  HORIZONS: [
+    { id: 'near', name: 'близкое' },
+    { id: 'far', name: 'отдаленное' }
+  ],
+  SIGNS: [
+    { id: 'plus', name: 'положительное', short: '+' },
+    { id: 'minus', name: 'отрицательное', short: '\u2212' }
+  ],
+  TREE_DEPTH: 3,             // раздел 5.6 ТЗ: ветвление до трех уровней
+  TREE_KIDS_MIN: 2,          // от двух до четырех следствий на узел
+  TREE_KIDS_MAX: 4,
+  TREE_NODES_GREEN: 5,       // раздел 6 ТЗ: зеленый шаг 5 это пять узлов
+
+  /* Раунды, раздел 5.10 ТЗ. По умолчанию два, в пределах ситуации от одного
+     до пяти. Число живет в настройках приложения, а не в ситуации: это
+     свойство турнира, а не спора. */
+  ROUNDS_MIN: 1,
+  ROUNDS_MAX: 5,
+
+  /* Пороги светофора, раздел 6 ТЗ. Все числа собраны здесь и больше
+     нигде не повторяются: менять правило готовности надо в одном месте. */
+  PHRASES_GREEN: 5,          // шаг 2: пять и более фраз
+  READINGS_PER_PHRASE: 2,    // у каждой две трактовки
+  LAYERS_GREEN: 5,           // задействовано пять слоев
+  THREATS_GREEN: 2,          // шаг 4: две угрозы с блоками (см. THREATS_PER_ROLE)
+
+  /* Состояния клетки матрицы соотношений, раздел 5.7 ТЗ.
+     Состояния "невозможно" нет намеренно: соперник назначает роли как хочет. */
+  CELL_STATES: [
+    { id: 'empty', name: 'не разобрано', short: '', about: 'Это соотношение еще не смотрели.' },
+    { id: 'played', name: 'проиграно', short: '✓', about: 'Соотношение мысленно проиграно, есть что записать.' },
+    { id: 'same', name: 'как обычно', short: '=', about: 'Ничего особенного: работает общий ответ роли.' }
+  ],
 
   /* Синхронизация, раздел 9 ТЗ. Единственные адреса, к которым
      приложение вообще обращается. */
@@ -539,12 +710,15 @@ var Schema = {
       step1: { fabula: '', plot: '', essence: '', retell: ['', '', ''] },
       step2: { phrases: [], layerNotes: Schema.emptyLayerNotes() },
       step3: { byRole: {} },
-      step4: {},
-      step5: {},
-      step6: {},
-      step7: {},
+      step4: { common: [], byRole: {} },
+      step5: {
+        judgeStatement: '', criteria: '', decision: '',
+        consequences: { nodes: [], premortem: [] }
+      },
+      step6: { byRole: {}, cells: {} },
+      step7: { common: [], byRole: {} },
       step8: { byRole: {} },
-      step9: {},
+      step9: { strategy: '', rounds: [] },
       secondQuestions: [],
       comments: [],
       afterNotes: ''
@@ -573,6 +747,66 @@ var Schema = {
   },
   newWordMeaning: function (word, layer) {
     return { id: U.id('wm_'), word: String(word || ''), layer: layer || '', text: '' };
+  },
+
+  /* Формула внутри ситуации, раздел 5.8 ТЗ. В нее ложится копия текста
+     заготовки, а не ссылка: правка копилки не должна задним числом
+     переписывать прошлые подготовки. originId помнит, откуда взято. */
+  newSitFormula: function (type, text, originId) {
+    return {
+      id: U.id('sf_'),
+      type: Schema.formulaType(type, 'refusal'),
+      text: String(text || ''),
+      originId: originId || null,
+      threatId: null      // угроза шага 4; сам шаг 4 появится в 0.4
+    };
+  },
+
+  /* Заготовка в копилке, раздел 5.13 ТЗ. */
+  newLibFormula: function (type, text) {
+    return {
+      id: U.id('f_'),
+      type: Schema.formulaType(type, 'refusal'),
+      text: String(text || ''),
+      comment: '',
+      tags: [],
+      createdAt: U.now(),
+      usedIn: [],
+      worked: 0,
+      failed: 0
+    };
+  },
+
+  formulaType: function (v, fallback) {
+    var t = String(v || '');
+    for (var i = 0; i < C.FORMULA_TYPES.length; i++) if (C.FORMULA_TYPES[i].id === t) return t;
+    return fallback || 'other';
+  },
+
+  normalizeSitFormula: function (f) {
+    return {
+      id: String((f && f.id) || U.id('sf_')),
+      type: Schema.formulaType(f && f.type, 'other'),
+      text: String((f && f.text) || ''),
+      originId: (f && f.originId) ? String(f.originId) : null,
+      threatId: (f && f.threatId) ? String(f.threatId) : null
+    };
+  },
+
+  normalizeLibFormula: function (f) {
+    if (!f || typeof f !== 'object') return null;
+    return {
+      id: String(f.id || U.id('f_')),
+      type: Schema.formulaType(f.type, 'other'),
+      text: String(f.text || ''),
+      comment: String(f.comment || ''),
+      tags: (Array.isArray(f.tags) ? f.tags : []).map(function (t) { return String(t || '').trim(); })
+        .filter(Boolean).slice(0, C.LIB_TAGS_MAX),
+      createdAt: Number(f.createdAt) || U.now(),
+      usedIn: (Array.isArray(f.usedIn) ? f.usedIn : []).map(String),
+      worked: Math.max(0, Number(f.worked) || 0),
+      failed: Math.max(0, Number(f.failed) || 0)
+    };
   },
 
   /* Слои фразы не отмечаются руками, а считаются: слой задействован,
@@ -642,6 +876,390 @@ var Schema = {
     if (!sit.step3.byRole[roleId]) sit.step3.byRole[roleId] = { heroVersion: '', assumptions: [] };
     return sit.step3.byRole[roleId];
   },
+  /* ---- шаг 9: стратегия связанных раундов, раздел 5.10 ТЗ ---- */
+
+  newRound: function (n, roleId) {
+    return { n: n || 1, myRoleId: roleId || '', goal: '', carryOver: '', ifFails: '' };
+  },
+
+  normalizeRound: function (r, i, roleIds) {
+    var rid = String((r && r.myRoleId) || '');
+    return {
+      n: i + 1,                                   // номер производный: он и есть место в ленте
+      myRoleId: roleIds.indexOf(rid) >= 0 ? rid : '',
+      goal: String((r && r.goal) || ''),
+      carryOver: String((r && r.carryOver) || ''),
+      ifFails: String((r && r.ifFails) || '')
+    };
+  },
+
+  ensureStep9: function (sit, wanted) {
+    if (!sit.step9 || typeof sit.step9 !== 'object' || Array.isArray(sit.step9)) sit.step9 = {};
+    if (typeof sit.step9.strategy !== 'string') sit.step9.strategy = '';
+    if (!Array.isArray(sit.step9.rounds)) sit.step9.rounds = [];
+    var want = Math.min(Math.max(Number(wanted) || sit.step9.rounds.length || 2, C.ROUNDS_MIN), C.ROUNDS_MAX);
+    while (sit.step9.rounds.length < want) sit.step9.rounds.push(Schema.newRound(sit.step9.rounds.length + 1));
+    sit.step9.rounds.forEach(function (r, i) { r.n = i + 1; });
+    return sit.step9;
+  },
+
+  /* Связка последнего раунда никуда не ведет, поэтому ее и не спрашивают:
+     раздел 5.10 ТЗ. Разрыв ленты это раунд без связки, кроме последнего. */
+  roundLinked: function (rounds, i) {
+    if (i >= rounds.length - 1) return true;
+    return !!String(rounds[i].carryOver || '').trim();
+  },
+
+  /* Раздел 6 ТЗ: у всех раундов есть цель, у всех кроме последнего связка. */
+  step9Ready: function (sit) {
+    var rs = (sit.step9 && sit.step9.rounds) || [];
+    if (!rs.length) return false;
+    return rs.every(function (r, i) {
+      return String(r.goal || '').trim() && Schema.roundLinked(rs, i);
+    });
+  },
+  step9Progress: function (sit) {
+    var rs = (sit.step9 && sit.step9.rounds) || [];
+    var goals = rs.filter(function (r) { return String(r.goal || '').trim(); }).length;
+    var breaks = rs.filter(function (r, i) { return !Schema.roundLinked(rs, i); }).length;
+    return { total: rs.length, goals: goals, breaks: breaks };
+  },
+
+  /* ---- комментарии к полям, раздел 5.12 ТЗ ---- */
+
+  newComment: function (path, author) {
+    return {
+      id: U.id('c_'),
+      path: String(path || ''),
+      text: '',
+      author: author === 'second' ? 'second' : 'self',
+      resolved: false,
+      ts: U.now()
+    };
+  },
+  normalizeComment: function (c) {
+    return {
+      id: String((c && c.id) || U.id('c_')),
+      path: String((c && c.path) || ''),
+      text: String((c && c.text) || ''),
+      author: ((c && c.author) === 'second') ? 'second' : 'self',
+      resolved: !!(c && c.resolved),
+      ts: Number(c && c.ts) || U.now()
+    };
+  },
+
+  /* ---- вопросы секунданта, раздел 5.11 ТЗ ---- */
+
+  newQuestion: function (author) {
+    return {
+      id: U.id('q_'),
+      text: '',
+      author: author === 'second' ? 'second' : 'self',
+      answer: '',
+      confident: false,
+      ts: U.now()
+    };
+  },
+  normalizeQuestion: function (q) {
+    return {
+      id: String((q && q.id) || U.id('q_')),
+      text: String((q && q.text) || ''),
+      author: ((q && q.author) === 'second') ? 'second' : 'self',
+      answer: String((q && q.answer) || ''),
+      confident: !!(q && q.confident),
+      ts: Number(q && q.ts) || U.now()
+    };
+  },
+  /* Незакрытый вопрос: есть текст, но нет уверенного ответа.
+     Такие отдельным блоком уходят на экран «Готов?» в 0.7. */
+  openQuestions: function (sit) {
+    return (sit.secondQuestions || []).filter(function (q) {
+      return String(q.text || '').trim() && !q.confident;
+    });
+  },
+
+  /* ---- шаг 5: позиция судьи и последствия, раздел 5.6 ТЗ ---- */
+
+  newConsequence: function (parent, sign) {
+    return {
+      id: U.id('n_'),
+      parent: parent || null,
+      text: '',
+      coord: [],
+      horizon: 'near',
+      sign: Schema.oneOf(sign, C.SIGNS, 'minus')
+    };
+  },
+  newPremortem: function () {
+    return { id: U.id('m_'), text: '', counter: '' };
+  },
+  oneOf: function (v, list, fallback) {
+    var x = String(v || '');
+    for (var i = 0; i < list.length; i++) if (list[i].id === x) return x;
+    return fallback;
+  },
+
+  normalizeConsequence: function (nd) {
+    var codes = C.COORDS.map(function (c) { return c.id; });
+    var src = (nd && Array.isArray(nd.coord)) ? nd.coord : [];
+    var coord = [];
+    codes.forEach(function (c) { if (src.indexOf(c) >= 0) coord.push(c); });  // порядок фиксирован, дублей нет
+    return {
+      id: String((nd && nd.id) || U.id('n_')),
+      parent: (nd && nd.parent) ? String(nd.parent) : null,
+      text: String((nd && nd.text) || ''),
+      coord: coord,
+      horizon: Schema.oneOf(nd && nd.horizon, C.HORIZONS, 'near'),
+      sign: Schema.oneOf(nd && nd.sign, C.SIGNS, 'minus')
+    };
+  },
+
+  ensureStep5: function (sit) {
+    if (!sit.step5 || typeof sit.step5 !== 'object' || Array.isArray(sit.step5)) sit.step5 = {};
+    var s5 = sit.step5;
+    if (typeof s5.judgeStatement !== 'string') s5.judgeStatement = '';
+    if (typeof s5.criteria !== 'string') s5.criteria = '';
+    if (typeof s5.decision !== 'string') s5.decision = '';
+    if (!s5.consequences || typeof s5.consequences !== 'object') s5.consequences = {};
+    if (!Array.isArray(s5.consequences.nodes)) s5.consequences.nodes = [];
+    if (!Array.isArray(s5.consequences.premortem)) s5.consequences.premortem = [];
+    return s5;
+  },
+
+  /* Прямые следствия узла в порядке хранения. Корень адресуется null. */
+  childrenOf: function (nodes, parentId) {
+    return (nodes || []).filter(function (x) { return (x.parent || null) === (parentId || null); });
+  },
+
+  /* Глубина узла: корень нулевой. Считается по ссылкам вверх, с защитой
+     от кольца, которое может приехать из чужого файла. */
+  depthOf: function (nodes, node) {
+    var byId = {};
+    (nodes || []).forEach(function (x) { byId[x.id] = x; });
+    var d = 0, cur = node, seen = {};
+    while (cur && cur.parent && byId[cur.parent] && !seen[cur.id]) {
+      seen[cur.id] = 1;
+      cur = byId[cur.parent];
+      d++;
+      if (d > 50) break;
+    }
+    return d;
+  },
+
+  /* Можно ли добавить следствие: ветвление до трех уровней и не больше
+     четырех следствий на узел. Раздел 5.6 ТЗ. */
+  canBranch: function (nodes, node) {
+    if (Schema.depthOf(nodes, node) + 1 >= C.TREE_DEPTH) return false;
+    return Schema.childrenOf(nodes, node.id).length < C.TREE_KIDS_MAX;
+  },
+
+  /* Узел и все, что под ним. Нужно при удалении ветки. */
+  subtreeIds: function (nodes, rootId) {
+    var out = [rootId], added = true, guard = 0;
+    while (added && guard++ < 50) {
+      added = false;
+      (nodes || []).forEach(function (x) {
+        if (x.parent && out.indexOf(x.parent) >= 0 && out.indexOf(x.id) < 0) { out.push(x.id); added = true; }
+      });
+    }
+    return out;
+  },
+
+  /* Сводка по дереву: сколько узлов с текстом и как они разложены. */
+  treeStats: function (sit) {
+    var nodes = (sit.step5 && sit.step5.consequences && sit.step5.consequences.nodes) || [];
+    var filled = nodes.filter(function (x) { return String(x.text || '').trim(); });
+    var s = { total: nodes.length, filled: filled.length, plus: 0, minus: 0, near: 0, far: 0 };
+    filled.forEach(function (x) {
+      s[x.sign === 'plus' ? 'plus' : 'minus']++;
+      s[x.horizon === 'far' ? 'far' : 'near']++;
+    });
+    return s;
+  },
+
+  /* Раздел 6 ТЗ: решение и критерий заполнены, в дереве не меньше пяти
+     узлов, пре-мортем не пуст. */
+  step5Ready: function (sit) {
+    var s5 = sit.step5 || {};
+    var st = Schema.treeStats(sit);
+    var pm = ((s5.consequences && s5.consequences.premortem) || []).filter(function (m) {
+      return String(m.text || '').trim();
+    });
+    return !!(String(s5.decision || '').trim() && String(s5.criteria || '').trim() &&
+      st.filled >= C.TREE_NODES_GREEN && pm.length > 0);
+  },
+
+  /* ---- шаг 4: нежелательные построения и блоки, раздел 5.5 ТЗ ---- */
+
+  newThreat: function () {
+    return { id: U.id('t_'), text: '', why: '', block: '', preemptive: false };
+  },
+
+  normalizeThreat: function (t) {
+    return {
+      id: String((t && t.id) || U.id('t_')),
+      text: String((t && t.text) || ''),
+      why: String((t && t.why) || ''),
+      block: String((t && t.block) || ''),
+      preemptive: !!(t && t.preemptive)
+    };
+  },
+
+  ensureStep4: function (sit) {
+    if (!sit.step4 || typeof sit.step4 !== 'object' || Array.isArray(sit.step4)) sit.step4 = { common: [], byRole: {} };
+    if (!Array.isArray(sit.step4.common)) sit.step4.common = [];
+    if (!sit.step4.byRole || typeof sit.step4.byRole !== 'object') sit.step4.byRole = {};
+    return sit.step4;
+  },
+  step4ForRole: function (sit, roleId) {
+    var s4 = Schema.ensureStep4(sit);
+    if (!s4.byRole[roleId] || typeof s4.byRole[roleId] !== 'object') s4.byRole[roleId] = { threats: [] };
+    if (!Array.isArray(s4.byRole[roleId].threats)) s4.byRole[roleId].threats = [];
+    return s4.byRole[roleId];
+  },
+
+  /* Все угрозы, которые видит роль: общие плюс свои. Общие идут первыми
+     и помечены, потому что правятся только в общем блоке. */
+  threatsOf: function (sit, roleId) {
+    var s4 = (sit && sit.step4) || {};
+    var out = [];
+    (s4.common || []).forEach(function (t, i) { out.push({ threat: t, common: true, index: i }); });
+    var r = s4.byRole && s4.byRole[roleId];
+    ((r && r.threats) || []).forEach(function (t, i) { out.push({ threat: t, common: false, index: i }); });
+    return out.filter(function (x) { return x.threat && String(x.threat.text || '').trim(); });
+  },
+
+  /* Чем закрыта угроза: своим блоком или формулой шага 7, которая
+     на нее сослалась. Раздел 5.8 ТЗ: связь видна с обеих сторон. */
+  threatClosedBy: function (sit, roleId, threatId) {
+    var out = { block: false, formula: null };
+    var all = [];
+    var s4 = (sit && sit.step4) || {};
+    (s4.common || []).forEach(function (t) { all.push(t); });
+    var r4 = s4.byRole && s4.byRole[roleId];
+    ((r4 && r4.threats) || []).forEach(function (t) { all.push(t); });
+    all.forEach(function (t) {
+      if (t && t.id === threatId && String(t.block || '').trim()) out.block = true;
+    });
+    var s7 = (sit && sit.step7) || {};
+    var take = function (list) {
+      (list || []).forEach(function (f) {
+        if (!out.formula && f && f.threatId === threatId && String(f.text || '').trim()) out.formula = f;
+      });
+    };
+    take(s7.common);
+    take(s7.byRole && s7.byRole[roleId] && s7.byRole[roleId].formulas);
+    return out;
+  },
+  threatClosed: function (sit, roleId, threatId) {
+    var c = Schema.threatClosedBy(sit, roleId, threatId);
+    return !!(c.block || c.formula);
+  },
+
+  /* Сколько угроз роли закрыто. Раздел 6 ТЗ: зеленый требует двух. */
+  threatsClosedCount: function (sit, roleId) {
+    return Schema.threatsOf(sit, roleId).filter(function (x) {
+      return Schema.threatClosed(sit, roleId, x.threat.id);
+    }).length;
+  },
+  step4Ready: function (sit, roleId) {
+    return Schema.threatsClosedCount(sit, roleId) >= C.THREATS_PER_ROLE;
+  },
+
+  /* Блоки на упреждение для роли: подсказка шага 8 и карточка репетиции. */
+  preemptiveOf: function (sit, roleId) {
+    return Schema.threatsOf(sit, roleId).filter(function (x) { return x.threat.preemptive; });
+  },
+
+  /* ---- шаг 6: ролевые соотношения, раздел 5.7 ТЗ ---- */
+
+  ensureStep6: function (sit) {
+    if (!sit.step6 || typeof sit.step6 !== 'object' || Array.isArray(sit.step6)) sit.step6 = { byRole: {}, cells: {} };
+    if (!sit.step6.byRole || typeof sit.step6.byRole !== 'object') sit.step6.byRole = {};
+    if (!sit.step6.cells || typeof sit.step6.cells !== 'object') sit.step6.cells = {};
+    return sit.step6;
+  },
+  step6ForRole: function (sit, roleId) {
+    var s6 = Schema.ensureStep6(sit);
+    if (!s6.byRole[roleId] || typeof s6.byRole[roleId] !== 'object') s6.byRole[roleId] = { helpAny: '' };
+    if (typeof s6.byRole[roleId].helpAny !== 'string') s6.byRole[roleId].helpAny = '';
+    return s6.byRole[roleId];
+  },
+  cellKey: function (mine, theirs) { return mine + '|' + theirs; },
+  newCell: function () { return { state: 'empty', notes: '', helpOverride: '' }; },
+  normalizeCell: function (c) {
+    var states = C.CELL_STATES.map(function (x) { return x.id; });
+    var st = String((c && c.state) || 'empty');
+    return {
+      state: states.indexOf(st) >= 0 ? st : 'empty',
+      notes: String((c && c.notes) || ''),
+      helpOverride: String((c && c.helpOverride) || '')
+    };
+  },
+  cellOf: function (sit, mine, theirs) {
+    var s6 = Schema.ensureStep6(sit);
+    var k = Schema.cellKey(mine, theirs);
+    if (!s6.cells[k] || typeof s6.cells[k] !== 'object') s6.cells[k] = Schema.newCell();
+    return s6.cells[k];
+  },
+
+  /* Разобрано столько-то из стольких-то. Диагональ в счет не идет,
+     "как обычно" считается разобранным: раздел 5.7 ТЗ. */
+  step6Progress: function (sit) {
+    var roles = (sit.roles || []).map(function (r) { return r.id; });
+    var total = 0, done = 0;
+    roles.forEach(function (a) {
+      roles.forEach(function (b) {
+        if (a === b) return;
+        total++;
+        var c = (sit.step6 && sit.step6.cells && sit.step6.cells[Schema.cellKey(a, b)]) || null;
+        if (c && c.state && c.state !== 'empty') done++;
+      });
+    });
+    return { done: done, total: total };
+  },
+  step6Ready: function (sit) {
+    var p = Schema.step6Progress(sit);
+    var everyone = (sit.roles || []).every(function (r) {
+      var d = sit.step6 && sit.step6.byRole && sit.step6.byRole[r.id];
+      return d && String(d.helpAny || '').trim();
+    });
+    return everyone && p.total > 0 && p.done === p.total;
+  },
+
+  ensureStep7: function (sit) {
+    if (!sit.step7 || typeof sit.step7 !== 'object' || Array.isArray(sit.step7)) sit.step7 = { common: [], byRole: {} };
+    if (!Array.isArray(sit.step7.common)) sit.step7.common = [];
+    if (!sit.step7.byRole || typeof sit.step7.byRole !== 'object') sit.step7.byRole = {};
+    return sit.step7;
+  },
+  step7ForRole: function (sit, roleId) {
+    var s7 = Schema.ensureStep7(sit);
+    if (!s7.byRole[roleId] || typeof s7.byRole[roleId] !== 'object') s7.byRole[roleId] = { formulas: [] };
+    if (!Array.isArray(s7.byRole[roleId].formulas)) s7.byRole[roleId].formulas = [];
+    return s7.byRole[roleId];
+  },
+
+  /* Сколько формул каждого типа есть у роли. Раздел 6 ТЗ прямо требует
+     считать сумму общего уровня и уровня роли. Пустой текст не считается. */
+  formulaTypesOf: function (sit, roleId) {
+    var out = {};
+    var take = function (list) {
+      (list || []).forEach(function (f) {
+        if (f && String(f.text || '').trim()) out[f.type] = (out[f.type] || 0) + 1;
+      });
+    };
+    var s7 = (sit && sit.step7) || {};
+    take(s7.common);
+    take(s7.byRole && s7.byRole[roleId] && s7.byRole[roleId].formulas);
+    return out;
+  },
+  /* Закрыты ли все четыре типа: зеленая точка светофора по шагу 7. */
+  formulasReady: function (sit, roleId) {
+    var have = Schema.formulaTypesOf(sit, roleId);
+    return C.FORMULA_REQUIRED.every(function (t) { return have[t]; });
+  },
+
   step8ForRole: function (sit, roleId) {
     if (!sit.step8) sit.step8 = { byRole: {} };
     if (!sit.step8.byRole) sit.step8.byRole = {};
@@ -667,8 +1285,13 @@ var Schema = {
     out.createdAt = Number(out.createdAt) || U.now();
     out.updatedAt = Number(out.updatedAt) || out.createdAt;
     out.afterNotes = String(out.afterNotes || '');
-    if (!Array.isArray(out.secondQuestions)) out.secondQuestions = [];
-    if (!Array.isArray(out.comments)) out.comments = [];
+    out.secondQuestions = (Array.isArray(out.secondQuestions) ? out.secondQuestions : [])
+      .filter(function (q) { return q && typeof q === 'object'; })
+      .map(Schema.normalizeQuestion);
+    out.comments = (Array.isArray(out.comments) ? out.comments : [])
+      .filter(function (c) { return c && typeof c === 'object'; })
+      .map(Schema.normalizeComment)
+      .filter(function (c) { return c.path; });   // комментарий без поля адресует пустоту
 
     if (!Array.isArray(out.roles)) out.roles = [];
     out.roles = out.roles.filter(function (r) { return r && typeof r === 'object'; }).map(function (r, i) {
@@ -739,17 +1362,100 @@ var Schema = {
       layerNotes: notes
     };
 
-    // разделы будущих версий держим объектами, чтобы схема была стабильной
-    ['step4', 'step5', 'step6', 'step7', 'step9'].forEach(function (key) {
-      if (!out[key] || typeof out[key] !== 'object') out[key] = {};
-    });
-
     // шаг 3
     if (!out.step3 || typeof out.step3 !== 'object') out.step3 = {};
     if (!out.step3.byRole || typeof out.step3.byRole !== 'object') out.step3.byRole = {};
     // шаг 8
     if (!out.step8 || typeof out.step8 !== 'object') out.step8 = {};
     if (!out.step8.byRole || typeof out.step8.byRole !== 'object') out.step8.byRole = {};
+    /* шаг 9: раунды это список, номер производный от места в нем.
+       Роль, которой в ситуации больше нет, сбрасывается: раунд остается,
+       ссылка в пустоту уходит. */
+    var s9in = (out.step9 && typeof out.step9 === 'object' && !Array.isArray(out.step9)) ? out.step9 : {};
+    var roleIds = out.roles.map(function (r) { return r.id; });
+    var rounds = (Array.isArray(s9in.rounds) ? s9in.rounds : [])
+      .filter(function (r) { return r && typeof r === 'object'; })
+      .slice(0, C.ROUNDS_MAX)
+      .map(function (r, i) { return Schema.normalizeRound(r, i, roleIds); });
+    out.step9 = { strategy: String(s9in.strategy || ''), rounds: rounds };
+
+    /* шаг 5: узлы дерева последствий лежат плоским списком со ссылкой
+       на родителя. Ссылка в пустоту рвется, кольца разрываются, лишние
+       уровни и лишние следствия отсекаются: дерево должно оставаться
+       деревом, каким бы ни был файл снаружи. */
+    var s5in = (out.step5 && typeof out.step5 === 'object' && !Array.isArray(out.step5)) ? out.step5 : {};
+    var cin = (s5in.consequences && typeof s5in.consequences === 'object') ? s5in.consequences : {};
+    var rawNodes = (Array.isArray(cin.nodes) ? cin.nodes : [])
+      .filter(function (x) { return x && typeof x === 'object'; })
+      .map(Schema.normalizeConsequence);
+    var seenId = {};
+    rawNodes = rawNodes.filter(function (x) {
+      if (seenId[x.id]) return false;
+      seenId[x.id] = 1;
+      return true;
+    });
+    var alive5 = {};
+    rawNodes.forEach(function (x) { alive5[x.id] = x; });
+    var keep = [], kids = {};
+    rawNodes.forEach(function (x) {
+      // ссылка в пустоту: узел становится корневым, а не пропадает
+      if (x.parent && !alive5[x.parent]) x.parent = null;
+      // кольцо: узел, дошедший до самого себя, отвязывается
+      var cur = alive5[x.parent], hops = 0;
+      while (cur && hops++ < 60) {
+        if (cur.id === x.id) { x.parent = null; break; }
+        cur = alive5[cur.parent];
+      }
+    });
+    rawNodes.forEach(function (x) {
+      var d = Schema.depthOf(rawNodes, x);
+      if (d >= C.TREE_DEPTH) return;                     // глубже трех уровней не держим
+      var k = x.parent || '';
+      kids[k] = (kids[k] || 0) + 1;
+      if (kids[k] > C.TREE_KIDS_MAX) return;             // больше четырех следствий на узел
+      keep.push(x);
+    });
+    // узел, чей родитель не уцелел, уходит вместе с ним: сирот в дереве не бывает
+    var keptIds = {};
+    keep.forEach(function (x) { keptIds[x.id] = 1; });
+    keep = keep.filter(function (x) { return !x.parent || keptIds[x.parent]; });
+    out.step5 = {
+      judgeStatement: String(s5in.judgeStatement || ''),
+      criteria: String(s5in.criteria || ''),
+      decision: String(s5in.decision || ''),
+      consequences: {
+        nodes: keep,
+        premortem: (Array.isArray(cin.premortem) ? cin.premortem : [])
+          .filter(function (m) { return m && typeof m === 'object'; })
+          .map(function (m) {
+            return {
+              id: String(m.id || U.id('m_')),
+              text: String(m.text || ''),
+              counter: String(m.counter || '')
+            };
+          })
+      }
+    };
+
+    // шаг 4: общий уровень плюс уровень роли
+    var s4in = (out.step4 && typeof out.step4 === 'object' && !Array.isArray(out.step4)) ? out.step4 : {};
+    out.step4 = {
+      common: (Array.isArray(s4in.common) ? s4in.common : [])
+        .filter(function (t) { return t && typeof t === 'object'; })
+        .map(Schema.normalizeThreat),
+      byRole: {}
+    };
+    // шаг 6: общий ответ по ролям плюс матрица соотношений
+    var s6in = (out.step6 && typeof out.step6 === 'object' && !Array.isArray(out.step6)) ? out.step6 : {};
+    out.step6 = { byRole: {}, cells: {} };
+    // шаг 7: общий уровень плюс уровень роли
+    var s7in = (out.step7 && typeof out.step7 === 'object' && !Array.isArray(out.step7)) ? out.step7 : {};
+    out.step7 = {
+      common: (Array.isArray(s7in.common) ? s7in.common : [])
+        .filter(function (f) { return f && typeof f === 'object'; })
+        .map(Schema.normalizeSitFormula),
+      byRole: {}
+    };
 
     out.roles.forEach(function (r) {
       var a = out.step3.byRole[r.id];
@@ -764,6 +1470,20 @@ var Schema = {
           };
         })
       };
+      var c4 = (s4in.byRole && s4in.byRole[r.id]) || null;
+      out.step4.byRole[r.id] = {
+        threats: (c4 && Array.isArray(c4.threats) ? c4.threats : [])
+          .filter(function (t) { return t && typeof t === 'object'; })
+          .map(Schema.normalizeThreat)
+      };
+      var c6 = (s6in.byRole && s6in.byRole[r.id]) || null;
+      out.step6.byRole[r.id] = { helpAny: String((c6 && c6.helpAny) || '') };
+      var c7 = (s7in.byRole && s7in.byRole[r.id]) || null;
+      out.step7.byRole[r.id] = {
+        formulas: (c7 && Array.isArray(c7.formulas) ? c7.formulas : [])
+          .filter(function (f) { return f && typeof f === 'object'; })
+          .map(Schema.normalizeSitFormula)
+      };
       var b = out.step8.byRole[r.id];
       out.step8.byRole[r.id] = {
         firstPhrase: U.cut(String((b && b.firstPhrase) || ''), C.PHRASE_MAX),
@@ -771,6 +1491,34 @@ var Schema = {
         roundGoal: String((b && b.roundGoal) || '')
       };
     });
+
+    /* Клетки матрицы соотношений переносятся только между живыми ролями:
+       удалили роль - клетки с ней уходят вместе с ней. */
+    var alive = {};
+    out.roles.forEach(function (r) { alive[r.id] = 1; });
+    var cellsIn = (s6in.cells && typeof s6in.cells === 'object') ? s6in.cells : {};
+    Object.keys(cellsIn).forEach(function (k) {
+      var pair = String(k).split('|');
+      if (pair.length !== 2 || pair[0] === pair[1]) return;
+      if (!alive[pair[0]] || !alive[pair[1]]) return;
+      var c = Schema.normalizeCell(cellsIn[k]);
+      if (c.state === 'empty' && !c.notes && !c.helpOverride) return;  // пустые не храним
+      out.step6.cells[k] = c;
+    });
+
+    /* Ссылка формулы на угрозу переживает чтение только если угроза
+       на месте: иначе связь молча указывала бы в пустоту. */
+    var threatIds = {};
+    (out.step4.common || []).forEach(function (t) { threatIds[t.id] = 1; });
+    out.roles.forEach(function (r) {
+      (out.step4.byRole[r.id].threats || []).forEach(function (t) { threatIds[t.id] = 1; });
+    });
+    var fixLinks = function (list) {
+      (list || []).forEach(function (f) { if (f.threatId && !threatIds[f.threatId]) f.threatId = null; });
+    };
+    fixLinks(out.step7.common);
+    out.roles.forEach(function (r) { fixLinks(out.step7.byRole[r.id].formulas); });
+
     return out;
   },
 
@@ -818,6 +1566,7 @@ var Schema = {
     if (!Array.isArray(root.situations)) root.situations = [];
     root.situations = root.situations.map(Schema.normalizeSituation).filter(Boolean);
     if (!Array.isArray(root.formulaLibrary)) root.formulaLibrary = [];
+    root.formulaLibrary = root.formulaLibrary.map(Schema.normalizeLibFormula).filter(Boolean);
     return root;
   }
 };
@@ -892,17 +1641,21 @@ var IDB = (function () {
     },
 
     /* Одна транзакция на всю пачку правок: либо записалось все, либо ничего.
-       batch = { situations:[], removed:[id], meta:[{key,value}], history:[], trim:[sid] } */
+       batch = { situations:[], removed:[id], meta:[{key,value}], history:[], trim:[sid],
+                 formulas:[], formulasRemoved:[id] } */
     write: function (batch) {
-      return run(['situations', 'meta', 'history'], 'readwrite', function (tx) {
+      return run(['situations', 'meta', 'history', 'formulas'], 'readwrite', function (tx) {
         var sSit = tx.objectStore('situations');
         var sMeta = tx.objectStore('meta');
         var sHist = tx.objectStore('history');
+        var sForm = tx.objectStore('formulas');
 
         (batch.situations || []).forEach(function (s) { sSit.put(s); });
         (batch.removed || []).forEach(function (id) { sSit.delete(id); });
         (batch.meta || []).forEach(function (m) { sMeta.put(m); });
         (batch.history || []).forEach(function (h) { sHist.add(h); });
+        (batch.formulas || []).forEach(function (f) { sForm.put(f); });
+        (batch.formulasRemoved || []).forEach(function (id) { sForm.delete(id); });
 
         // журнал: не больше C.HISTORY_PER_SITUATION записей на ситуацию
         (batch.trim || []).forEach(function (sid) {
@@ -1031,6 +1784,8 @@ var Storage = (function () {
   var dirtySits = Object.create(null);   // id -> true
   var removedSits = Object.create(null); // id -> true
   var dirtySettings = false;
+  var dirtyForms = Object.create(null);   // id заготовки -> true
+  var removedForms = Object.create(null); // id заготовки -> true
   var histPending = Object.create(null); // "sid|path" -> запись журнала
   var writing = false;
   var rewriteAfter = false;
@@ -1051,8 +1806,14 @@ var Storage = (function () {
   var schedule = U.debounce(function () { flush().catch(function () {}); }, C.AUTOSAVE_MS);
 
   function collect() {
-    var batch = { situations: [], removed: [], meta: [], history: [], trim: [] };
+    var batch = { situations: [], removed: [], meta: [], history: [], trim: [], formulas: [], formulasRemoved: [] };
     var id;
+    for (id in removedForms) batch.formulasRemoved.push(id);
+    for (id in dirtyForms) {
+      if (removedForms[id]) continue;
+      var f0 = findFormula(id);
+      if (f0) batch.formulas.push(U.clone(f0));
+    }
     for (id in removedSits) batch.removed.push(id);
     for (id in dirtySits) {
       if (removedSits[id]) continue;
@@ -1077,12 +1838,15 @@ var Storage = (function () {
     schedule.cancel();
     if (writing) { rewriteAfter = true; return Promise.resolve(); }
     var batch = collect();
-    var empty = !batch.situations.length && !batch.removed.length && !batch.meta.length && !batch.history.length;
+    var empty = !batch.situations.length && !batch.removed.length && !batch.meta.length &&
+      !batch.history.length && !batch.formulas.length && !batch.formulasRemoved.length;
     if (empty) { setState('saved'); return Promise.resolve(); }
 
     dirtySits = Object.create(null);
     removedSits = Object.create(null);
     dirtySettings = false;
+    dirtyForms = Object.create(null);
+    removedForms = Object.create(null);
     histPending = Object.create(null);
 
     writing = true;
@@ -1097,6 +1861,8 @@ var Storage = (function () {
       batch.situations.forEach(function (s) { dirtySits[s.id] = true; });
       batch.removed.forEach(function (id) { removedSits[id] = true; });
       if (batch.meta.length) dirtySettings = true;
+      batch.formulas.forEach(function (f) { dirtyForms[f.id] = true; });
+      batch.formulasRemoved.forEach(function (id) { removedForms[id] = true; });
       batch.history.forEach(function (h) { histPending[h.situationId + '|' + h.path] = h; });
       setState('dirty');
       emit({ type: 'error', error: err });
@@ -1108,12 +1874,20 @@ var Storage = (function () {
     for (var a in dirtySits) return true;
     for (var b in removedSits) return true;
     for (var c in histPending) return true;
+    for (var d in dirtyForms) return true;
+    for (var e in removedForms) return true;
     return dirtySettings;
   }
 
   function find(id) {
     if (!root) return null;
     for (var i = 0; i < root.situations.length; i++) if (root.situations[i].id === id) return root.situations[i];
+    return null;
+  }
+
+  function findFormula(id) {
+    if (!root) return null;
+    for (var i = 0; i < root.formulaLibrary.length; i++) if (root.formulaLibrary[i].id === id) return root.formulaLibrary[i];
     return null;
   }
 
@@ -1209,6 +1983,8 @@ var Storage = (function () {
       dirtySits = Object.create(null);
       removedSits = Object.create(null);
       histPending = Object.create(null);
+      dirtyForms = Object.create(null);
+      removedForms = Object.create(null);
       dirtySettings = false;
       // корень меняется по месту: ссылки, которые держит интерфейс, остаются живыми
       root.schema = next.schema;
@@ -1228,6 +2004,46 @@ var Storage = (function () {
         emit({ type: 'error', error: err });
         throw err;
       });
+    },
+
+    /* ---- копилка формул, раздел 5.13 ТЗ ----
+       Копилка живет рядом с ситуациями, а не внутри них: заготовка
+       переживает ситуацию, из которой родилась. Журнал правок на нее
+       не ведется - он привязан к ситуации по устройству хранилища. */
+
+    formulas: function () { return root ? root.formulaLibrary : []; },
+    getFormula: findFormula,
+
+    addFormula: function (f) {
+      if (!root) return null;
+      var nf = Schema.normalizeLibFormula(f || Schema.newLibFormula());
+      if (!nf) return null;
+      root.formulaLibrary.push(nf);
+      dirtyForms[nf.id] = true;
+      markDirty();
+      return nf;
+    },
+
+    patchFormula: function (id, path, value) {
+      var f = findFormula(id);
+      if (!f) return false;
+      var old = U.getPath(f, path);
+      if (U.same(old, value)) return false;
+      U.setPath(f, path, value);
+      dirtyForms[id] = true;
+      markDirty();
+      return true;
+    },
+
+    removeFormula: function (id) {
+      if (!root) return false;
+      var i = root.formulaLibrary.findIndex(function (f) { return f.id === id; });
+      if (i < 0) return false;
+      root.formulaLibrary.splice(i, 1);
+      removedForms[id] = true;
+      delete dirtyForms[id];
+      markDirty();
+      return true;
     },
 
     /* ---- служебное ---- */
@@ -1751,6 +2567,8 @@ var Icons = (function () {
     cloud_sync: '<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.5-1A3.9 3.9 0 0121 13a4 4 0 01-4 5z"/><path d="M10 14.5h3.5M13 12.5l1.5 2-1.5 2"/>',
     cloud_alert: '<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.5-1A3.9 3.9 0 0121 13a4 4 0 01-4 5z"/><path d="M12 11v3M12 16.5v.5"/>',
     star: '<path d="M12 4l2.3 4.9 5.2.7-3.8 3.7.9 5.3-4.6-2.6-4.6 2.6.9-5.3L4.5 9.6l5.2-.7z"/>',
+    arrow: '<path d="M4 12h14M13 7l5 5-5 5"/>',
+    broken: '<path d="M4 12h5M15 12h5"/><path d="M11 7l-1 5 3-1-1 5"/>',
     star_on: '<path d="M12 4l2.3 4.9 5.2.7-3.8 3.7.9 5.3-4.6-2.6-4.6 2.6.9-5.3L4.5 9.6l5.2-.7z" fill="currentColor"/>'
   };
   return function (name, size) {
@@ -1993,6 +2811,360 @@ var Archive = {
   }
 };
 /* ---------------------------------------------------------------------
+   9в. Комментарии к полям. Раздел 5.12 ТЗ.
+   Секундант не правит ваши формулировки, он их оспаривает, поэтому
+   возражение висит на конкретном поле, а не на ситуации вообще.
+   В приложение секундант не заходит: комментарии записывает участник
+   с его слов, поле author осталось от прежней редакции ТЗ.
+   --------------------------------------------------------------------- */
+var Comments = {
+  /* Куда ведет путь поля. Порядок важен: первое совпадение выигрывает,
+     поэтому длинные приставки идут раньше коротких. */
+  MAP: [
+    ['step1.retell', 's1', 'Пересказ в трех предложениях'],
+    ['step1.fabula', 's1', 'Фабула'],
+    ['step1.plot', 's1', 'Сюжет'],
+    ['step1.essence', 's1', 'Суть'],
+    ['step2.layerNotes', 's2', 'Заметка по слою'],
+    ['step2.phrases', 's2', 'Разбор фразы'],
+    ['step3.', 's3', 'Положительный герой роли'],
+    ['step4.', 's4', 'Нежелательное построение'],
+    ['step5.consequences.premortem', 's5', 'Пре-мортем'],
+    ['step5.consequences', 's5', 'Дерево последствий'],
+    ['step5.judgeStatement', 's5', 'Позиция мирового судьи'],
+    ['step5.criteria', 's5', 'Критерий'],
+    ['step5.decision', 's5', 'Решение'],
+    ['step6.cells', 's6', 'Клетка матрицы соотношений'],
+    ['step6.', 's6', 'Общий ответ роли'],
+    ['step7.', 's7', 'Формула'],
+    ['step8.', 's8', 'Первая фраза и цель'],
+    ['step9.', 's9', 'Стратегия раундов'],
+    ['secondQuestions', 'sq', 'Вопрос секунданта'],
+    ['sourceText', 'setup', 'Текст ситуации'],
+    ['context', 'setup', 'Турнир и дата'],
+    ['title', 'setup', 'Название ситуации'],
+    ['roles', 'setup', 'Роли']
+  ],
+  locate: function (path) {
+    var p = String(path || '');
+    for (var i = 0; i < Comments.MAP.length; i++) {
+      if (p.indexOf(Comments.MAP[i][0]) === 0) {
+        return { sec: Comments.MAP[i][1], label: Comments.MAP[i][2] };
+      }
+    }
+    return { sec: 'setup', label: 'Поле' };
+  },
+
+  forPath: function (sit, path) {
+    return (sit.comments || []).filter(function (c) { return c.path === path; });
+  },
+  openForPath: function (sit, path) {
+    return Comments.forPath(sit, path).filter(function (c) {
+      return !c.resolved && String(c.text || '').trim();
+    });
+  },
+  open: function (sit) {
+    return (sit.comments || []).filter(function (c) {
+      return !c.resolved && String(c.text || '').trim();
+    });
+  },
+  /* Комментарии, сгруппированные по полю: так их читают при разборе. */
+  grouped: function (sit) {
+    var order = [], by = {};
+    (sit.comments || []).forEach(function (c) {
+      if (!by[c.path]) { by[c.path] = []; order.push(c.path); }
+      by[c.path].push(c);
+    });
+    return order.map(function (p) {
+      return { path: p, place: Comments.locate(p), items: by[p] };
+    });
+  }
+};
+
+/* ---------------------------------------------------------------------
+   9б. Копирование между ролями. Раздел 10 ТЗ.
+   Копируется текст, а не связь: скопированное правится свободно и
+   с исходной ролью больше ничем не связано.
+   --------------------------------------------------------------------- */
+var Copy = {
+  KINDS: {
+    hero: { path: 'step3.byRole.{r}.heroVersion', name: 'положительный герой' },
+    help: { path: 'step6.byRole.{r}.helpAny', name: 'общий ответ роли' },
+    assign: { path: 'step8.byRole.{r}.roleAssignment', name: 'какие задать роли' },
+    goal: { path: 'step8.byRole.{r}.roundGoal', name: 'цель на раунд' },
+    first: { path: 'step8.byRole.{r}.firstPhrase', name: 'первая фраза' }
+  },
+  pathOf: function (roleId, kind) {
+    var k = Copy.KINDS[kind];
+    return k ? k.path.replace('{r}', roleId) : '';
+  },
+  valueOf: function (sit, roleId, kind) {
+    var p = Copy.pathOf(roleId, kind);
+    return p ? (U.getPath(sit, p) || '') : '';
+  },
+  nameOf: function (kind) { return (Copy.KINDS[kind] || {}).name || ''; }
+};
+
+/* ---------------------------------------------------------------------
+   9a. Светофор готовности. Раздел 6 ТЗ.
+   Чистые функции над ситуацией: ни базы, ни разметки. Каждый шаг
+   отвечает за себя, пороги берутся из C. У шагов, зависящих от роли,
+   к точке добавляется дробь: сколько ролей закрыто из скольких.
+   --------------------------------------------------------------------- */
+var Express = {
+  /* Экспресс-режим, раздел 10 ТЗ: показываются только поля, которые
+     считает светофор. Список скрываемого закрытый и лежит здесь, чтобы
+     его можно было прочитать целиком, а не собирать по всему файлу.
+     Скрываются: фабула и сюжет (шаг 1); "зачем эта фраза" и заметки
+     по слоям (шаг 2); "чем опасно" (шаг 4);
+     позиция судьи и упреждающее действие (шаг 5); заметка клетки и
+     ответ для пары (шаг 6); "какие задать роли" (шаг 8); "что если
+     не выйдет" (шаг 9). */
+  flag: false,
+  on: function () { return !!Express.flag; },
+  set: function (v) { Express.flag = !!v; }
+};
+
+var Traffic = {
+  TITLES: {
+    1: 'Понять ситуацию',
+    2: 'Разобрать текст на фразы и слова',
+    3: 'Вытащить роль на положительного героя',
+    4: 'Нежелательные построения и блоки',
+    5: 'Позиция мирового судьи и последствия',
+    6: 'Ролевые соотношения',
+    7: 'Формулы',
+    8: 'Первая фраза',
+    9: 'Стратегия связанных раундов'
+  },
+  SECTIONS: { 1: 's1', 2: 's2', 3: 's3', 4: 's4', 5: 's5', 6: 's6', 7: 's7', 8: 's8', 9: 's9' },
+
+  /* Общая мерка для шагов по ролям: закрыто столько-то ролей из стольких-то. */
+  byRole: function (sit, isReady) {
+    var roles = sit.roles || [];
+    var done = roles.filter(function (r) { return isReady(sit, r.id); }).length;
+    return {
+      done: done, total: roles.length,
+      state: !roles.length ? 'red' : (done === roles.length ? 'green' : (done ? 'yellow' : 'red'))
+    };
+  },
+
+  /* Шаг 1. Зеленый: суть и три предложения. Желтый: что-то заполнено. */
+  step1: function (sit) {
+    var d = sit.step1 || {};
+    var retell = (d.retell || []).filter(function (t) { return String(t || '').trim(); }).length;
+    var essence = !!String(d.essence || '').trim();
+    if (essence && retell >= C.RETELL_COUNT) return { state: 'green' };
+    var any = essence || retell > 0 || String(d.fabula || '').trim() || String(d.plot || '').trim();
+    return { state: any ? 'yellow' : 'red' };
+  },
+
+  /* Шаг 2. Зеленый: пять фраз, у каждой две трактовки, пять слоев. */
+  step2: function (sit) {
+    var ph = (sit.step2 && sit.step2.phrases) || [];
+    var real = ph.filter(function (p) { return String(p.quote || '').trim(); });
+    var withTwo = real.filter(function (p) {
+      return (p.readings || []).filter(function (r) { return String(r.text || '').trim(); }).length >= C.READINGS_PER_PHRASE;
+    }).length;
+    var used = {};
+    real.forEach(function (p) { Schema.layersOf(p).forEach(function (l) { used[l] = 1; }); });
+    var layers = Object.keys(used).length;
+    var green = real.length >= C.PHRASES_GREEN && withTwo === real.length && layers >= C.LAYERS_GREEN;
+    return {
+      state: green ? 'green' : (real.length ? 'yellow' : 'red'),
+      note: real.length ? ('фраз ' + real.length + ', с двумя трактовками ' + withTwo + ', слоев ' + layers) : ''
+    };
+  },
+
+  /* Шаг 3. Зеленый: у роли есть герой и вводная с обеими отметками. */
+  role3: function (sit, roleId) {
+    var d = (sit.step3 && sit.step3.byRole && sit.step3.byRole[roleId]) || null;
+    if (!d || !String(d.heroVersion || '').trim()) return false;
+    return (d.assumptions || []).some(function (a) {
+      return String(a.text || '').trim() && a.necessary && a.sufficient;
+    });
+  },
+  step3: function (sit) { return Traffic.byRole(sit, Traffic.role3); },
+
+  /* Шаг 4. Зеленый: две угрозы с блоками, считая общий уровень.
+     Желтый по ТЗ: есть угрозы без блоков. */
+  step4: function (sit) {
+    var r = Traffic.byRole(sit, Schema.step4Ready);
+    if (r.state !== 'green') {
+      var any = (sit.roles || []).some(function (x) { return Schema.threatsOf(sit, x.id).length; });
+      r.state = any ? 'yellow' : 'red';
+    }
+    return r;
+  },
+
+  /* Шаг 5. Зеленый: решение, критерий, пять узлов, непустой пре-мортем.
+     Желтый: заполнены только текстовые поля. */
+  step5: function (sit) {
+    if (Schema.step5Ready(sit)) return { state: 'green' };
+    var d = sit.step5 || {};
+    var text = String(d.judgeStatement || '').trim() || String(d.criteria || '').trim() || String(d.decision || '').trim();
+    var st = Schema.treeStats(sit);
+    return {
+      state: (text || st.filled) ? 'yellow' : 'red',
+      note: st.filled ? ('последствий ' + st.filled + ' из ' + C.TREE_NODES_GREEN) : ''
+    };
+  },
+
+  /* Шаг 6. Зеленый: у всех ролей общий ответ и все клетки разобраны. */
+  role6: function (sit, roleId) {
+    return !!String(Schema.step6ForRole(sit, roleId).helpAny || '').trim();
+  },
+  step6: function (sit) {
+    var r = Traffic.byRole(sit, Traffic.role6);
+    var p = Schema.step6Progress(sit);
+    r.note = 'клеток ' + p.done + ' из ' + p.total;
+    if (r.state === 'green' && !(p.total > 0 && p.done === p.total)) r.state = 'yellow';
+    return r;
+  },
+
+  /* Шаг 7. Зеленый: все четыре типа формул, считая общий уровень. */
+  step7: function (sit) {
+    var r = Traffic.byRole(sit, Schema.formulasReady);
+    if (r.state !== 'green') {
+      var any = (sit.roles || []).some(function (x) {
+        return Object.keys(Schema.formulaTypesOf(sit, x.id)).length > 0;
+      });
+      r.state = any ? 'yellow' : 'red';
+    }
+    return r;
+  },
+
+  /* Шаг 8. Зеленый: у роли есть первая фраза и цель на раунд. */
+  role8: function (sit, roleId) {
+    var d = (sit.step8 && sit.step8.byRole && sit.step8.byRole[roleId]) || null;
+    return !!(d && String(d.firstPhrase || '').trim() && String(d.roundGoal || '').trim());
+  },
+  step8: function (sit) { return Traffic.byRole(sit, Traffic.role8); },
+
+  /* Шаг 9. Зеленый: у всех раундов цель, у всех кроме последнего связка. */
+  step9: function (sit) {
+    var p = Schema.step9Progress(sit);
+    if (!p.total) return { state: 'red' };
+    if (Schema.step9Ready(sit)) return { state: 'green', note: 'раундов ' + p.total };
+    var any = p.goals > 0 || String((sit.step9 && sit.step9.strategy) || '').trim();
+    return {
+      state: any ? 'yellow' : 'red',
+      note: 'с целью ' + p.goals + ' из ' + p.total + (p.breaks ? ', разрывов ' + p.breaks : '')
+    };
+  },
+
+  /* Все девять точек разом. Порядок фиксирован: это порядок шагов. */
+  of: function (sit) {
+    var out = [];
+    for (var i = 1; i <= 9; i++) {
+      var r = Traffic['step' + i](sit) || { state: 'red' };
+      out.push({
+        n: i,
+        sec: Traffic.SECTIONS[i],
+        title: Traffic.TITLES[i],
+        state: r.state,
+        done: (typeof r.done === 'number') ? r.done : null,
+        total: (typeof r.total === 'number') ? r.total : null,
+        note: r.note || ''
+      });
+    }
+    return out;
+  },
+
+  /* Сводка для экрана «Готов?» и для карточки в списке. */
+  summary: function (sit) {
+    var pts = Traffic.of(sit);
+    return {
+      points: pts,
+      green: pts.filter(function (p) { return p.state === 'green'; }).length,
+      yellow: pts.filter(function (p) { return p.state === 'yellow'; }).length,
+      red: pts.filter(function (p) { return p.state === 'red'; }).length,
+      openQuestions: Schema.openQuestions(sit)
+    };
+  }
+};
+
+/* ---------------------------------------------------------------------
+   10a. Копилка формул. Раздел 5.13 ТЗ. Чистые функции отбора и переноса:
+   ни базы, ни разметки. Связей между копилкой и ситуациями нет
+   намеренно - есть только копия текста и память о происхождении.
+   --------------------------------------------------------------------- */
+var Library = {
+  typeName: function (id) {
+    for (var i = 0; i < C.FORMULA_TYPES.length; i++) if (C.FORMULA_TYPES[i].id === id) return C.FORMULA_TYPES[i].name;
+    return 'Свое';
+  },
+
+  /* Результативность: доля сработавших применений. Заготовка, которую еще
+     не проверяли в поединке, считается нейтральной, иначе один удачный
+     случай выносил бы новичка выше проверенных заготовок. */
+  score: function (f) {
+    var total = (f.worked || 0) + (f.failed || 0);
+    return total ? (f.worked || 0) / total : 0;
+  },
+
+  matches: function (f, query) {
+    var q = String(query || '').trim().toLowerCase();
+    if (!q) return true;
+    if (String(f.text || '').toLowerCase().indexOf(q) >= 0) return true;
+    if (String(f.comment || '').toLowerCase().indexOf(q) >= 0) return true;
+    return (f.tags || []).some(function (t) { return String(t).toLowerCase().indexOf(q) >= 0; });
+  },
+
+  /* opts = { type, query, sort: recent | used | result } */
+  select: function (list, opts) {
+    var o = opts || {};
+    var out = (list || []).filter(function (f) {
+      if (o.type && o.type !== 'all' && f.type !== o.type) return false;
+      return Library.matches(f, o.query);
+    });
+    var mode = o.sort || 'recent';
+    out.sort(function (a, b) {
+      if (mode === 'used') {
+        var ua = (a.usedIn || []).length, ub = (b.usedIn || []).length;
+        if (ua !== ub) return ub - ua;
+      } else if (mode === 'result') {
+        var sa = Library.score(a), sb = Library.score(b);
+        if (sa !== sb) return sb - sa;
+        var na = (a.worked || 0) + (a.failed || 0), nb = (b.worked || 0) + (b.failed || 0);
+        if (na !== nb) return nb - na;
+      }
+      return (b.createdAt || 0) - (a.createdAt || 0);
+    });
+    return out;
+  },
+
+  parseTags: function (text) {
+    var seen = {}, out = [];
+    String(text || '').split(/[,;]+/).forEach(function (t) {
+      t = t.trim().toLowerCase();
+      if (!t || seen[t]) return;
+      seen[t] = 1;
+      out.push(t);
+    });
+    return out.slice(0, C.LIB_TAGS_MAX);
+  },
+
+  /* Из ситуации в копилку: заводится новая заготовка с копией текста. */
+  send: function (formula, situationId) {
+    var f = Storage.addFormula(Schema.newLibFormula(formula.type, formula.text));
+    if (f && situationId) Storage.patchFormula(f.id, 'usedIn', [situationId]);
+    return f;
+  },
+
+  /* Из копилки в ситуацию: возвращается копия, готовая лечь в шаг 7.
+     Заготовка запоминает, где ее применили. */
+  take: function (libId, situationId) {
+    var f = Storage.getFormula(libId);
+    if (!f) return null;
+    if (situationId && (f.usedIn || []).indexOf(situationId) < 0) {
+      Storage.patchFormula(libId, 'usedIn', (f.usedIn || []).concat([situationId]));
+    }
+    return Schema.newSitFormula(f.type, f.text, f.id);
+  }
+};
+
+/* ---------------------------------------------------------------------
    11. Отрисовка. Никакого фреймворка: строки HTML плюс делегирование
    событий. Поле, в котором стоит курсор, при вводе не перерисовывается.
    --------------------------------------------------------------------- */
@@ -2026,6 +3198,32 @@ var View = (function () {
       '" aria-label="' + U.esc(Theme.label[theme]) + '">' + Icons(Theme.icon[theme]) + '</button>';
   }
 
+  /* Девять точек светофора. Раздел 6 ТЗ: у шагов по ролям дробь. */
+  function lights(sit) {
+    var pts = Traffic.of(sit);
+    return '<div class="lights" id="lights">' + pts.map(function (p) {
+      var frac = (p.total !== null && p.total > 0) ? (p.done + '/' + p.total) : '';
+      return '<button class="lt ' + p.state + '" data-act="light" data-sec="' + p.sec + '" title="' +
+        U.esc(p.n + '. ' + p.title + (p.note ? ': ' + p.note : '')) + '">' +
+        '<span class="d"></span><b>' + p.n + '</b>' + (frac ? '&nbsp;' + frac : '') + '</button>';
+    }).join('') + '</div>';
+  }
+
+  function lightsMini(sit) {
+    return '<div class="lights-mini" aria-hidden="true">' + Traffic.of(sit).map(function (p) {
+      return '<i class="' + p.state + '"></i>';
+    }).join('') + '</div>';
+  }
+
+  /* Полоска в заголовке шага: закрашены роли, где шаг заполнен. */
+  function accBar(sit, sec) {
+    var fn = { s3: Traffic.role3, s4: Schema.step4Ready, s6: Traffic.role6, s7: Schema.formulasReady, s8: Traffic.role8 }[sec];
+    if (!fn) return '';
+    return '<span class="acc-bar" aria-hidden="true">' + Roles.sorted(sit.roles).map(function (r) {
+      return '<i class="' + (fn(sit, r.id) ? 'on' : '') + '"></i>';
+    }).join('') + '</span>';
+  }
+
   function counter(id, len, max, withTime) {
     var cls = 'counter';
     if (len >= max) cls += ' full';
@@ -2046,8 +3244,23 @@ var View = (function () {
       (o.max ? counter(o.id, U.len(v), o.max, !!o.time) : '');
   }
 
-  function field(label, hint, inner) {
-    return '<div class="field"><span class="label">' + U.esc(label) + '</span>' +
+  /* Точка у поля: раздел 5.12 ТЗ. Открытый комментарий виден, не открывая
+     ничего. Ситуация приходит через замыкание отрисовки, потому что
+     field() зовут из двух десятков мест. */
+  var CUR = null;   // ситуация, которую рисуем прямо сейчас
+
+  function commentDot(path) {
+    if (!CUR || !path) return '';
+    var open = Comments.openForPath(CUR, path).length;
+    var all = Comments.forPath(CUR, path).length;
+    return '<button class="cmt-btn' + (open ? ' has' : '') + '" data-act="cmt" data-path="' + U.esc(path) +
+      '" title="' + (open ? 'Открытых возражений: ' + open : (all ? 'Возражения сняты' : 'Записать возражение секунданта')) +
+      '" aria-label="Комментарии к полю">' +
+      '<span class="dot"></span>' + (all ? all : '') + '</button>';
+  }
+
+  function field(label, hint, inner, path) {
+    return '<div class="field"><span class="label">' + U.esc(label) + commentDot(path) + '</span>' +
       (hint ? '<div class="hint">' + U.esc(hint) + '</div>' : '') + inner + '</div>';
   }
 
@@ -2063,6 +3276,7 @@ var View = (function () {
         (s.context ? '<div class="muted">' + U.esc(s.context) + '</div>' : '') +
         '<div class="muted">' + roles + ' ' + plural(roles, 'роль', 'роли', 'ролей') +
         ' &middot; изменена ' + U.dateShort(s.updatedAt) + '</div>' +
+        lightsMini(s) +
         '</div>' +
         '<button class="btn btn-ghost btn-icon" data-act="rename-sit" data-id="' + s.id + '" title="Переименовать" aria-label="Переименовать">' + Icons('pencil') + '</button>' +
         '<button class="btn btn-ghost btn-icon" data-act="del-sit" data-id="' + s.id + '" title="Удалить" aria-label="Удалить">' + Icons('trash') + '</button>' +
@@ -2077,6 +3291,9 @@ var View = (function () {
       '<div class="wrap">' +
       '<div class="row" style="margin:16px 0">' +
       '<button class="btn btn-primary" data-act="new-sit">' + Icons('plus') + 'Новая ситуация</button>' +
+      '<span class="spacer"></span>' +
+      '<button class="btn" data-act="library">' + Icons('doc') + 'Копилка формул' +
+      (root.formulaLibrary.length ? ' <span class="muted">' + root.formulaLibrary.length + '</span>' : '') + '</button>' +
       '</div>' +
       (cards || '<div class="empty">Ситуаций пока нет.<br>Начните с кнопки «Новая ситуация».</div>') +
       '<div class="sep"></div>' +
@@ -2102,9 +3319,12 @@ var View = (function () {
 
   function roleBar(sit, activeId, step) {
     var tabs = Roles.sorted(sit.roles).map(function (r) {
-      var filled = step === 's3'
-        ? !!(sit.step3.byRole[r.id] && String(sit.step3.byRole[r.id].heroVersion || '').trim())
-        : !!(sit.step8.byRole[r.id] && String(sit.step8.byRole[r.id].firstPhrase || '').trim());
+      var filled;
+      if (step === 's3') filled = !!(sit.step3.byRole[r.id] && String(sit.step3.byRole[r.id].heroVersion || '').trim());
+      else if (step === 's4') filled = Schema.step4Ready(sit, r.id);
+      else if (step === 's6') filled = !!String(Schema.step6ForRole(sit, r.id).helpAny || '').trim();
+      else if (step === 's7') filled = Schema.formulasReady(sit, r.id);
+      else filled = !!(sit.step8.byRole[r.id] && String(sit.step8.byRole[r.id].firstPhrase || '').trim());
       return '<button class="role-tab' + (r.id === activeId ? ' on' : '') + '" data-act="role" data-id="' + r.id + '">' +
         '<span class="dot' + (filled ? ' filled' : '') + '"></span>' +
         '<span class="nm">' + U.esc(Roles.nameOf(r)) + '</span>' +
@@ -2114,11 +3334,46 @@ var View = (function () {
     return '<div class="roles-bar" role="tablist" aria-label="Активная роль">' + tabs + '</div>';
   }
 
-  function accordion(num, title, open, sec, body) {
-    return '<section class="acc' + (open ? ' open' : '') + '">' +
+  /* Переключатель вида в шагах по ролям, раздел 10 ТЗ. */
+  function roleSwitch(sec) {
+    return '<div class="row" style="margin:0 0 10px">' +
+      '<button class="btn btn-sm" data-act="all-roles" data-sec="' + sec + '">Все роли сразу</button>' +
+      '</div>';
+  }
+
+  /* Все роли подряд карточками. Удобно, когда добиваешь однотипные поля:
+     пять первых фраз пишутся втрое быстрее, чем через переключение роли. */
+  function allRolesBox(sit, sec, one) {
+    var cards = Roles.sorted(sit.roles).map(function (r) {
+      return '<div class="card" style="margin-bottom:12px" data-role-card="' + r.id + '">' +
+        '<div class="row" style="margin-bottom:8px"><h3 style="margin:0">' + U.esc(Roles.nameOf(r)) + '</h3>' +
+        (r.hard ? '<span class="tag-hard">трудная</span>' : '') + '</div>' +
+        one(sit, r) + '</div>';
+    }).join('');
+    return '<div class="row" style="margin:0 0 10px">' +
+      '<button class="btn btn-sm" data-act="all-roles" data-sec="' + sec + '">По одной роли</button>' +
+      '<span class="muted">все роли подряд</span></div>' + cards;
+  }
+
+  /* Кнопка «взять из роли ...»: копия с последующей правкой, раздел 10 ТЗ.
+     Копируется только непустое и только в пустое поле не подставляется само. */
+  function copyFrom(sit, roleId, kind) {
+    var others = Roles.sorted(sit.roles).filter(function (r) {
+      return r.id !== roleId && String(Copy.valueOf(sit, r.id, kind) || '').trim();
+    });
+    if (!others.length) return '';
+    return '<div class="row" style="margin:-8px 0 12px">' + others.map(function (r) {
+      return '<button class="btn btn-sm" data-act="copy-role" data-from="' + r.id + '" data-to="' + roleId +
+        '" data-kind="' + kind + '">взять из роли «' + U.esc(Roles.nameOf(r)) + '»</button>';
+    }).join('') + '</div>';
+  }
+
+  function accordion(num, title, open, sec, body, bar) {
+    return '<section class="acc' + (open ? ' open' : '') + '" data-sec-box="' + sec + '">' +
       '<button class="acc-h" data-act="acc" data-sec="' + sec + '" aria-expanded="' + (open ? 'true' : 'false') + '">' +
       '<span class="acc-num">' + num + '</span>' +
       '<span class="acc-t">' + U.esc(title) + '</span>' +
+      (bar || '') +
       '<span class="chev">' + Icons('chev', 18) + '</span>' +
       '</button>' +
       (open ? '<div class="acc-b">' + body + '</div>' : '') +
@@ -2164,7 +3419,7 @@ var View = (function () {
       Icons('plus') + 'Добавить роль</button></div>';
   }
 
-  function step1Body(sit) {
+  function step1Body(sit, express) {
     var s1 = sit.step1;
     var ret = '';
     for (var i = 0; i < C.RETELL_COUNT; i++) {
@@ -2178,9 +3433,10 @@ var View = (function () {
       '<p><b>Сюжет</b> («как это рассказывают или организуют»): последовательность и связь описания событий, обычно с причинно-следственными переходами и акцентами. Отвечает на вопрос «как и почему это подано именно так?».</p>' +
       '<p><b>Суть</b> («в чем главный смысл, конфликт или проблема»): смысловое ядро, главный конфликт, интересы сторон, ключевая проблема и критерий, по которому ситуация будет оценена. Часто формируется одной фразой: «это спор о...», «это история про...», «центральный вопрос: ...».</p>' +
       '</div></details>' +
-      field('Фабула', '', '<textarea rows="4" data-field="step1.fabula" placeholder="Кто что сделал и когда">' + U.esc(s1.fabula) + '</textarea>') +
-      field('Сюжет', '', '<textarea rows="4" data-field="step1.plot" placeholder="Как и почему это подано именно так">' + U.esc(s1.plot) + '</textarea>') +
-      field('Суть', '', '<textarea rows="3" data-field="step1.essence" placeholder="Это спор о...">' + U.esc(s1.essence) + '</textarea>') +
+      (express ? '' :
+        field('Фабула', '', '<textarea rows="4" data-field="step1.fabula" placeholder="Кто что сделал и когда">' + U.esc(s1.fabula) + '</textarea>') +
+        field('Сюжет', '', '<textarea rows="4" data-field="step1.plot" placeholder="Как и почему это подано именно так">' + U.esc(s1.plot) + '</textarea>')) +
+      field('Суть', '', '<textarea rows="3" data-field="step1.essence" placeholder="Это спор о...">' + U.esc(s1.essence) + '</textarea>', 'step1.essence') +
       '<div class="sep"></div>' +
       '<h3 style="margin-bottom:4px">Пересказ в трех предложениях</h3>' +
       '<div class="hint">По ' + C.RETELL_MAX + ' символов на предложение.</div>' +
@@ -2294,8 +3550,9 @@ var View = (function () {
         '<button class="btn btn-ghost btn-icon" data-act="del-phrase" data-i="' + i + '" title="Удалить фразу" aria-label="Удалить фразу">' + Icons('trash') + '</button>' +
         '</div>' +
         (src.missing[p.id] ? '<div class="asm-warn">' + Icons('alert', 15) + 'Этого куска в тексте ситуации нет: текст правили после разбора</div>' : '') +
-        '<div class="field" style="margin-top:12px"><span class="label">Зачем эта фраза в тексте</span>' +
-        '<textarea rows="2" data-field="' + base + '.purpose" placeholder="Смысл и причина существования фразы">' + U.esc(p.purpose) + '</textarea></div>' +
+        (Express.on() ? '' :
+          '<div class="field" style="margin-top:12px"><span class="label">Зачем эта фраза в тексте</span>' +
+          '<textarea rows="2" data-field="' + base + '.purpose" placeholder="Смысл и причина существования фразы">' + U.esc(p.purpose) + '</textarea></div>') +
         '<div class="label">Трактовки</div>' +
         '<div class="hint">Одна и та же фраза в разных слоях читается по-разному. У каждой трактовки свой слой.</div>' +
         (readings || '<div class="muted" style="margin-bottom:8px">Ни одной трактовки. Их полезно иметь хотя бы две.</div>') +
@@ -2477,8 +3734,9 @@ var View = (function () {
       '</div>' +
       '<div class="one-q">' + U.esc(p.quote || 'фраза без цитаты') + '</div>' +
       (p.purpose ? '' : '<div class="hint" style="margin-top:8px">Зачем эта фраза в тексте, стоит записать: это половина смысла разбора.</div>') +
-      '<div class="field" style="margin-top:10px"><span class="label">Зачем эта фраза в тексте</span>' +
-      '<textarea rows="2" data-field="' + base + '.purpose" placeholder="Смысл и причина существования фразы">' + U.esc(p.purpose) + '</textarea></div>' +
+      (Express.on() ? '' :
+        '<div class="field" style="margin-top:10px"><span class="label">Зачем эта фраза в тексте</span>' +
+        '<textarea rows="2" data-field="' + base + '.purpose" placeholder="Смысл и причина существования фразы">' + U.esc(p.purpose) + '</textarea></div>') +
       '<div class="muted" style="margin:0 0 10px">Пройдено слоев по этой фразе: ' + done + ' из ' + nLayers + '.</div>' +
       blocks;
   }
@@ -2512,7 +3770,7 @@ var View = (function () {
         '</button></td>' + cells + '</tr>';
     }).join('');
 
-    var notes = C.LAYERS.map(function (l) {
+    var notes = Express.on() ? '' : C.LAYERS.map(function (l) {
       return '<div class="field">' +
         '<details class="det"><summary>' + U.esc(l.name) + '</summary><div class="det-b">' + U.esc(l.about) + '</div></details>' +
         '<textarea rows="2" data-field="step2.layerNotes.' + l.id + '" placeholder="Что в этой ситуации относится к слою">' +
@@ -2547,7 +3805,9 @@ var View = (function () {
 
     return (role.interest ? '<div class="det-b" style="padding:0 0 12px"><b>Интересы роли:</b> ' + U.esc(role.interest) + '</div>' : '') +
       field('Как эта роль выглядит положительным героем', '',
-        '<textarea rows="5" data-field="step3.byRole.' + role.id + '.heroVersion" placeholder="Положительный герой в этой роли">' + U.esc(d.heroVersion) + '</textarea>') +
+        '<textarea rows="5" data-field="step3.byRole.' + role.id + '.heroVersion" placeholder="Положительный герой в этой роли">' + U.esc(d.heroVersion) + '</textarea>',
+        'step3.byRole.' + role.id + '.heroVersion') +
+      copyFrom(sit, role.id, 'hero') +
       '<div class="sep"></div>' +
       '<h3 style="margin-bottom:4px">Вводные</h3>' +
       '<div class="hint">Минимальные, необходимые и достаточные. Вводная без обеих отметок помечается как подозрительная.</div>' +
@@ -2555,19 +3815,652 @@ var View = (function () {
       '<div class="row"><button class="btn" data-act="add-asm">' + Icons('plus') + 'Добавить вводную</button></div>';
   }
 
+  /* ---------------- шаг 9: стратегия связанных раундов ---------------- */
+
+  function roundRibbon(sit, active) {
+    var rs = sit.step9.rounds;
+    var parts = [];
+    rs.forEach(function (r, i) {
+      var goal = String(r.goal || '').trim();
+      parts.push('<button class="rnd' + (i === active ? ' on' : '') + '" data-act="round" data-i="' + i + '">' +
+        '<div class="rn">Раунд ' + r.n + '</div>' +
+        '<div class="rg' + (goal ? '' : ' no') + '">' + U.esc(goal ? U.cut(goal, 60) + (U.len(goal) > 60 ? '...' : '') : 'цель не записана') + '</div>' +
+        '</button>');
+      if (i < rs.length - 1) {
+        var linked = Schema.roundLinked(rs, i);
+        parts.push('<div class="link' + (linked ? '' : ' brk') + '" title="' +
+          (linked ? 'связка есть' : 'связки нет: лента рвется') + '">' +
+          Icons(linked ? 'arrow' : 'broken', 22) + '</div>');
+      }
+    });
+    return '<div class="ribbon">' + parts.join('') + '</div>';
+  }
+
+  function step9Head(sit) {
+    var p = Schema.step9Progress(sit);
+    return '<span class="muted" data-r-done="1">раундов ' + p.total + ', с целью ' + p.goals +
+      (p.breaks ? ', разрывов ленты ' + p.breaks : ', лента цела') + '</span>';
+  }
+
+  function step9Body(sit, view, settings) {
+    Schema.ensureStep9(sit, settings.roundsCount);
+    var rs = sit.step9.rounds;
+    var i = Math.min(Math.max(Number(view.round) || 0, 0), rs.length - 1);
+    var r = rs[i];
+    var last = i === rs.length - 1;
+    var roles = Roles.sorted(sit.roles);
+    var opts = '<option value="">роль не выбрана</option>' + roles.map(function (x) {
+      return '<option value="' + x.id + '"' + (r.myRoleId === x.id ? ' selected' : '') + '>' + U.esc(Roles.nameOf(x)) + '</option>';
+    }).join('');
+    var cnt = [];
+    for (var k = C.ROUNDS_MIN; k <= C.ROUNDS_MAX; k++) {
+      cnt.push('<option value="' + k + '"' + (rs.length === k ? ' selected' : '') + '>' + k + '</option>');
+    }
+
+    return '<div class="hint">Раунды связаны: то, чем кончился один, становится входом следующего. Раунд без связки рвет ленту - это и есть отсутствие стратегии, а не мелкая недоделка.</div>' +
+      field('Общая стратегия', 'Куда ведет вся цепочка раундов.',
+        '<textarea rows="3" data-field="step9.strategy" placeholder="Чего добиваюсь всей цепочкой">' + U.esc(sit.step9.strategy) + '</textarea>', 'step9.strategy') +
+      '<div class="row" style="margin:0 0 8px">' +
+      '<span class="label" style="margin:0">Раундов</span>' +
+      '<select class="lsel" data-rcount="1" aria-label="Число раундов">' + cnt.join('') + '</select>' +
+      '<span class="spacer"></span><span id="s9-head">' + step9Head(sit) + '</span>' +
+      '</div>' +
+      roundRibbon(sit, i) +
+      '<div class="cellbox">' +
+      '<h4>Раунд ' + r.n + ' из ' + rs.length + '</h4>' +
+      field('Моя роль в этом раунде', 'Роли назначает соперник, но готовиться надо к той, которую ждете.',
+        '<select class="lsel" data-rrole="' + i + '" aria-label="Роль в раунде">' + opts + '</select>') +
+      field('Цель раунда', 'Чего добиваюсь именно здесь.',
+        '<textarea rows="3" data-field="step9.rounds.' + i + '.goal" placeholder="Цель этого раунда">' + U.esc(r.goal) + '</textarea>', 'step9.rounds.' + i + '.goal') +
+      (last
+        ? '<div class="det-b" style="padding:0 0 12px">Это последний раунд: связку с ним никто не спрашивает, дальше ничего нет.</div>'
+        : field('Связка со следующим раундом', 'С чем я выхожу из этого раунда и вхожу в следующий.',
+          '<textarea rows="3" data-field="step9.rounds.' + i + '.carryOver" placeholder="Что переношу дальше">' + U.esc(r.carryOver) + '</textarea>')) +
+      (Express.on() ? '' :
+        field('Что если не выйдет', 'Запасной ход, когда раунд пошел не так.',
+          '<textarea rows="3" data-field="step9.rounds.' + i + '.ifFails" placeholder="Запасной ход">' + U.esc(r.ifFails) + '</textarea>')) +
+      '</div>';
+  }
+
+  /* ---------------- вопросы секунданта ---------------- */
+
+  function questionsBody(sit) {
+    var list = sit.secondQuestions;
+    var open = Schema.openQuestions(sit).length;
+    var body = list.map(function (q, i) {
+      var has = String(q.text || '').trim();
+      var cls = !has ? '' : (q.confident ? ' ok' : ' open');
+      return '<div class="qst' + cls + '" data-q="' + q.id + '">' +
+        '<div class="csq-h">' +
+        '<span class="chip">' + (q.author === 'second' ? 'от секунданта' : 'свой') + '</span>' +
+        '<span class="spacer"></span>' +
+        '<label class="chk' + (q.confident ? ' on' : '') + '">' +
+        '<input type="checkbox" data-check="confident" data-i="' + i + '"' + (q.confident ? ' checked' : '') + '>отвечаю уверенно</label>' +
+        '<button class="btn btn-ghost btn-icon" data-act="del-q" data-id="' + q.id +
+        '" title="Удалить" aria-label="Удалить">' + Icons('trash') + '</button>' +
+        '</div>' +
+        '<textarea rows="2" data-field="secondQuestions.' + i + '.text" placeholder="Вопрос">' + U.esc(q.text) + '</textarea>' +
+        '<div class="thr-sub">Ответ</div>' +
+        '<textarea rows="2" data-field="secondQuestions.' + i + '.answer" placeholder="Что отвечаю">' + U.esc(q.answer) + '</textarea>' +
+        '</div>';
+    }).join('');
+
+    return '<div class="hint">Вопросы записываете вы: свои при самопроверке и те, что задал секундант при разборе. Приложение не подсказывает вопросов и не предлагает шаблонов: универсальный вопрос либо повторяет шаг 1, либо бесполезен.</div>' +
+      '<div class="row" style="margin:0 0 12px"><span class="muted" data-q-done="1">вопросов ' + list.length +
+      ', без уверенного ответа ' + open + '</span></div>' +
+      (body || '<div class="muted" style="margin:0 0 12px">Вопросов пока нет.</div>') +
+      '<div class="row">' +
+      '<button class="btn" data-act="add-q" data-author="self">' + Icons('plus') + 'Свой вопрос</button>' +
+      '<button class="btn" data-act="add-q" data-author="second">' + Icons('plus') + 'Вопрос секунданта</button>' +
+      '</div>';
+  }
+
+  /* ---------------- комментарии к полям ---------------- */
+
+  function commentsBody(sit) {
+    var groups = Comments.grouped(sit);
+    var open = Comments.open(sit).length;
+    var body = groups.map(function (g) {
+      var items = g.items.map(function (c) {
+        var i = sit.comments.indexOf(c);
+        return '<div class="cmt' + (c.resolved ? ' res' : '') + '" data-cmt="' + c.id + '">' +
+          '<div class="csq-h">' +
+          '<span class="chip">' + (c.author === 'second' ? 'от секунданта' : 'свой') + '</span>' +
+          '<span class="muted">' + U.dateShort(c.ts) + '</span>' +
+          '<span class="spacer"></span>' +
+          '<label class="chk' + (c.resolved ? ' on' : '') + '">' +
+          '<input type="checkbox" data-check="resolved" data-i="' + i + '"' + (c.resolved ? ' checked' : '') + '>снято</label>' +
+          '<button class="btn btn-ghost btn-icon" data-act="del-cmt" data-id="' + c.id +
+          '" title="Удалить" aria-label="Удалить">' + Icons('trash') + '</button>' +
+          '</div>' +
+          '<textarea rows="2" data-field="comments.' + i + '.text" placeholder="Возражение">' + U.esc(c.text) + '</textarea>' +
+          '</div>';
+      }).join('');
+      return '<div class="cmt-g"><div class="h"><b>' + U.esc(g.place.label) + '</b>' +
+        '<button class="btn btn-sm" data-act="go-step" data-sec="' + g.place.sec + '">к полю</button></div>' +
+        items + '</div>';
+    }).join('');
+
+    return '<div class="hint">Секундант не правит ваши формулировки, он их оспаривает. Возражение висит на конкретном поле, а не на ситуации вообще. В приложение секундант не заходит: записываете вы, с его слов.</div>' +
+      '<div class="row" style="margin:0 0 12px"><span class="muted" data-c-open="1">возражений ' +
+      (sit.comments || []).length + ', открытых ' + open + '</span></div>' +
+      (body || '<div class="muted" style="margin:0 0 12px">Возражений пока нет. Точка стоит рядом с названием поля: нажмите ее там, где секундант возразил.</div>');
+  }
+
+  /* ---------------- шаг 5: судья, решение и последствия ---------------- */
+
+  function csqCard(sit, nd, path, i, nodes) {
+    var coords = C.COORDS.map(function (c) {
+      var on = nd.coord.indexOf(c.id) >= 0;
+      return '<button class="csq-c' + (on ? ' on' : '') + '" data-act="coord" data-id="' + nd.id +
+        '" data-coord="' + c.id + '" title="Координата: ' + U.esc(c.name) + '" aria-pressed="' + (on ? 'true' : 'false') +
+        '">' + c.letter + '</button>';
+    }).join('');
+    var hor = C.HORIZONS.map(function (h) {
+      return '<option value="' + h.id + '"' + (nd.horizon === h.id ? ' selected' : '') + '>' + U.esc(h.name) + '</option>';
+    }).join('');
+    var sign = nd.sign === 'plus' ? 'plus' : 'minus';
+    var signShort = '';
+    C.SIGNS.forEach(function (x) { if (x.id === sign) signShort = x.short; });
+    var canAdd = Schema.canBranch(nodes, nd);
+    return '<div class="csq ' + sign + '" data-csq="' + nd.id + '">' +
+      '<div class="csq-h">' +
+      '<button class="csq-s ' + sign + '" data-act="csq-sign" data-id="' + nd.id +
+      '" title="Знак: ' + (sign === 'plus' ? 'положительное' : 'отрицательное') + '">' + signShort + '</button>' +
+      '<select class="lsel" data-chor="' + nd.id + '" aria-label="Горизонт">' + hor + '</select>' +
+      coords +
+      '<span class="spacer"></span>' +
+      (canAdd ? '<button class="btn btn-sm" data-act="csq-add" data-id="' + nd.id + '">Следствие</button>' : '') +
+      '<button class="btn btn-ghost btn-icon" data-act="csq-del" data-id="' + nd.id +
+      '" title="Удалить" aria-label="Удалить">' + Icons('trash') + '</button>' +
+      '</div>' +
+      '<textarea rows="2" data-field="' + path + '.' + i + '.text" placeholder="Что из этого следует">' + U.esc(nd.text) + '</textarea>' +
+      '</div>';
+  }
+
+  /* Список с отступами: узел, под ним его следствия со сдвигом. */
+  function csqBranch(sit, nodes, parentId, indexOf) {
+    var kids = Schema.childrenOf(nodes, parentId);
+    if (!kids.length) return '';
+    var body = kids.map(function (nd) {
+      return csqCard(sit, nd, 'step5.consequences.nodes', indexOf[nd.id], nodes) +
+        csqBranch(sit, nodes, nd.id, indexOf);
+    }).join('');
+    return parentId ? '<div class="tree-lvl">' + body + '</div>' : body;
+  }
+
+  /* Компактная схема. Рисуется тем же деревом, что и список: цвет
+     означает знак, буквы справа - координаты, под текстом горизонт. */
+  function csqScheme(sit, nodes) {
+    var W = 250, H = 46, GAP_X = 26, GAP_Y = 14, PAD = 12;
+    var rows = [];
+    var walk = function (parentId, depth) {
+      Schema.childrenOf(nodes, parentId).forEach(function (nd) {
+        rows.push({ node: nd, depth: depth });
+        walk(nd.id, depth + 1);
+      });
+    };
+    walk(null, 1);
+    if (!rows.length) return '';
+    var maxDepth = rows.reduce(function (a, r) { return Math.max(a, r.depth); }, 0);
+    var width = PAD * 2 + (maxDepth + 1) * (W + GAP_X) - GAP_X;
+    var height = PAD * 2 + (rows.length + 1) * (H + GAP_Y) - GAP_Y;
+    var yOf = {}, i;
+    var box = function (x, y, w, h, cls, title, sub, tags) {
+      return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="8" class="' + cls + '"/>' +
+        '<text x="' + (x + 10) + '" y="' + (y + 19) + '" class="sch-t">' +
+        U.esc(U.cut(title, 34)) + (U.len(title) > 34 ? '&#8230;' : '') + '</text>' +
+        '<text x="' + (x + 10) + '" y="' + (y + 35) + '" class="sch-s">' + U.esc(sub) + '</text>' +
+        (tags ? '<text x="' + (x + w - 10) + '" y="' + (y + 35) + '" class="sch-g" text-anchor="end">' + U.esc(tags) + '</text>' : '');
+    };
+    var out = '';
+    var rootY = PAD;
+    out += box(PAD, rootY, W, H, 'sch-root', String(sit.step5.decision || '').trim() || 'решение не записано', 'решение', '');
+    rows.forEach(function (r, k) {
+      var x = PAD + r.depth * (W + GAP_X);
+      var y = PAD + (k + 1) * (H + GAP_Y);
+      yOf[r.node.id] = { x: x, y: y };
+      var px = r.node.parent ? yOf[r.node.parent].x + W : PAD + W;
+      var py = r.node.parent ? yOf[r.node.parent].y + H / 2 : rootY + H / 2;
+      out += '<path d="M' + px + ' ' + py + ' C' + (px + GAP_X / 2) + ' ' + py + ',' +
+        (x - GAP_X / 2) + ' ' + (y + H / 2) + ',' + x + ' ' + (y + H / 2) + '" class="sch-l"/>';
+      var tags = r.node.coord.map(function (c) {
+        var L = '';
+        C.COORDS.forEach(function (z) { if (z.id === c) L = z.letter; });
+        return L;
+      }).join(' ');
+      var hn = '';
+      C.HORIZONS.forEach(function (h) { if (h.id === r.node.horizon) hn = h.name; });
+      out += box(x, y, W, H, 'sch-b ' + (r.node.sign === 'plus' ? 'p' : 'm'),
+        String(r.node.text || '').trim() || 'без текста', hn, tags);
+    });
+    return '<div class="scheme"><svg viewBox="0 0 ' + width + ' ' + height + '" width="' + width + '" height="' + height +
+      '" role="img" aria-label="Схема последствий">' + out + '</svg></div>';
+  }
+
+  function step5Head(sit) {
+    var st = Schema.treeStats(sit);
+    return '<span class="muted" data-n-done="1">последствий ' + st.filled + ' из ' + C.TREE_NODES_GREEN +
+      ' нужных' + (st.filled ? ', плюс ' + st.plus + ', минус ' + st.minus +
+        ', близких ' + st.near + ', отдаленных ' + st.far : '') + '</span>';
+  }
+
+  function step5Body(sit, view) {
+    var s5 = Schema.ensureStep5(sit);
+    var nodes = s5.consequences.nodes;
+    var indexOf = {};
+    nodes.forEach(function (nd, i) { indexOf[nd.id] = i; });
+    var top = Schema.childrenOf(nodes, null);
+    var canAddTop = top.length < C.TREE_KIDS_MAX;
+    var pm = s5.consequences.premortem.map(function (m, i) {
+      return '<div class="pm" data-pm="' + m.id + '">' +
+        '<div class="csq-h"><b style="font-size:14px">Решение провалилось, потому что</b><span class="spacer"></span>' +
+        '<button class="btn btn-ghost btn-icon" data-act="del-pm" data-id="' + m.id +
+        '" title="Удалить" aria-label="Удалить">' + Icons('trash') + '</button></div>' +
+        '<textarea rows="2" data-field="step5.consequences.premortem.' + i + '.text" placeholder="Почему оно провалилось">' + U.esc(m.text) + '</textarea>' +
+        (Express.on() ? '' :
+          '<div class="thr-sub">Что делаю заранее</div>' +
+          '<textarea rows="2" data-field="step5.consequences.premortem.' + i + '.counter" placeholder="Упреждающее действие">' + U.esc(m.counter) + '</textarea>') +
+        '</div>';
+    }).join('');
+
+    return '<div class="hint">Мировой судья это не участник спора, а тот, кто смотрит со стороны и не заинтересован в исходе. Сначала его позиция, потом решение, потом то, что из решения следует.</div>' +
+      (Express.on() ? '' :
+        field('Что сказал бы мировой судья', 'Взгляд со стороны, без вашей заинтересованности.',
+          '<textarea rows="4" data-field="step5.judgeStatement" placeholder="Позиция мирового судьи">' + U.esc(s5.judgeStatement) + '</textarea>')) +
+      field('Критерий', 'По чему видно, что решение правильное.',
+        '<textarea rows="3" data-field="step5.criteria" placeholder="Как я пойму, что оно верное">' + U.esc(s5.criteria) + '</textarea>', 'step5.criteria') +
+      field('Решение', 'Из него растет дерево последствий.',
+        '<textarea rows="3" data-field="step5.decision" placeholder="Что я решаю">' + U.esc(s5.decision) + '</textarea>', 'step5.decision') +
+      '<div class="sep"></div>' +
+      '<div class="row" style="margin:0 0 8px"><h3 style="margin:0">Последствия</h3>' +
+      '<span class="spacer"></span><span id="s5-head">' + step5Head(sit) + '</span></div>' +
+      '<div class="hint">Обозначения те же, что в «А что потом?»: координаты Л - люди, В - власть, Д - дело; горизонт близкий или отдаленный; знак плюс или минус. Ветвление до трех уровней, до четырех следствий на узел.</div>' +
+      '<div class="tabs">' +
+      '<button class="tab' + (view.s5view !== 'scheme' ? ' on' : '') + '" data-act="s5view" data-tab="list">Список</button>' +
+      '<button class="tab' + (view.s5view === 'scheme' ? ' on' : '') + '" data-act="s5view" data-tab="scheme">Схема</button>' +
+      '</div>' +
+      '<div class="csq-root"><b>Решение:</b> ' +
+      (String(s5.decision || '').trim() ? U.esc(s5.decision) : '<span class="muted">не записано, поле выше</span>') + '</div>' +
+      (view.s5view === 'scheme'
+        ? (csqScheme(sit, nodes) || '<div class="empty">Последствий пока нет.</div>')
+        : (csqBranch(sit, nodes, null, indexOf) || '<div class="muted" style="margin:0 0 12px">Последствий пока нет.</div>')) +
+      (view.s5view !== 'scheme' && canAddTop
+        ? '<div class="row"><button class="btn" data-act="csq-add" data-id="">' + Icons('plus') + 'Прямое следствие</button></div>'
+        : '') +
+      '<div class="sep"></div>' +
+      '<h3 style="margin-bottom:4px">Пре-мортем</h3>' +
+      '<div class="hint">Представьте, что решение уже провалилось, и объясните почему. Рядом - что можно сделать заранее.</div>' +
+      (pm || '<div class="muted" style="margin:0 0 12px">Здесь пока пусто.</div>') +
+      '<div class="row"><button class="btn" data-act="add-pm">' + Icons('plus') + 'Причину провала</button></div>';
+  }
+
+  /* ---------------- шаг 4: нежелательные построения ---------------- */
+
+  /* Отметка о том, чем закрыта угроза. Считается на лету, поэтому
+     обновляется отдельно от карточки: поле с курсором не перерисовывается. */
+  function threatStatus(sit, roleId, t) {
+    if (!String(t.text || '').trim()) return '';
+    var closed = Schema.threatClosedBy(sit, roleId, t.id);
+    if (closed.block) return '<span class="thr-st">блок есть</span>';
+    if (closed.formula) return '<span class="thr-st">закрыта формулой шага 7</span>';
+    return '<span class="thr-st no">блока нет</span>';
+  }
+
+  function threatCard(sit, roleId, t, path, i, level) {
+    return '<div class="thr' + (level === 'common' ? ' thr-c' : '') + '" data-thr="' + t.id + '">' +
+      '<div class="thr-h">' +
+      (level === 'common' ? '<span class="chip">общая</span>' : '') +
+      '<span data-thr-st="' + t.id + '">' + threatStatus(sit, roleId, t) + '</span>' +
+      '<span class="spacer"></span>' +
+      '<label class="chk' + (t.preemptive ? ' on' : '') + '">' +
+      '<input type="checkbox" data-check="preempt" data-level="' + level + '" data-i="' + i + '"' +
+      (t.preemptive ? ' checked' : '') + '>на упреждение</label>' +
+      '<button class="btn btn-ghost btn-icon" data-act="del-threat" data-level="' + level + '" data-i="' + i +
+      '" title="Удалить" aria-label="Удалить">' + Icons('trash') + '</button>' +
+      '</div>' +
+      '<textarea rows="2" data-field="' + path + '.' + i + '.text" placeholder="Нежелательное построение соперника">' + U.esc(t.text) + '</textarea>' +
+      (Express.on() ? '' :
+        '<div class="thr-sub">Чем опасно</div>' +
+        '<textarea rows="2" data-field="' + path + '.' + i + '.why" placeholder="Что оно со мной делает">' + U.esc(t.why) + '</textarea>') +
+      '<div class="thr-sub">Блок</div>' +
+      '<textarea rows="2" data-field="' + path + '.' + i + '.block" placeholder="Чем отвечаю">' + U.esc(t.block) + '</textarea>' +
+      '</div>';
+  }
+
+  function step4Head(sit, roleId) {
+    var all = Schema.threatsOf(sit, roleId);
+    var closed = Schema.threatsClosedCount(sit, roleId);
+    var pre = Schema.preemptiveOf(sit, roleId).length;
+    return '<span class="muted" data-t-done="1">угроз ' + all.length + ', с блоком ' + closed +
+      ' из ' + C.THREATS_PER_ROLE + ' нужных' + (pre ? ', на упреждение ' + pre : '') + '</span>';
+  }
+
+  function step4Body(sit, role) {
+    var d = Schema.step4ForRole(sit, role.id);
+    var s4 = sit.step4;
+    var common = s4.common.map(function (t, i) {
+      return threatCard(sit, role.id, t, 'step4.common', i, 'common');
+    }).join('');
+    var own = d.threats.map(function (t, i) {
+      return threatCard(sit, role.id, t, 'step4.byRole.' + role.id + '.threats', i, role.id);
+    }).join('');
+
+    return '<div class="hint">Что соперник может построить так, что вам станет неудобно, и чем вы на это отвечаете. Общие построения опасны в любой роли; они видны из каждой роли и правятся только здесь.</div>' +
+      '<div class="row" id="s4-head" style="margin:0 0 14px">' + step4Head(sit, role.id) + '</div>' +
+      '<h3 style="margin-bottom:4px">Общие построения</h3>' +
+      '<div class="hint">Опасны независимо от того, какую роль вам дадут.</div>' +
+      (common || '<div class="muted" style="margin:0 0 12px">Здесь пока пусто.</div>') +
+      '<div class="row"><button class="btn" data-act="add-threat" data-level="common">' + Icons('plus') + 'Построение</button></div>' +
+      '<div class="sep"></div>' +
+      '<h3 style="margin-bottom:4px">Построения против роли «' + U.esc(Roles.nameOf(role)) + '»</h3>' +
+      '<div class="hint">То, что опасно именно в этой роли.</div>' +
+      (own || '<div class="muted" style="margin:0 0 12px">Здесь пока пусто.</div>') +
+      '<div class="row"><button class="btn" data-act="add-threat" data-level="' + role.id + '">' + Icons('plus') + 'Построение</button></div>';
+  }
+
+  /* ---------------- шаг 6: ролевые соотношения ---------------- */
+
+  function step6Matrix(sit, view) {
+    var roles = Roles.sorted(sit.roles);
+    var head = '<tr><th class="qcell">я в роли &rarr; соперник &darr;</th>' +
+      roles.map(function (r) { return '<th title="' + U.esc(Roles.nameOf(r)) + '">' + U.esc(r.short || Roles.nameOf(r)) + '</th>'; }).join('') +
+      '</tr>';
+    var rows = roles.map(function (mine) {
+      var tds = roles.map(function (theirs) {
+        if (mine.id === theirs.id) return '<td class="diag" aria-hidden="true">&mdash;</td>';
+        var c = (sit.step6.cells || {})[Schema.cellKey(mine.id, theirs.id)] || null;
+        var st = (c && c.state) || 'empty';
+        var mark = '';
+        C.CELL_STATES.forEach(function (x) { if (x.id === st) mark = x.short; });
+        var sel = (view.s6mine === mine.id && view.s6theirs === theirs.id) ? ' sel' : '';
+        return '<td class="cell st-' + st + sel + '" data-act="cell" data-mine="' + mine.id + '" data-theirs="' + theirs.id +
+          '" role="button" tabindex="0" title="я ' + U.esc(Roles.nameOf(mine)) + ', соперник ' + U.esc(Roles.nameOf(theirs)) + '">' +
+          (mark || '&nbsp;') + '</td>';
+      }).join('');
+      return '<tr><th class="qcell" style="text-align:left">' + U.esc(Roles.nameOf(mine)) + '</th>' + tds + '</tr>';
+    }).join('');
+    return '<div class="mx-wrap"><table class="mx">' + head + rows + '</table></div>';
+  }
+
+  function step6Cell(sit, view) {
+    var mine = null, theirs = null;
+    sit.roles.forEach(function (r) {
+      if (r.id === view.s6mine) mine = r;
+      if (r.id === view.s6theirs) theirs = r;
+    });
+    if (!mine || !theirs || mine.id === theirs.id) return '';
+    var c = Schema.cellOf(sit, mine.id, theirs.id);
+    var key = Schema.cellKey(mine.id, theirs.id);
+    var help = String(Schema.step6ForRole(sit, mine.id).helpAny || '').trim();
+    var btns = C.CELL_STATES.map(function (x) {
+      return '<button class="chip' + (c.state === x.id ? ' on' : '') + '" data-act="cell-state" data-id="' + x.id +
+        '" title="' + U.esc(x.about) + '">' + U.esc(x.name) + '</button>';
+    }).join('');
+    return '<div class="cellbox">' +
+      '<h4>Я в роли «' + U.esc(Roles.nameOf(mine)) + '», соперник в роли «' + U.esc(Roles.nameOf(theirs)) + '»</h4>' +
+      '<div class="chips" style="margin-bottom:10px">' + btns + '</div>' +
+      (help ? '<div class="det-b" style="padding:0 0 10px"><b>Общий ответ этой роли:</b> ' + U.esc(help) + '</div>'
+        : '<div class="det-b" style="padding:0 0 10px">Общий ответ этой роли не заполнен. Клетки уточняют его, а не заменяют.</div>') +
+      (Express.on() ? '' :
+        field('Чем это соотношение особенное', 'Заполняется там, где пара дает что-то, чего нет в общем ответе.',
+          '<textarea rows="3" data-field="step6.cells.' + key + '.notes" placeholder="Что тут не как обычно">' + U.esc(c.notes) + '</textarea>') +
+        field('Ответ именно для этой пары', 'Перекрывает общий ответ роли. Пусто - работает общий.',
+          '<textarea rows="3" data-field="step6.cells.' + key + '.helpOverride" placeholder="Как вытаскиваю в герои именно эту роль">' + U.esc(c.helpOverride) + '</textarea>')) +
+      '</div>';
+  }
+
+  function step6Head(sit) {
+    var p = Schema.step6Progress(sit);
+    return '<span class="muted" data-c-done="1">разобрано ' + p.done + ' из ' + p.total + '</span>';
+  }
+
+  function step6Body(sit, role, view) {
+    var d = Schema.step6ForRole(sit, role.id);
+    var hero = String(Schema.step3ForRole(sit, role.id).heroVersion || '').trim();
+    return '<div class="hint">Сначала общий ответ по роли: как вы из нее вытаскиваете в положительные герои любого соперника. Это девяносто процентов шага. Матрица потом уточняет остальное.</div>' +
+      (hero
+        ? '<div class="det-b" style="padding:0 0 12px"><b>Положительный герой этой роли:</b> ' + U.esc(hero) + '</div>'
+        : '<div class="det-b" style="padding:0 0 12px">Положительный герой этой роли в шаге 3 не описан. Помощь сопернику оказывается из этой позиции, а не из абстрактной роли.</div>') +
+      field('Как я в этой роли помогаю любому сопернику стать положительным героем', '',
+        '<textarea rows="4" data-field="step6.byRole.' + role.id + '.helpAny" placeholder="Общий ответ этой роли">' + U.esc(d.helpAny) + '</textarea>',
+        'step6.byRole.' + role.id + '.helpAny') +
+      copyFrom(sit, role.id, 'help') +
+      '<div class="sep"></div>' +
+      '<div class="row" style="margin:0 0 10px"><h3 style="margin:0">Матрица соотношений</h3>' +
+      '<span class="spacer"></span><span id="s6-head">' + step6Head(sit) + '</span></div>' +
+      '<div class="hint">Строка - моя роль, столбец - роль соперника. Диагональ выключена. «Как обычно» тоже считается разобранным: большинство клеток закрывается одним нажатием.</div>' +
+      step6Matrix(sit, view) +
+      step6Cell(sit, view);
+  }
+
+  /* ---------------- шаг 7: формулы ---------------- */
+
+  function typeSelect(attr, path, value) {
+    var opts = C.FORMULA_TYPES.map(function (t) {
+      return '<option value="' + t.id + '"' + (t.id === value ? ' selected' : '') + '>' + U.esc(t.name) + '</option>';
+    }).join('');
+    return '<select class="lsel" ' + attr + '="' + path + '" aria-label="Тип формулы">' + opts + '</select>';
+  }
+
+  /* Блок ставится не вообще, а против конкретной вводной соперника:
+     раздел 5.8 ТЗ. Список угроз берется из шага 4 для текущей роли. */
+  function threatSelect(sit, roleId, path, value) {
+    var list = Schema.threatsOf(sit, roleId);
+    if (!list.length) return '<span class="fm-o">в шаге 4 угроз пока нет</span>';
+    var opts = '<option value="">против угрозы: не выбрано</option>' + list.map(function (x) {
+      return '<option value="' + x.threat.id + '"' + (x.threat.id === value ? ' selected' : '') + '>' +
+        (x.common ? 'общая: ' : '') + U.esc(U.cut(x.threat.text, 60)) + '</option>';
+    }).join('');
+    return '<select class="lsel" data-fthreat="' + path + '" aria-label="Против какой угрозы">' + opts + '</select>';
+  }
+
+  function formulaCard(sit, roleId, f, path, i, level) {
+    var text = String(f.text || '').trim();
+    return '<div class="fm" data-fm="' + f.id + '">' +
+      '<div class="fm-h">' +
+      typeSelect('data-ftype', path + '.' + i + '.type', f.type) +
+      (f.originId ? '<span class="fm-o">из копилки</span>' : '') +
+      '<span class="spacer"></span>' +
+      (text && !f.originId
+        ? '<button class="btn btn-sm" data-act="to-lib" data-level="' + level + '" data-i="' + i + '">В копилку</button>' : '') +
+      '<button class="btn btn-ghost btn-icon" data-act="del-formula" data-level="' + level + '" data-i="' + i +
+      '" title="Удалить формулу" aria-label="Удалить формулу">' + Icons('trash') + '</button>' +
+      '</div>' +
+      '<textarea rows="3" data-field="' + path + '.' + i + '.text" placeholder="Текст формулы">' + U.esc(f.text) + '</textarea>' +
+      (f.type === 'block'
+        ? '<div class="fm-h" style="margin:8px 0 0">' + threatSelect(sit, roleId, path + '.' + i + '.threatId', f.threatId) + '</div>'
+        : '') +
+      '</div>';
+  }
+
+  function step7Level(sit, roleId, list, path, level, title, hint) {
+    var body = (list || []).map(function (f, i) { return formulaCard(sit, roleId, f, path, i, level); }).join('');
+    return '<h3 style="margin-bottom:4px">' + U.esc(title) + '</h3>' +
+      '<div class="hint">' + U.esc(hint) + '</div>' +
+      (body || '<div class="muted" style="margin:0 0 12px">Здесь пока пусто.</div>') +
+      '<div class="row">' +
+      '<button class="btn" data-act="add-formula" data-level="' + level + '">' + Icons('plus') + 'Формулу</button>' +
+      '<button class="btn" data-act="from-lib" data-level="' + level + '">Взять из копилки</button>' +
+      '</div>';
+  }
+
+  /* Отметки закрытых типов. Считаются на лету, поэтому вынесены отдельно:
+     при наборе текста формулы перерисовывается только эта строка. */
+  function step7Head(sit, roleId) {
+    var have = Schema.formulaTypesOf(sit, roleId);
+    var chips = C.FORMULA_REQUIRED.map(function (id) {
+      var k = have[id] || 0;
+      return '<span class="chip' + (k ? ' on' : '') + '">' + U.esc(Library.typeName(id)) + (k > 1 ? ' &middot; ' + k : '') + '</span>';
+    }).join('');
+    var done = C.FORMULA_REQUIRED.filter(function (id) { return have[id]; }).length;
+    return '<div class="chips">' + chips + '</div><span class="spacer"></span>' +
+      '<span class="muted" data-f-done="1">типов закрыто ' + done + ' из ' + C.FORMULA_REQUIRED.length + '</span>';
+  }
+
+  function step7Body(sit, role) {
+    var d = Schema.step7ForRole(sit, role.id);
+
+    return '<div class="hint">Формула это заготовленный кусок речи. Общие работают из любой роли, остальные привязаны к роли; светофор считает сумму обоих уровней.</div>' +
+      '<div class="row" id="s7-head" style="margin:0 0 14px">' + step7Head(sit, role.id) + '</div>' +
+      step7Level(sit, role.id, sit.step7.common, 'step7.common', 'common', 'Общие формулы',
+        'Годятся из любой роли. Чаще всего общими оказываются объяснение и взывание к совести.') +
+      '<div class="sep"></div>' +
+      step7Level(sit, role.id, d.formulas, 'step7.byRole.' + role.id + '.formulas', role.id,
+        'Формулы роли «' + Roles.nameOf(role) + '»', 'Отказ и защитный блок обычно привязаны к роли.');
+  }
+
   function step8Body(sit, role) {
     var d = Schema.step8ForRole(sit, role.id);
-    return field('Первая фраза', 'Не длиннее ' + C.PHRASE_MAX + ' символов, это примерно ' + U.seconds(C.PHRASE_MAX) + ' секунд речи.',
-      textarea({ id: 'fp', path: 'step8.byRole.' + role.id + '.firstPhrase', value: d.firstPhrase, rows: 5, max: C.PHRASE_MAX, time: true, placeholder: 'С чего начинаю' })) +
-      field('Какие задать роли', '',
-        '<textarea rows="3" data-field="step8.byRole.' + role.id + '.roleAssignment" placeholder="Кем называю себя и соперника">' + U.esc(d.roleAssignment) + '</textarea>') +
-      field('Цель на раунд', '',
-        '<textarea rows="3" data-field="step8.byRole.' + role.id + '.roundGoal" placeholder="Чего добиваюсь в этом раунде">' + U.esc(d.roundGoal) + '</textarea>');
+    var hero = String(Schema.step3ForRole(sit, role.id).heroVersion || '').trim();
+    var pre = Schema.preemptiveOf(sit, role.id).length;
+    /* Порядок полей повторяет шаблон: сначала роли, потом цель, потом фраза.
+       Фраза вытекает из назначения ролей и цели, а не наоборот. */
+    return (hero
+      ? '<div class="det-b" style="padding:0 0 12px"><b>Положительный герой этой роли:</b> ' + U.esc(hero) + '</div>'
+      : '<div class="det-b" style="padding:0 0 12px">Положительный герой этой роли в шаге 3 не описан. Первая фраза выводится из него, а не наоборот.</div>') +
+      (Express.on() ? '' :
+        field('Какие задать роли', 'Кем называю себя и кем соперника.',
+          '<textarea rows="3" data-field="step8.byRole.' + role.id + '.roleAssignment" placeholder="Кем называю себя и соперника">' + U.esc(d.roleAssignment) + '</textarea>') +
+        copyFrom(sit, role.id, 'assign')) +
+      field('Цель на раунд', 'Чего добиваюсь именно в этом раунде.',
+        '<textarea rows="3" data-field="step8.byRole.' + role.id + '.roundGoal" placeholder="Чего добиваюсь в этом раунде">' + U.esc(d.roundGoal) + '</textarea>',
+        'step8.byRole.' + role.id + '.roundGoal') +
+      copyFrom(sit, role.id, 'goal') +
+      field('Первая фраза', 'Вытекает из ролей и цели. Не длиннее ' + C.PHRASE_MAX + ' символов, это примерно ' + U.seconds(C.PHRASE_MAX) + ' секунд речи.',
+        textarea({ id: 'fp', path: 'step8.byRole.' + role.id + '.firstPhrase', value: d.firstPhrase, rows: 5, max: C.PHRASE_MAX, time: true, placeholder: 'С чего начинаю' }),
+        'step8.byRole.' + role.id + '.firstPhrase') +
+      copyFrom(sit, role.id, 'first') +
+      '<div class="row"><button class="btn" data-act="preempt-list">' + Icons('doc', 18) + 'Блоки на упреждение' +
+      (pre ? ' <span class="muted">' + pre + '</span>' : '') + '</button></div>';
+  }
+
+  /* ---------------- экран 4: «Готов?» ---------------- */
+
+  function screenReady(root, state, view) {
+    var sit = Storage.getSituation(view.sitId);
+    if (!sit) return screenList(root, state);
+    var sum = Traffic.summary(sit);
+    var rows = sum.points.map(function (p) {
+      var frac = (p.total !== null && p.total > 0) ? (' &middot; ролей ' + p.done + ' из ' + p.total) : '';
+      var word = p.state === 'green' ? 'закрыт' : (p.state === 'yellow' ? 'начат' : 'не начат');
+      return '<div class="rd-row" data-act="go-step" data-sec="' + p.sec + '" role="button" tabindex="0">' +
+        '<span class="rd-n ' + p.state + '">' + p.n + '</span>' +
+        '<span><b>' + U.esc(p.title) + '</b><br>' +
+        '<span class="muted">' + word + frac + (p.note ? ' &middot; ' + U.esc(p.note) : '') + '</span></span>' +
+        '</div>';
+    }).join('');
+
+    var qs = sum.openQuestions.map(function (q) {
+      return '<div class="qst open" style="margin-bottom:8px"><b>' + U.esc(q.text) + '</b>' +
+        (String(q.answer || '').trim() ? '<div class="muted" style="margin-top:4px">' + U.esc(q.answer) + '</div>' : '') +
+        '</div>';
+    }).join('');
+
+    var verdict = sum.red === 0 && sum.yellow === 0
+      ? 'Все девять шагов закрыты.'
+      : (sum.green + ' закрыто, ' + sum.yellow + ' начато, ' + sum.red + ' не начато.');
+
+    return '<header class="hdr"><div class="hdr-in">' +
+      '<button class="btn btn-ghost btn-icon" data-act="back-sit" title="К ситуации" aria-label="К ситуации">' + Icons('back') + '</button>' +
+      '<div class="hdr-title"><h1>Готов?</h1>' +
+      '<div class="hdr-sub">' + U.esc(sit.title || C.TITLE_DEFAULT) + '</div></div>' +
+      saveIndicator(state) + cloudBtn(Cloud.state()) + themeBtn(root.settings.theme) +
+      '</div></header>' +
+      '<div class="wrap"><div style="height:14px"></div>' +
+      '<div class="card"><h3 style="margin-bottom:6px">' + U.esc(verdict) + '</h3>' +
+      '<div class="muted" style="margin-bottom:10px">Светофор ничего не запрещает: он показывает, где подготовка тонкая. Нажатие на строку открывает шаг.</div>' +
+      lights(sit) + '</div>' +
+      '<div class="card" style="margin-top:12px">' + rows + '</div>' +
+      '<div class="card" style="margin-top:12px">' +
+      '<h3 style="margin-bottom:6px">Незакрытые вопросы секунданта' +
+      (sum.openQuestions.length ? ' (' + sum.openQuestions.length + ')' : '') + '</h3>' +
+      (qs || '<div class="muted">Вопросов без уверенного ответа нет.</div>') +
+      '</div>' +
+      '<div style="height:20px"></div></div>';
+  }
+
+  /* ---------------- экран 3: копилка формул ---------------- */
+
+  function libCard(f) {
+    var used = (f.usedIn || []).length;
+    var total = (f.worked || 0) + (f.failed || 0);
+    return '<div class="lib-card" data-lib-card="' + f.id + '">' +
+      '<div class="fm-h">' +
+      typeSelect('data-libtype', f.id, f.type) +
+      '<span class="muted">' + (used ? ('взята в ' + used + ' ' + plural(used, 'ситуацию', 'ситуации', 'ситуаций')) : 'еще не бралась') +
+      (total ? ', в поединке ' + Math.round(Library.score(f) * 100) + '%' : '') + '</span>' +
+      '<span class="spacer"></span>' +
+      '<button class="btn btn-sm" data-act="lib-worked" data-id="' + f.id + '" title="Сработала в поединке">Сработала ' + (f.worked || 0) + '</button>' +
+      '<button class="btn btn-sm" data-act="lib-failed" data-id="' + f.id + '" title="Не сработала в поединке">Нет ' + (f.failed || 0) + '</button>' +
+      '<button class="btn btn-ghost btn-icon" data-act="lib-del" data-id="' + f.id +
+      '" title="Удалить заготовку" aria-label="Удалить заготовку">' + Icons('trash') + '</button>' +
+      '</div>' +
+      '<textarea rows="3" data-lib="' + f.id + '" data-libfield="text" placeholder="Текст заготовки">' + U.esc(f.text) + '</textarea>' +
+      '<div class="field" style="margin:10px 0 0"><span class="label">Когда применима</span>' +
+      '<textarea rows="2" data-lib="' + f.id + '" data-libfield="comment" placeholder="Условия, в которых она работает">' + U.esc(f.comment) + '</textarea></div>' +
+      '<div class="field" style="margin:10px 0 0"><span class="label">Теги</span>' +
+      '<input type="text" data-lib="' + f.id + '" data-libfield="tags" value="' + U.esc((f.tags || []).join(', ')) +
+      '" placeholder="через запятую: давление, сроки"></div>' +
+      ((f.tags || []).length ? '<div class="tags">' + f.tags.map(function (t) { return '<span class="tag">' + U.esc(t) + '</span>'; }).join('') + '</div>' : '') +
+      '<div class="muted" style="margin-top:8px">Заведена ' + U.dateShort(f.createdAt) + '</div>' +
+      '</div>';
+  }
+
+  function libList(root, view) {
+    var all = root.formulaLibrary || [];
+    var list = Library.select(all, { type: view.libType || 'all', query: view.libQuery, sort: view.libSort || 'recent' });
+    var head = '<div class="muted" id="lib-count" style="margin-bottom:10px">' +
+      (all.length
+        ? ('показано ' + list.length + ' из ' + all.length + ' ' + plural(all.length, 'заготовки', 'заготовок', 'заготовок'))
+        : 'копилка пуста') + '</div>';
+    if (!all.length) {
+      return head + '<div class="empty">Копилка поставляется пустой: чужие формулы не работают.<br>' +
+        'Она наполняется сама, когда вы отправляете в нее свои формулы из шага 7.</div>';
+    }
+    if (!list.length) return head + '<div class="empty">Под фильтр ничего не подошло.</div>';
+    return head + list.map(libCard).join('');
+  }
+
+  function screenLibrary(root, state, view) {
+    var types = [{ id: 'all', name: 'Все' }].concat(C.FORMULA_TYPES);
+    var chips = types.map(function (t) {
+      return '<button class="chip' + ((view.libType || 'all') === t.id ? ' on' : '') +
+        '" data-act="lib-type" data-id="' + t.id + '">' + U.esc(t.name) + '</button>';
+    }).join('');
+    var sorts = [
+      { id: 'recent', name: 'сначала свежие' },
+      { id: 'used', name: 'сначала частые' },
+      { id: 'result', name: 'сначала сработавшие' }
+    ];
+    var sortOpts = sorts.map(function (o) {
+      return '<option value="' + o.id + '"' + ((view.libSort || 'recent') === o.id ? ' selected' : '') + '>' + U.esc(o.name) + '</option>';
+    }).join('');
+
+    return '<header class="hdr"><div class="hdr-in">' +
+      '<button class="btn btn-ghost btn-icon" data-act="back" title="К списку" aria-label="К списку">' + Icons('back') + '</button>' +
+      '<div class="hdr-title"><h1>Копилка формул</h1>' +
+      '<div class="hdr-sub">Картотека заготовок, а не общая база</div></div>' +
+      saveIndicator(state) + cloudBtn(Cloud.state()) + themeBtn(root.settings.theme) +
+      '</div></header>' +
+      '<div class="wrap"><div style="height:14px"></div>' +
+      '<div class="muted" style="margin-bottom:12px">В ситуацию из копилки уходит копия текста. Правка копии не меняет заготовку, а правка заготовки не меняет прошлые подготовки.</div>' +
+      '<div class="field"><input type="text" id="lib-q" data-libq="1" value="' + U.esc(view.libQuery || '') +
+      '" placeholder="Поиск по тексту, условию и тегам"></div>' +
+      '<div class="chips" style="margin-bottom:10px">' + chips + '</div>' +
+      '<div class="lib-bar">' +
+      '<select class="lsel" data-lsort="1" aria-label="Порядок">' + sortOpts + '</select>' +
+      '<span class="spacer"></span>' +
+      '<button class="btn btn-primary" data-act="lib-add">' + Icons('plus') + 'Заготовку</button>' +
+      '</div>' +
+      '<div id="lib-list">' + libList(root, view) + '</div>' +
+      '</div>';
   }
 
   function screenSituation(root, state, view) {
     var sit = Storage.getSituation(view.sitId);
     if (!sit) return screenList(root, state);
+    CUR = sit;   // точки комментариев рисуются по этой ситуации
     var roles = Roles.sorted(sit.roles);
     var role = null, i;
     for (i = 0; i < roles.length; i++) if (roles[i].id === view.roleId) role = roles[i];
@@ -2575,13 +4468,36 @@ var View = (function () {
 
     var open = view.open;
     var body = '';
+    var express = !!root.settings.expressMode;
+    /* Шаги по ролям умеют два вида: активная роль или все роли подряд.
+       Раздел 10 ТЗ: переключается одной кнопкой внутри шага. */
+    var perRole = function (sec, one) {
+      if (view.allRoles) return allRolesBox(sit, sec, one);
+      return roleBar(sit, role.id, sec) + roleSwitch(sec) + one(sit, role);
+    };
+
     body += accordion(Icons('doc', 16), 'Текст и роли', open === 'setup', 'setup', open === 'setup' ? setupBody(sit) : '');
-    body += accordion('1', 'Понять ситуацию', open === 's1', 's1', open === 's1' ? step1Body(sit) : '');
+    body += accordion('1', 'Понять ситуацию', open === 's1', 's1', open === 's1' ? step1Body(sit, express) : '');
     body += accordion('2', 'Разобрать текст на фразы и слова', open === 's2', 's2', open === 's2' ? step2Body(sit, view.s2tab, view.s2layer, view.s2phrase) : '');
     body += accordion('3', 'Вытащить роль на положительного героя', open === 's3', 's3',
-      open === 's3' ? (roleBar(sit, role.id, 's3') + step3Body(sit, role)) : '');
+      open === 's3' ? perRole('s3', step3Body) : '', accBar(sit, 's3'));
+    body += accordion('4', 'Нежелательные построения и блоки', open === 's4', 's4',
+      open === 's4' ? perRole('s4', step4Body) : '', accBar(sit, 's4'));
+    body += accordion('5', 'Позиция мирового судьи и последствия', open === 's5', 's5',
+      open === 's5' ? step5Body(sit, view) : '');
+    body += accordion('6', 'Ролевые соотношения', open === 's6', 's6',
+      open === 's6' ? perRole('s6', function (x, r) { return step6Body(x, r, view); }) : '', accBar(sit, 's6'));
+    body += accordion('7', 'Формулы', open === 's7', 's7',
+      open === 's7' ? perRole('s7', step7Body) : '', accBar(sit, 's7'));
     body += accordion('8', 'Первая фраза', open === 's8', 's8',
-      open === 's8' ? (roleBar(sit, role.id, 's8') + step8Body(sit, role)) : '');
+      open === 's8' ? perRole('s8', step8Body) : '', accBar(sit, 's8'));
+    body += accordion('9', 'Стратегия связанных раундов', open === 's9', 's9',
+      open === 's9' ? step9Body(sit, view, root.settings) : '');
+    body += accordion('?', 'Вопросы секунданта', open === 'sq', 'sq',
+      open === 'sq' ? questionsBody(sit) : '');
+    var openCmt = Comments.open(sit).length;
+    body += accordion('!', 'Комментарии' + (openCmt ? ' (' + openCmt + ')' : ''), open === 'sc', 'sc',
+      open === 'sc' ? commentsBody(sit) : '');
 
     return '<header class="hdr"><div class="hdr-in">' +
       '<button class="btn btn-ghost btn-icon" data-act="back" title="К списку" aria-label="К списку">' + Icons('back') + '</button>' +
@@ -2589,8 +4505,19 @@ var View = (function () {
       (sit.context ? '<div class="hdr-sub">' + U.esc(sit.context) + '</div>' : '') + '</div>' +
       saveIndicator(state) + cloudBtn(Cloud.state()) + themeBtn(root.settings.theme) +
       '</div></header>' +
-      '<div class="wrap"><div style="height:14px"></div>' + body +
-      '<div class="muted" style="text-align:center;margin-top:8px">Шаги 4, 5, 6, 7 и 9 появятся в следующих версиях.</div>' +
+      '<div class="wrap">' +
+      '<div style="margin:12px 0 4px">' + lights(sit) + '</div>' +
+      (root.settings.expressMode
+        ? '<div class="det-b" style="padding:6px 0 0">Экспресс-режим: показаны только поля, которые считает светофор.</div>'
+        : '') +
+      '<div style="height:8px"></div>' + body +
+      '<div class="botbar"><div class="row">' +
+      '<button class="btn" data-act="express">' + Icons(root.settings.expressMode ? 'check' : 'wand', 18) +
+      (root.settings.expressMode ? 'Экспресс-режим' : 'Экспресс') + '</button>' +
+      '<button class="btn" data-act="export">' + Icons('down_tray', 18) + 'Экспорт</button>' +
+      '<span class="spacer"></span>' +
+      '<button class="btn btn-primary" data-act="ready">Готов?</button>' +
+      '</div></div>' +
       '</div>';
   }
 
@@ -2625,6 +4552,20 @@ var View = (function () {
   return {
     list: screenList,
     situation: screenSituation,
+    library: screenLibrary,
+    libList: libList,
+    step7Head: step7Head,
+    step4Head: step4Head,
+    threatStatus: threatStatus,
+    step6Head: step6Head,
+    ready: screenReady,
+    lights: lights,
+    lightsMini: lightsMini,
+    express: Express,
+    comments: commentsBody,
+    step5Head: step5Head,
+    step9Head: step9Head,
+    roundRibbon: roundRibbon,
     saveIndicator: saveIndicator,
     markSource: markSource,
     cloudBtn: cloudBtn,
@@ -2639,7 +4580,12 @@ var View = (function () {
    --------------------------------------------------------------------- */
 var App = (function () {
   var root = null;
-  var view = { screen: 'list', sitId: null, roleId: null, open: 'setup', s2tab: 'pass', s2layer: 'tech', s2phrase: 0 };
+  var view = {
+    screen: 'list', sitId: null, roleId: null, open: 'setup',
+    s2tab: 'pass', s2layer: 'tech', s2phrase: 0,
+    s6mine: null, s6theirs: null, s5view: 'list', round: 0, allRoles: false,
+    libType: 'all', libQuery: '', libSort: 'recent'
+  };
   var mount = null;
   var lastSelection = '';   // кусок текста ситуации, выделенный пользователем
 
@@ -2647,9 +4593,10 @@ var App = (function () {
 
   function render() {
     var state = Storage.saveState();
-    mount.innerHTML = (view.screen === 'situation')
-      ? View.situation(root, state, view)
-      : View.list(root, state);
+    mount.innerHTML = (view.screen === 'situation') ? View.situation(root, state, view)
+      : (view.screen === 'ready') ? View.ready(root, state, view)
+        : (view.screen === 'library') ? View.library(root, state, view)
+          : View.list(root, state);
     growAll();
   }
 
@@ -2699,6 +4646,46 @@ var App = (function () {
 
   function sit() { return Storage.getSituation(view.sitId); }
 
+  /* Копилка: список перерисовывается отдельно от экрана, иначе
+     поле поиска теряло бы курсор на каждой букве. */
+  function renderLibList() {
+    var box = document.getElementById('lib-list');
+    if (!box) { render(); return; }
+    box.innerHTML = View.libList(root, view);
+    var chips = mount.querySelectorAll('[data-act="lib-type"]');
+    for (var i = 0; i < chips.length; i++) {
+      chips[i].classList.toggle('on', chips[i].getAttribute('data-id') === (view.libType || 'all'));
+    }
+    growAll();
+  }
+
+  /* Узлы дерева последствий лежат плоским списком, а адресуются по id:
+     номер в списке меняется при удалении веток. */
+  function nodeIndex(s, id) {
+    Schema.ensureStep5(s);
+    var nodes = s.step5.consequences.nodes;
+    for (var i = 0; i < nodes.length; i++) if (nodes[i].id === id) return i;
+    return -1;
+  }
+
+  /* Шаг 4: те же два уровня, что в шаге 7. */
+  function thPath(level) {
+    return level === 'common' ? 'step4.common' : 'step4.byRole.' + level + '.threats';
+  }
+  function thList(s, level) {
+    Schema.ensureStep4(s);
+    return level === 'common' ? s.step4.common : Schema.step4ForRole(s, level).threats;
+  }
+
+  /* Шаг 7: два уровня в одной разметке, общий и по роли. */
+  function fmPath(level) {
+    return level === 'common' ? 'step7.common' : 'step7.byRole.' + level + '.formulas';
+  }
+  function fmList(s, level) {
+    Schema.ensureStep7(s);
+    return level === 'common' ? s.step7.common : Schema.step7ForRole(s, level).formulas;
+  }
+
   /* Пока роль не выбрана руками, активной считается первая по порядку показа,
      то есть трудная. Как только роль выбрана явно, она держится. */
   function activeRole() {
@@ -2714,6 +4701,21 @@ var App = (function () {
   function onInput(e) {
     var t = e.target;
     if (!t || !t.getAttribute) return;
+
+    /* Копилка формул: свои поля, ситуации здесь нет */
+    var libId = t.getAttribute('data-lib');
+    if (libId) {
+      var lf = t.getAttribute('data-libfield');
+      if (lf === 'tags') Storage.patchFormula(libId, 'tags', Library.parseTags(t.value));
+      else if (lf) Storage.patchFormula(libId, lf, t.value);
+      if (t.tagName === 'TEXTAREA') grow(t);
+      return;
+    }
+    if (t.getAttribute('data-libq') !== null) {
+      view.libQuery = t.value;
+      renderLibList();
+      return;
+    }
 
     /* Первый ввод трактовки в прогоне: записи для этого слоя еще нет,
        создаем ее и дальше поле работает как обычное. */
@@ -2748,6 +4750,7 @@ var App = (function () {
       try { t.setSelectionRange(Math.min(pos, v.length), Math.min(pos, v.length)); } catch (err) {}
     }
     Storage.patch(view.sitId, path, v);
+    refreshLights();
     if (t.tagName === 'TEXTAREA') grow(t);
     if (max) updateCounter(t);
     if (path === 'title') {
@@ -2760,9 +4763,109 @@ var App = (function () {
       var ph = U.getPath(sit(), 'step2.phrases.' + pm[1]);
       if (ph) Storage.patch(view.sitId, 'step2.phrases.' + pm[1] + '.layers', Schema.layersOf(ph));
     }
+    // счетчики шагов 4, 6 и 7 пересчитываются прямо во время набора
+    if (path.indexOf('step7.') === 0) refreshStep7Head();
+    if (path.indexOf('step4.') === 0) refreshStep4Head();
+    if (path.indexOf('step5.consequences.nodes') === 0) refreshStep5Head();
+    /* Лента раундов показывает цели и разрывы: она обновляется во время
+       набора, иначе разрыв висел бы до следующего нажатия. */
+    if (path.indexOf('step9.rounds.') === 0) refreshRibbon();
+    if (path.indexOf('secondQuestions.') === 0) refreshQuestionsHead();
+    if (path.indexOf('comments.') === 0) refreshCommentsHead();
+    // корень схемы это само решение: правка поля видна в дереве сразу
+    if (path === 'step5.decision') refreshDecision();
     // правка цитаты меняет подсветку в тексте ситуации, но не трогает поле ввода
     if (/^step2\.phrases\.\d+\.quote$/.test(path)) refreshSource();
     if (path === 'sourceText' && document.getElementById('src-text')) refreshSource();
+  }
+
+  /* Светофор считается по всей ситуации, поэтому обновляется при любой
+     правке. Перерисовывается только строка точек: поле с курсором цело. */
+  function refreshLights() {
+    var box = document.getElementById('lights');
+    var s = sit();
+    if (!box || !s) return;
+    var tmp = document.createElement('div');
+    tmp.innerHTML = View.lights(s);
+    box.parentNode.replaceChild(tmp.firstChild, box);
+  }
+
+  function refreshRibbon() {
+    var s = sit();
+    var box = mount.querySelector('.ribbon');
+    var head = document.getElementById('s9-head');
+    if (!s || !box) return;
+    var tmp = document.createElement('div');
+    tmp.innerHTML = View.roundRibbon(s, view.round);
+    box.parentNode.replaceChild(tmp.firstChild, box);
+    if (head) head.innerHTML = View.step9Head(s);
+  }
+
+  function refreshQuestionsHead() {
+    var s = sit();
+    var box = mount.querySelector('[data-q-done]');
+    if (!s || !box) return;
+    box.textContent = 'вопросов ' + s.secondQuestions.length +
+      ', без уверенного ответа ' + Schema.openQuestions(s).length;
+    /* Полоса слева у карточки тоже считается на лету: вопрос без текста
+       ничем не выделен, с текстом и без уверенного ответа - открыт. */
+    s.secondQuestions.forEach(function (q) {
+      var card = mount.querySelector('[data-q="' + q.id + '"]');
+      if (!card) return;
+      var has = !!String(q.text || '').trim();
+      card.classList.toggle('open', has && !q.confident);
+      card.classList.toggle('ok', has && !!q.confident);
+    });
+  }
+
+  function refreshCommentsHead() {
+    var s = sit();
+    var box = mount.querySelector('[data-c-open]');
+    if (!s || !box) return;
+    box.textContent = 'возражений ' + s.comments.length + ', открытых ' + Comments.open(s).length;
+  }
+
+  function refreshStep5Head() {
+    var box = document.getElementById('s5-head');
+    var s = sit();
+    if (!box || !s) return;
+    box.innerHTML = View.step5Head(s);
+  }
+
+  function refreshDecision() {
+    var box = mount.querySelector('.csq-root');
+    var s = sit();
+    if (!box || !s) return;
+    var d = String(s.step5.decision || '').trim();
+    box.innerHTML = '<b>Решение:</b> ' + (d ? U.esc(d) : '<span class="muted">не записано, поле выше</span>');
+  }
+
+  function refreshStep4Head() {
+    var box = document.getElementById('s4-head');
+    var s = sit(), role = activeRole();
+    if (!box || !s || !role) return;
+    box.innerHTML = View.step4Head(s, role.id);
+    /* Отметки "блок есть" и "блока нет" тоже считаются на лету */
+    Schema.ensureStep4(s);
+    var all = (s.step4.common || []).concat(Schema.step4ForRole(s, role.id).threats);
+    all.forEach(function (t) {
+      var slot = mount.querySelector('[data-thr-st="' + t.id + '"]');
+      if (slot) slot.innerHTML = View.threatStatus(s, role.id, t);
+    });
+  }
+
+  function refreshStep6Head() {
+    var box = document.getElementById('s6-head');
+    var s = sit();
+    if (!box || !s) return;
+    box.innerHTML = View.step6Head(s);
+  }
+
+  function refreshStep7Head() {
+    var box = document.getElementById('s7-head');
+    var s = sit(), role = activeRole();
+    if (!box || !s || !role) return;
+    box.innerHTML = View.step7Head(s, role.id);
   }
 
   function refreshSource() {
@@ -2775,6 +4878,75 @@ var App = (function () {
   function onChange(e) {
     var t = e.target;
     if (t && t.tagName === 'SELECT' && t.getAttribute('data-sel')) { onLayerPick(t); return; }
+    if (t && t.tagName === 'SELECT' && t.getAttribute('data-libtype')) {
+      Storage.patchFormula(t.getAttribute('data-libtype'), 'type', t.value);
+      renderLibList();
+      return;
+    }
+    if (t && t.tagName === 'SELECT' && t.getAttribute('data-lsort')) {
+      view.libSort = t.value;
+      renderLibList();
+      return;
+    }
+    if (t && t.tagName === 'SELECT' && t.getAttribute('data-rcount')) {
+      var sr = sit();
+      if (!sr) return;
+      var want = Number(t.value) || C.ROUNDS_MIN;
+      var cur = sr.step9.rounds.length;
+      if (want === cur) return;
+      if (want > cur) {
+        var next = sr.step9.rounds.slice();
+        while (next.length < want) next.push(Schema.newRound(next.length + 1));
+        Storage.patch(sr.id, 'step9.rounds', next);
+        Storage.setSetting('roundsCount', want);
+        view.round = Math.min(view.round, want - 1);
+        render();
+        return;
+      }
+      /* Убавление раундов выбрасывает содержание последних, поэтому
+         спрашиваем, но только если там что-то есть. */
+      var lost = sr.step9.rounds.slice(want).filter(function (r) {
+        return String(r.goal || '').trim() || String(r.carryOver || '').trim() || String(r.ifFails || '').trim();
+      }).length;
+      var cutTo = function () {
+        Storage.patch(sr.id, 'step9.rounds', sr.step9.rounds.slice(0, want));
+        Storage.setSetting('roundsCount', want);
+        view.round = Math.min(view.round, want - 1);
+        render();
+      };
+      if (!lost) { cutTo(); return; }
+      Modal.confirm('Убрать раунды',
+        'Раундов станет ' + want + '. Заполненных раундов при этом пропадет: ' + lost + '.'
+      ).then(function (ok) { if (ok) cutTo(); else render(); });
+      return;
+    }
+    if (t && t.tagName === 'SELECT' && t.getAttribute('data-rrole')) {
+      if (!view.sitId) return;
+      Storage.patch(view.sitId, 'step9.rounds.' + Number(t.getAttribute('data-rrole')) + '.myRoleId', t.value);
+      render();
+      return;
+    }
+    if (t && t.tagName === 'SELECT' && t.getAttribute('data-chor')) {
+      var sh = sit();
+      if (!sh) return;
+      var ih = nodeIndex(sh, t.getAttribute('data-chor'));
+      if (ih < 0) return;
+      Storage.patch(sh.id, 'step5.consequences.nodes.' + ih + '.horizon', t.value);
+      render();
+      return;
+    }
+    if (t && t.tagName === 'SELECT' && t.getAttribute('data-fthreat')) {
+      if (!view.sitId) return;
+      Storage.patch(view.sitId, t.getAttribute('data-fthreat'), t.value || null);
+      render();
+      return;
+    }
+    if (t && t.tagName === 'SELECT' && t.getAttribute('data-ftype')) {
+      if (!view.sitId) return;
+      Storage.patch(view.sitId, t.getAttribute('data-ftype'), t.value);
+      render();
+      return;
+    }
     if (!t || t.type !== 'checkbox') return;
     var kind = t.getAttribute('data-check');
     if (!kind || !view.sitId) return;
@@ -2784,6 +4956,29 @@ var App = (function () {
 
     if (kind === 'hard') {
       Storage.patch(view.sitId, 'roles.' + i + '.hard', t.checked);
+      return;
+    }
+    if (kind === 'resolved') {
+      var sc = sit();
+      if (!sc) return;
+      Storage.patch(sc.id, 'comments.' + Number(t.getAttribute('data-i')) + '.resolved', t.checked);
+      render();
+      return;
+    }
+    if (kind === 'confident') {
+      var sq = sit();
+      if (!sq) return;
+      Storage.patch(sq.id, 'secondQuestions.' + Number(t.getAttribute('data-i')) + '.confident', t.checked);
+      render();
+      return;
+    }
+    if (kind === 'preempt') {
+      var sPre = sit();
+      if (!sPre) return;
+      var lvl = t.getAttribute('data-level');
+      var ip = Number(t.getAttribute('data-i'));
+      Storage.patch(sPre.id, thPath(lvl) + '.' + ip + '.preemptive', t.checked);
+      refreshStep4Head();
       return;
     }
     if (kind === 'silent') {
@@ -2924,19 +5119,34 @@ var App = (function () {
       for (i = 0; i < s.roles.length; i++) if (s.roles[i].id === id) r = s.roles[i];
       if (!r) return;
       var d3 = s.step3.byRole[id], d8 = s.step8.byRole[id];
+      var d4 = Schema.step4ForRole(s, id), d6 = Schema.step6ForRole(s, id), d7 = Schema.step7ForRole(s, id);
       var hasData = !!(d3 && (String(d3.heroVersion || '').trim() || (d3.assumptions || []).length)) ||
-        !!(d8 && (String(d8.firstPhrase || '').trim() || String(d8.roleAssignment || '').trim() || String(d8.roundGoal || '').trim()));
+        !!(d8 && (String(d8.firstPhrase || '').trim() || String(d8.roleAssignment || '').trim() || String(d8.roundGoal || '').trim())) ||
+        d4.threats.length > 0 || d7.formulas.length > 0 || !!String(d6.helpAny || '').trim();
       var text = 'Роль «' + Roles.nameOf(r) + '» будет удалена.' +
-        (hasData ? ' Вместе с ней пропадет все, что заполнено по этой роли в шагах 3 и 8.' : '');
+        (hasData ? ' Вместе с ней пропадет все, что заполнено по этой роли в шагах 3, 4, 6, 7 и 8, включая ее клетки матрицы соотношений.' : '');
       Modal.confirm('Удалить роль', text).then(function (ok) {
         if (!ok) return;
         var next = s.roles.filter(function (x) { return x.id !== id; });
         Storage.patch(s.id, 'roles', Roles.renumber(next));
-        var b3 = {}, b8 = {}, k;
-        for (k in s.step3.byRole) if (k !== id) b3[k] = s.step3.byRole[k];
-        for (k in s.step8.byRole) if (k !== id) b8[k] = s.step8.byRole[k];
-        Storage.patch(s.id, 'step3.byRole', b3);
-        Storage.patch(s.id, 'step8.byRole', b8);
+        var k;
+        var strip = function (obj) {
+          var out = {};
+          for (var key in obj) if (key !== id) out[key] = obj[key];
+          return out;
+        };
+        Storage.patch(s.id, 'step3.byRole', strip(s.step3.byRole));
+        Storage.patch(s.id, 'step8.byRole', strip(s.step8.byRole));
+        Storage.patch(s.id, 'step4.byRole', strip(s.step4.byRole));
+        Storage.patch(s.id, 'step6.byRole', strip(s.step6.byRole));
+        Storage.patch(s.id, 'step7.byRole', strip(s.step7.byRole));
+        var cells = {};
+        for (k in s.step6.cells) {
+          var pair = String(k).split('|');
+          if (pair[0] !== id && pair[1] !== id) cells[k] = s.step6.cells[k];
+        }
+        Storage.patch(s.id, 'step6.cells', cells);
+        if (view.s6mine === id || view.s6theirs === id) { view.s6mine = null; view.s6theirs = null; }
         if (view.roleId === id) view.roleId = null;
         render();
       });
@@ -3188,10 +5398,516 @@ var App = (function () {
       render();
     },
 
+    /* ---- шаг 9: раунды ---- */
+
+    round: function (_id, b) {
+      view.round = Number(b.getAttribute('data-i')) || 0;
+      render();
+    },
+
+    /* ---- комментарии к полям ---- */
+
+    cmt: function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var path = b.getAttribute('data-path');
+      var place = Comments.locate(path);
+      var have = Comments.forPath(s, path);
+      var list = have.length
+        ? have.map(function (c) {
+          return '<div class="cmt' + (c.resolved ? ' res' : '') + '" style="margin-bottom:8px">' +
+            '<div class="muted">' + (c.author === 'second' ? 'от секунданта' : 'свой') +
+            ' &middot; ' + U.dateShort(c.ts) + (c.resolved ? ' &middot; снято' : '') + '</div>' +
+            '<div class="pre">' + U.esc(c.text) + '</div></div>';
+        }).join('')
+        : '';
+      Modal.open({
+        title: 'Возражение к полю',
+        html: '<p class="muted">' + U.esc(place.label) + '. Секундант не правит формулировку, он ее оспаривает.</p>' +
+          list +
+          '<div class="field"><label class="label" for="cmt-new">Новое возражение</label>' +
+          '<textarea id="cmt-new" rows="3" placeholder="Что вызывает возражение"></textarea></div>' +
+          '<label class="chk"><input type="checkbox" id="cmt-second" checked>со слов секунданта</label>',
+        actions: [
+          { label: 'Закрыть', value: null },
+          {
+            label: 'Записать', kind: 'btn-primary',
+            collect: function (node) {
+              var ta = node.querySelector('#cmt-new');
+              var cb = node.querySelector('#cmt-second');
+              var text = String(ta ? ta.value : '').trim();
+              return text ? { text: text, second: !!(cb && cb.checked) } : null;
+            }
+          }
+        ]
+      }).then(function (res) {
+        if (!res) return;
+        var c = Schema.newComment(path, res.second ? 'second' : 'self');
+        c.text = res.text;
+        Storage.patch(s.id, 'comments', s.comments.concat([c]));
+        Toast.show('Возражение записано');
+        render();
+      });
+    },
+
+    'del-cmt': function (id) {
+      var s = sit();
+      if (!s) return;
+      var c = s.comments.filter(function (x) { return x.id === id; })[0];
+      if (!c) return;
+      var drop = function () {
+        Storage.patch(s.id, 'comments', s.comments.filter(function (x) { return x.id !== id; }));
+        render();
+      };
+      if (!String(c.text || '').trim()) { drop(); return; }
+      Modal.confirm('Удалить возражение',
+        'Возражение будет удалено. Снятое возражение стоит держать: оно помнит, что вы уже обсуждали.'
+      ).then(function (ok) { if (ok) drop(); });
+    },
+
+    /* ---- вопросы секунданта ---- */
+
+    'add-q': function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var q = Schema.newQuestion(b.getAttribute('data-author'));
+      Storage.patch(s.id, 'secondQuestions', s.secondQuestions.concat([q]));
+      render();
+      var box = mount.querySelector('[data-q="' + q.id + '"] textarea');
+      if (box) box.focus();
+    },
+
+    'del-q': function (id) {
+      var s = sit();
+      if (!s) return;
+      var q = s.secondQuestions.filter(function (x) { return x.id === id; })[0];
+      if (!q) return;
+      var drop = function () {
+        Storage.patch(s.id, 'secondQuestions', s.secondQuestions.filter(function (x) { return x.id !== id; }));
+        render();
+      };
+      if (!String(q.text || '').trim() && !String(q.answer || '').trim()) { drop(); return; }
+      Modal.confirm('Удалить вопрос', 'Вопрос будет удален вместе с ответом.')
+        .then(function (ok) { if (ok) drop(); });
+    },
+
+    /* ---- шаг 5: последствия и пре-мортем ---- */
+
+    s5view: function (_id, b) {
+      view.s5view = b.getAttribute('data-tab') === 'scheme' ? 'scheme' : 'list';
+      render();
+    },
+
+    'csq-add': function (id) {
+      var s = sit();
+      if (!s) return;
+      Schema.ensureStep5(s);
+      var nodes = s.step5.consequences.nodes;
+      var parent = id || null;
+      if (parent) {
+        var pn = nodes.filter(function (x) { return x.id === parent; })[0];
+        if (!pn || !Schema.canBranch(nodes, pn)) return;
+      } else if (Schema.childrenOf(nodes, null).length >= C.TREE_KIDS_MAX) {
+        return;
+      }
+      /* Умолчание минус: разбор последствий делается ради того,
+         чего вы не хотите, а приятное вспоминается само. */
+      var nd = Schema.newConsequence(parent, 'minus');
+      Storage.patch(s.id, 'step5.consequences.nodes', nodes.concat([nd]));
+      view.s5view = 'list';
+      render();
+      var box = mount.querySelector('[data-csq="' + nd.id + '"] textarea');
+      if (box) box.focus();
+    },
+
+    'csq-del': function (id) {
+      var s = sit();
+      if (!s) return;
+      Schema.ensureStep5(s);
+      var nodes = s.step5.consequences.nodes;
+      var nd = nodes.filter(function (x) { return x.id === id; })[0];
+      if (!nd) return;
+      var ids = Schema.subtreeIds(nodes, id);
+      var drop = function () {
+        Storage.patch(s.id, 'step5.consequences.nodes',
+          nodes.filter(function (x) { return ids.indexOf(x.id) < 0; }));
+        render();
+      };
+      var text = String(nd.text || '').trim();
+      if (!text && ids.length === 1) { drop(); return; }
+      Modal.confirm('Удалить последствие',
+        'Последствие' + (text ? ' «' + U.cut(text, 80) + (U.len(text) > 80 ? '...' : '') + '»' : '') +
+        ' будет удалено' + (ids.length > 1 ? ' вместе со всем, что из него следует (' + (ids.length - 1) + ')' : '') + '.'
+      ).then(function (ok) { if (ok) drop(); });
+    },
+
+    'csq-sign': function (id) {
+      var s = sit();
+      if (!s) return;
+      var i = nodeIndex(s, id);
+      if (i < 0) return;
+      var cur = s.step5.consequences.nodes[i].sign;
+      Storage.patch(s.id, 'step5.consequences.nodes.' + i + '.sign', cur === 'plus' ? 'minus' : 'plus');
+      render();
+    },
+
+    coord: function (id, b) {
+      var s = sit();
+      if (!s) return;
+      var i = nodeIndex(s, id);
+      if (i < 0) return;
+      var code = b.getAttribute('data-coord');
+      var nd = s.step5.consequences.nodes[i];
+      var has = nd.coord.indexOf(code) >= 0;
+      var next = [];
+      C.COORDS.forEach(function (c) {
+        var on = (c.id === code) ? !has : nd.coord.indexOf(c.id) >= 0;
+        if (on) next.push(c.id);   // порядок Л, В, Д держится сам
+      });
+      Storage.patch(s.id, 'step5.consequences.nodes.' + i + '.coord', next);
+      render();
+    },
+
+    'add-pm': function () {
+      var s = sit();
+      if (!s) return;
+      Schema.ensureStep5(s);
+      var m = Schema.newPremortem();
+      Storage.patch(s.id, 'step5.consequences.premortem', s.step5.consequences.premortem.concat([m]));
+      render();
+      var box = mount.querySelector('[data-pm="' + m.id + '"] textarea');
+      if (box) box.focus();
+    },
+
+    'del-pm': function (id) {
+      var s = sit();
+      if (!s) return;
+      Schema.ensureStep5(s);
+      var list = s.step5.consequences.premortem;
+      var m = list.filter(function (x) { return x.id === id; })[0];
+      if (!m) return;
+      var drop = function () {
+        Storage.patch(s.id, 'step5.consequences.premortem',
+          list.filter(function (x) { return x.id !== id; }));
+        render();
+      };
+      if (!String(m.text || '').trim() && !String(m.counter || '').trim()) { drop(); return; }
+      Modal.confirm('Удалить причину провала',
+        'Запись будет удалена вместе с упреждающим действием.').then(function (ok) { if (ok) drop(); });
+    },
+
+    /* ---- шаг 4: нежелательные построения ---- */
+
+    'add-threat': function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var level = b.getAttribute('data-level');
+      var list = thList(s, level);
+      var t = Schema.newThreat();
+      Storage.patch(s.id, thPath(level), list.concat([t]));
+      render();
+      var box = mount.querySelector('[data-thr="' + t.id + '"] textarea');
+      if (box) box.focus();
+    },
+
+    'del-threat': function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var level = b.getAttribute('data-level');
+      var i = Number(b.getAttribute('data-i'));
+      var list = thList(s, level);
+      var t = list[i];
+      if (!t) return;
+      var drop = function () {
+        /* Формулы, сославшиеся на эту угрозу, теряют связь: висящая
+           ссылка хуже отсутствующей. */
+        var clear = function (path, arr) {
+          (arr || []).forEach(function (f, k) {
+            if (f.threatId === t.id) Storage.patch(s.id, path + '.' + k + '.threatId', null);
+          });
+        };
+        Schema.ensureStep7(s);
+        clear('step7.common', s.step7.common);
+        s.roles.forEach(function (r) {
+          clear('step7.byRole.' + r.id + '.formulas', Schema.step7ForRole(s, r.id).formulas);
+        });
+        Storage.patch(s.id, thPath(level), list.filter(function (x, k) { return k !== i; }));
+        render();
+      };
+      var text = String(t.text || '').trim();
+      if (!text) { drop(); return; }
+      Modal.confirm('Удалить построение',
+        'Построение «' + U.cut(text, 80) + (U.len(text) > 80 ? '...' : '') +
+        '» будет удалено вместе с блоком. Формулы, которые на него ссылались, останутся, но связь потеряют.'
+      ).then(function (ok) { if (ok) drop(); });
+    },
+
+    'preempt-list': function () {
+      var s = sit(), role = activeRole();
+      if (!s || !role) return;
+      var list = Schema.preemptiveOf(s, role.id);
+      var html = list.length
+        ? list.map(function (x) {
+          return '<div class="thr' + (x.common ? ' thr-c' : '') + '" style="margin-bottom:8px">' +
+            (x.common ? '<span class="chip">общая</span><br>' : '') +
+            '<b>' + U.esc(x.threat.text) + '</b>' +
+            (x.threat.why ? '<div class="muted">Опасно тем, что ' + U.esc(x.threat.why) + '</div>' : '') +
+            (String(x.threat.block || '').trim()
+              ? '<div style="margin-top:6px">Блок: ' + U.esc(x.threat.block) + '</div>'
+              : '<div class="muted" style="margin-top:6px">Блок не написан.</div>') +
+            '</div>';
+        }).join('')
+        : '<p class="muted">В шаге 4 нет построений с отметкой «на упреждение». Отметка ставится там, где блок надо поставить заранее, не дожидаясь хода соперника.</p>';
+      Modal.open({
+        title: 'Блоки на упреждение',
+        html: '<p class="muted">Роль «' + U.esc(Roles.nameOf(role)) + '». Эти блоки ставятся заранее, поэтому их место в первой фразе.</p>' + html,
+        actions: [{ label: 'Понятно', kind: 'btn-primary', value: null }]
+      });
+    },
+
+    /* ---- шаг 6: ролевые соотношения ---- */
+
+    cell: function (_id, b) {
+      var mine = b.getAttribute('data-mine'), theirs = b.getAttribute('data-theirs');
+      if (view.s6mine === mine && view.s6theirs === theirs) { view.s6mine = null; view.s6theirs = null; }
+      else { view.s6mine = mine; view.s6theirs = theirs; }
+      render();
+    },
+
+    'cell-state': function (id) {
+      var s = sit();
+      if (!s || !view.s6mine || !view.s6theirs) return;
+      Schema.cellOf(s, view.s6mine, view.s6theirs);
+      Storage.patch(s.id, 'step6.cells.' + Schema.cellKey(view.s6mine, view.s6theirs) + '.state', id);
+      render();
+    },
+
+    /* ---- шаг 7: формулы ---- */
+
+    'add-formula': function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var level = b.getAttribute('data-level');
+      var list = fmList(s, level);
+      /* Умолчание по типу от практики: общими чаще оказываются объяснение
+         и взывание к совести, привязанным к роли - отказ. */
+      var f = Schema.newSitFormula(level === 'common' ? 'explain' : 'refusal');
+      Storage.patch(s.id, fmPath(level), list.concat([f]));
+      render();
+      var box = mount.querySelector('[data-fm="' + f.id + '"] textarea');
+      if (box) box.focus();
+    },
+
+    'del-formula': function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var level = b.getAttribute('data-level');
+      var i = Number(b.getAttribute('data-i'));
+      var list = fmList(s, level);
+      var f = list[i];
+      if (!f) return;
+      var drop = function () {
+        Storage.patch(s.id, fmPath(level), list.filter(function (x, k) { return k !== i; }));
+        render();
+      };
+      var text = String(f.text || '').trim();
+      if (!text) { drop(); return; }
+      Modal.confirm('Удалить формулу',
+        'Формула «' + U.cut(text, 80) + (U.len(text) > 80 ? '...' : '') +
+        '» будет удалена из этой ситуации. Заготовка в копилке, если она есть, останется на месте.'
+      ).then(function (ok) { if (ok) drop(); });
+    },
+
+    'to-lib': function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var level = b.getAttribute('data-level');
+      var i = Number(b.getAttribute('data-i'));
+      var f = fmList(s, level)[i];
+      if (!f || !String(f.text || '').trim()) return;
+      var lib = Library.send(f, s.id);
+      if (!lib) return;
+      Storage.patch(s.id, fmPath(level) + '.' + i + '.originId', lib.id);
+      Toast.show('Формула отправлена в копилку');
+      render();
+    },
+
+    'from-lib': function (_id, b) { pickFormula(b.getAttribute('data-level')); },
+
+    /* ---- копилка ---- */
+
+    library: function () {
+      Storage.flush().catch(function () {});
+      view.screen = 'library';
+      render();
+      window.scrollTo(0, 0);
+    },
+
+    'lib-type': function (id) {
+      view.libType = id || 'all';
+      renderLibList();
+    },
+
+    'lib-add': function () {
+      var f = Storage.addFormula(Schema.newLibFormula(view.libType !== 'all' ? view.libType : 'refusal', ''));
+      if (!f) return;
+      view.libQuery = '';
+      render();
+      var box = mount.querySelector('[data-lib-card="' + f.id + '"] textarea');
+      if (box) box.focus();
+    },
+
+    'lib-del': function (id) {
+      var f = Storage.getFormula(id);
+      if (!f) return;
+      var text = String(f.text || '').trim();
+      Modal.confirm('Удалить заготовку',
+        'Заготовка' + (text ? ' «' + U.cut(text, 80) + (U.len(text) > 80 ? '...' : '') + '»' : '') +
+        ' будет удалена из копилки. Формулы, уже скопированные в ситуации, останутся на месте.'
+      ).then(function (ok) {
+        if (!ok) return;
+        Storage.removeFormula(id);
+        Toast.show('Заготовка удалена');
+        renderLibList();
+      });
+    },
+
+    'lib-worked': function (id) {
+      var f = Storage.getFormula(id);
+      if (!f) return;
+      Storage.patchFormula(id, 'worked', (f.worked || 0) + 1);
+      renderLibList();
+    },
+
+    'lib-failed': function (id) {
+      var f = Storage.getFormula(id);
+      if (!f) return;
+      Storage.patchFormula(id, 'failed', (f.failed || 0) + 1);
+      renderLibList();
+    },
+
+    /* ---- светофор, «Готов?», режимы ---- */
+
+    light: function (_id, b) {
+      var sec = b.getAttribute('data-sec');
+      if (view.screen !== 'situation') { view.screen = 'situation'; }
+      view.open = sec;
+      render();
+      var box = mount.querySelector('[data-sec-box="' + sec + '"]');
+      if (box && box.scrollIntoView) { try { box.scrollIntoView(); } catch (e) {} }
+    },
+
+    ready: function () {
+      Storage.flush().catch(function () {});
+      view.screen = 'ready';
+      render();
+      window.scrollTo(0, 0);
+    },
+
+    'back-sit': function () {
+      view.screen = 'situation';
+      render();
+      window.scrollTo(0, 0);
+    },
+
+    'go-step': function (_id, b) {
+      view.screen = 'situation';
+      view.open = b.getAttribute('data-sec');
+      render();
+      var box = mount.querySelector('[data-sec-box="' + view.open + '"]');
+      if (box && box.scrollIntoView) { try { box.scrollIntoView(); } catch (e) {} }
+    },
+
+    express: function () {
+      var next = !root.settings.expressMode;
+      Storage.setSetting('expressMode', next);
+      Express.set(next);
+      Toast.show(next
+        ? 'Экспресс-режим: видны только поля, которые считает светофор'
+        : 'Экспресс-режим выключен, поля вернулись');
+      render();
+    },
+
+    'all-roles': function (_id, b) {
+      view.allRoles = !view.allRoles;
+      view.open = b.getAttribute('data-sec');
+      render();
+    },
+
+    'copy-role': function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var from = b.getAttribute('data-from'), to = b.getAttribute('data-to'), kind = b.getAttribute('data-kind');
+      var value = Copy.valueOf(s, from, kind);
+      if (!String(value || '').trim()) return;
+      var target = Copy.pathOf(to, kind);
+      var cur = String(U.getPath(s, target) || '').trim();
+      var put = function () {
+        Storage.patch(s.id, target, value);
+        Toast.show('Скопировано, правьте свободно');
+        render();
+      };
+      if (!cur) { put(); return; }
+      /* Копия затирает написанное, поэтому спрашиваем: скопированное
+         правится свободно, но потерять свое из-за одного нажатия нельзя. */
+      var fromName = '';
+      s.roles.forEach(function (r) { if (r.id === from) fromName = Roles.nameOf(r); });
+      Modal.confirm('Взять из другой роли',
+        'Поле «' + Copy.nameOf(kind) + '» уже заполнено. Текст из роли «' + fromName + '» его заменит.',
+        'Заменить').then(function (ok) { if (ok) put(); });
+    },
+
     export: function () { doExport(); },
     import: function () { doImport(); },
     cloud: function () { cloudDialog(); }
   };
+
+  /* Выбор заготовки из копилки. В ситуацию уходит копия текста. */
+  function pickFormula(level) {
+    var s = sit();
+    if (!s) return;
+    var lib = Storage.formulas();
+    if (!lib.length) {
+      Modal.open({
+        title: 'Копилка пуста',
+        html: '<p class="muted">Копилка наполняется вашими формулами: напишите формулу здесь и нажмите «В копилку». ' +
+          'Приложение поставляется с пустой копилкой намеренно - чужие заготовки не работают.</p>',
+        actions: [{ label: 'Понятно', kind: 'btn-primary', value: null }]
+      });
+      return;
+    }
+    var list = Library.select(lib, { sort: 'used' });
+    var rows = list.map(function (f, k) {
+      return '<label class="chk" style="display:flex;align-items:flex-start;margin:0 0 8px;text-align:left;border-radius:var(--r)">' +
+        '<input type="radio" name="pickf" data-pick="' + k + '"' + (k === 0 ? ' checked' : '') + '>' +
+        '<span style="font-size:13px"><b>' + U.esc(Library.typeName(f.type)) + '.</b> ' +
+        U.esc(U.cut(String(f.text || ''), 200)) +
+        (f.comment ? '<br><span class="muted">' + U.esc(f.comment) + '</span>' : '') +
+        ((f.tags || []).length ? '<br><span class="muted">теги: ' + U.esc(f.tags.join(', ')) + '</span>' : '') +
+        '</span></label>';
+    }).join('');
+    Modal.open({
+      title: 'Взять из копилки',
+      html: '<p class="muted">В ситуацию попадет копия текста. Правьте ее свободно: ни заготовка, ни прошлые подготовки от этого не изменятся.</p>' + rows,
+      actions: [
+        { label: 'Отмена', value: null },
+        {
+          label: 'Взять', kind: 'btn-primary',
+          collect: function (node) {
+            var r = node.querySelector('[data-pick]:checked');
+            return r ? Number(r.getAttribute('data-pick')) : null;
+          }
+        }
+      ]
+    }).then(function (k) {
+      if (k === null || k === undefined || isNaN(k) || !list[k]) return;
+      var copy = Library.take(list[k].id, s.id);
+      if (!copy) return;
+      Storage.patch(s.id, fmPath(level), fmList(s, level).concat([copy]));
+      Toast.show('Формула взята из копилки');
+      render();
+    });
+  }
 
   /* ---------- синхронизация ---------- */
 
@@ -3343,6 +6059,9 @@ var App = (function () {
     view.sitId = id;
     view.roleId = null; // роль не выбрана: активной будет трудная
     view.s2phrase = 0;  // свод по фразе начинается с первой, а не с чужого номера
+    view.s6mine = null; // клетка матрицы соотношений не выбрана
+    view.s6theirs = null;
+    view.round = 0;     // лента раундов начинается с первого
     view.open = String(s.sourceText || '').trim() ? 's1' : 'setup';
     render();
     window.scrollTo(0, 0);
@@ -3543,6 +6262,7 @@ var App = (function () {
     Storage.load().then(function (r) {
       root = r;
       Theme.apply(root.settings.theme);
+      Express.set(root.settings.expressMode);
       if (root.settings.cloud.connected) useCloudAdapter(true);
       render();
 
@@ -3574,7 +6294,8 @@ var App = (function () {
    на работу приложения не влияет. */
 window.PP = {
   C: C, U: U, Schema: Schema, Storage: Storage, Roles: Roles, Archive: Archive,
-  Cloud: Cloud, GoogleAuth: GoogleAuth, Drive: Drive, App: App
+  Cloud: Cloud, GoogleAuth: GoogleAuth, Drive: Drive, App: App, Library: Library,
+  Traffic: Traffic, Copy: Copy, Express: Express, Comments: Comments
 };
 
 if (!IS_OAUTH_POPUP) {
