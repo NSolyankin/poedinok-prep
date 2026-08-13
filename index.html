@@ -6,7 +6,16 @@
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#f7f7f5" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#16181a" media="(prefers-color-scheme: dark)">
-<link rel="icon" href="data:,">
+<!-- Установка на домашний экран, раздел 3.1 ТЗ. Иконка и манифест лежат
+     прямо здесь data-адресами: файл остается одним и работает с диска. -->
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9Ijk2IiBmaWxsPSIjMjY1ODRhIi8+PHBhdGggZD0iTTI1NiA5MmwxMjggNDR2MTMwYzAgODQtNTQgMTMyLTEyOCAxNTQtNzQtMjItMTI4LTcwLTEyOC0xNTRWMTM2eiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZGZlYWU1IiBzdHJva2Utd2lkdGg9IjI0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTE5NiAyMTZsMTIwIDEyME0zMTYgMjE2TDE5NiAzMzYiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+">
+<link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9Ijk2IiBmaWxsPSIjMjY1ODRhIi8+PHBhdGggZD0iTTI1NiA5MmwxMjggNDR2MTMwYzAgODQtNTQgMTMyLTEyOCAxNTQtNzQtMjItMTI4LTcwLTEyOC0xNTRWMTM2eiIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZGZlYWU1IiBzdHJva2Utd2lkdGg9IjI0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PHBhdGggZD0iTTE5NiAyMTZsMTIwIDEyME0zMTYgMjE2TDE5NiAzMzYiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIyNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+">
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoi0J/QvtC00LPQvtGC0L7QstC60LAg0Log0L/QvtC10LTQuNC90LrRgyIsInNob3J0X25hbWUiOiLQn9C+0LXQtNC40L3QvtC6Iiwic3RhcnRfdXJsIjoiLiIsInNjb3BlIjoiLiIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwib3JpZW50YXRpb24iOiJwb3J0cmFpdCIsImJhY2tncm91bmRfY29sb3IiOiIjZjRmNGYxIiwidGhlbWVfY29sb3IiOiIjMjY1ODRhIiwibGFuZyI6InJ1IiwiaWNvbnMiOlt7InNyYyI6ImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjRiV3h1Y3owaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNQzl6ZG1jaUlIWnBaWGRDYjNnOUlqQWdNQ0ExTVRJZ05URXlJajQ4Y21WamRDQjNhV1IwYUQwaU5URXlJaUJvWldsbmFIUTlJalV4TWlJZ2NuZzlJamsySWlCbWFXeHNQU0lqTWpZMU9EUmhJaTgrUEhCaGRHZ2daRDBpVFRJMU5pQTVNbXd4TWpnZ05EUjJNVE13WXpBZ09EUXROVFFnTVRNeUxURXlPQ0F4TlRRdE56UXRNakl0TVRJNExUY3dMVEV5T0MweE5UUldNVE0yZWlJZ1ptbHNiRDBpYm05dVpTSWdjM1J5YjJ0bFBTSWpaR1psWVdVMUlpQnpkSEp2YTJVdGQybGtkR2c5SWpJMElpQnpkSEp2YTJVdGJHbHVaV3B2YVc0OUluSnZkVzVrSWk4K1BIQmhkR2dnWkQwaVRURTVOaUF5TVRac01USXdJREV5TUUwek1UWWdNakUyVERFNU5pQXpNellpSUhOMGNtOXJaVDBpSTJabVptWm1aaUlnYzNSeWIydGxMWGRwWkhSb1BTSXlOaUlnYzNSeWIydGxMV3hwYm1WallYQTlJbkp2ZFc1a0lpOCtQQzl6ZG1jKyIsInNpemVzIjoiYW55IiwidHlwZSI6ImltYWdlL3N2Zyt4bWwiLCJwdXJwb3NlIjoiYW55IG1hc2thYmxlIn1dfQ==">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Поединок">
+<meta name="application-name" content="Поединок">
 <title>Подготовка к поединку</title>
 <style>
 :root{
@@ -345,6 +354,38 @@ table.mx td.diag{background:var(--surface2); color:var(--muted)}
 .cmt.res{opacity:.55}
 .cmt-g{margin:0 0 14px}
 .cmt-g > .h{display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; margin-bottom:6px}
+
+/* ---------- репетиция ---------- */
+.reh{min-height:100vh; display:flex; flex-direction:column; background:var(--bg)}
+.reh-top{display:flex; gap:8px; align-items:center; padding:10px 14px; border-bottom:1px solid var(--line); flex-wrap:wrap}
+.reh-mid{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:16px; text-align:center}
+.clock{font-size:19vw; line-height:1; font-weight:700; font-variant-numeric:tabular-nums; letter-spacing:-2px}
+@media (min-width:700px){ .clock{font-size:120px} }
+.clock.warn{color:var(--warn)}
+.clock.over{color:var(--danger)}
+.reh-card{max-width:640px; width:100%; text-align:left; margin:14px auto 0}
+.reh-card .q{font-size:17px; line-height:1.5; margin:0 0 8px}
+.reh-acts{display:flex; gap:8px; flex-wrap:wrap; justify-content:center; padding:10px 14px 16px}
+.panel{
+  position:fixed; left:0; right:0; bottom:0; z-index:60; max-height:70vh; overflow:auto;
+  background:var(--surface); border-top:1px solid var(--line); border-radius:14px 14px 0 0;
+  padding:14px; box-shadow:var(--shadow);
+}
+.panel h3{margin:0 0 8px}
+.panel .ftype{font-size:13px; color:var(--muted); margin:10px 0 4px}
+.self-box{border:1px dashed var(--accent); border-radius:var(--r); padding:12px; margin:10px 0; background:var(--accent-soft)}
+
+/* ---------- баннеры сохранности, раздел 3.1 ТЗ ---------- */
+.banner{
+  display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap;
+  border:1px solid var(--warn); background:var(--warn-soft); color:var(--text);
+  border-radius:var(--r); padding:10px 12px; margin:12px 0 0; font-size:14px;
+}
+.banner.calm{border-color:var(--accent); background:var(--accent-soft)}
+.banner .bt{flex:1 1 220px; line-height:1.45}
+.after-fm{border:1px solid var(--line); border-radius:var(--r); padding:10px; margin:0 0 8px; background:var(--surface)}
+.after-fm.ok{border-left:3px solid #2E7D52}
+.after-fm.no{border-left:3px solid var(--danger)}
 .scheme .sch-b{fill:var(--surface2); stroke:var(--line)}
 .scheme .sch-b.p{stroke:#2E7D52} .scheme .sch-b.m{stroke:var(--danger)}
 .scheme .sch-root{fill:var(--accent-soft); stroke:var(--accent)}
@@ -466,11 +507,11 @@ var IS_OAUTH_POPUP = false;
    1. КОНСТАНТЫ. Все пороги ТЗ собраны здесь и больше нигде не повторяются.
    --------------------------------------------------------------------- */
 var C = {
-  APP_VERSION: '0.7.1',
+  APP_VERSION: '1.0.1',
   SYNC_VERSION: '0.1',
   SCHEMA: 2,                 // версия схемы данных, раздел 5 ТЗ
   DB_NAME: 'poedinok-prep',  // раздел 3 ТЗ
-  DB_VERSION: 1,
+  DB_VERSION: 2,
 
   ROLES_MIN: 3,              // раздел 5.1 ТЗ
   ROLES_MAX: 6,
@@ -482,6 +523,11 @@ var C = {
   PHRASE_MAX: 400,
   SPEECH_CPS: 15,            // знаков в секунду, темп спокойной русской речи
 
+  TRASH_DAYS: 30,            // раздел 11 ТЗ: корзина на 30 дней
+  EXPORT_REMIND_DAYS: 7,     // раздел 3.1 ТЗ: напомнить, если архива не было неделю
+  SNAPSHOTS_PER_SITUATION: 10, // раздел 3.1 ТЗ: последние десять состояний ситуации
+  SNAPSHOT_MS: 120000,       // не чаще раза в две минуты: снимок на каждую букву не нужен
+  TAB_CHANNEL: 'poedinok-prep-tabs',
   AUTOSAVE_MS: 400,          // раздел 11 ТЗ
   HISTORY_PER_SITUATION: 200,// раздел 11 ТЗ
 
@@ -553,6 +599,13 @@ var C = {
   READINGS_PER_PHRASE: 2,    // у каждой две трактовки
   LAYERS_GREEN: 5,           // задействовано пять слоев
   THREATS_GREEN: 2,          // шаг 4: две угрозы с блоками (см. THREATS_PER_ROLE)
+
+  /* Репетиция, раздел 7 ТЗ. */
+  ROUND_MINUTES_DEFAULT: 5,
+  ROUND_MINUTES_MIN: 1,
+  ROUND_MINUTES_MAX: 15,
+  WARN_SECONDS: 60,          // сигнал за минуту до конца
+  TICK_MS: 200,              // шаг часов; время считается по системным часам, а не тиками
 
   /* Состояния клетки матрицы соотношений, раздел 5.7 ТЗ.
      Состояния "невозможно" нет намеренно: соперник назначает роли как хочет. */
@@ -706,6 +759,7 @@ var Schema = {
       context: '',
       createdAt: ts,
       updatedAt: ts,
+      deletedAt: 0,        // корзина, раздел 11 ТЗ: 0 значит живая ситуация
       roles: roles,
       step1: { fabula: '', plot: '', essence: '', retell: ['', '', ''] },
       step2: { phrases: [], layerNotes: Schema.emptyLayerNotes() },
@@ -758,7 +812,8 @@ var Schema = {
       type: Schema.formulaType(type, 'refusal'),
       text: String(text || ''),
       originId: originId || null,
-      threatId: null      // угроза шага 4; сам шаг 4 появится в 0.4
+      threatId: null,     // угроза шага 4
+      outcome: ''         // разбор после поединка: '', 'worked', 'failed'
     };
   },
 
@@ -789,7 +844,8 @@ var Schema = {
       type: Schema.formulaType(f && f.type, 'other'),
       text: String((f && f.text) || ''),
       originId: (f && f.originId) ? String(f.originId) : null,
-      threatId: (f && f.threatId) ? String(f.threatId) : null
+      threatId: (f && f.threatId) ? String(f.threatId) : null,
+      outcome: ((f && f.outcome) === 'worked' || (f && f.outcome) === 'failed') ? f.outcome : ''
     };
   },
 
@@ -1284,6 +1340,7 @@ var Schema = {
     out.context = String(out.context || '');
     out.createdAt = Number(out.createdAt) || U.now();
     out.updatedAt = Number(out.updatedAt) || out.createdAt;
+    out.deletedAt = Number(out.deletedAt) || 0;
     out.afterNotes = String(out.afterNotes || '');
     out.secondQuestions = (Array.isArray(out.secondQuestions) ? out.secondQuestions : [])
       .filter(function (q) { return q && typeof q === 'object'; })
@@ -1595,6 +1652,12 @@ var IDB = (function () {
           var h = d.createObjectStore('history', { keyPath: 'seq', autoIncrement: true });
           h.createIndex('bySituation', 'situationId', { unique: false });
         }
+        /* Автоснимки, раздел 3.1 ТЗ: целые состояния ситуации рядом
+           с журналом отдельных правок. Заведены в схеме базы 2. */
+        if (!d.objectStoreNames.contains('snapshots')) {
+          var sn = d.createObjectStore('snapshots', { keyPath: 'seq', autoIncrement: true });
+          sn.createIndex('bySituation', 'situationId', { unique: false });
+        }
       };
       req.onsuccess = function () {
         db = req.result;
@@ -1684,11 +1747,12 @@ var IDB = (function () {
 
     // полная замена содержимого: импорт архива
     replaceAll: function (situations, meta, formulas) {
-      return run(['situations', 'meta', 'formulas', 'history'], 'readwrite', function (tx) {
+      return run(['situations', 'meta', 'formulas', 'history', 'snapshots'], 'readwrite', function (tx) {
         tx.objectStore('situations').clear();
         tx.objectStore('meta').clear();
         tx.objectStore('formulas').clear();
         tx.objectStore('history').clear();
+        tx.objectStore('snapshots').clear();
         situations.forEach(function (s) { tx.objectStore('situations').put(s); });
         meta.forEach(function (m) { tx.objectStore('meta').put(m); });
         (formulas || []).forEach(function (f) { tx.objectStore('formulas').put(f); });
@@ -1707,6 +1771,42 @@ var IDB = (function () {
       return run(['meta'], 'readwrite', function (tx) {
         if (value === null || value === undefined) tx.objectStore('meta').delete(key);
         else tx.objectStore('meta').put({ key: key, value: value });
+      });
+    },
+
+    /* Снимок состояния ситуации целиком. Раздел 3.1 ТЗ: последние десять. */
+    putSnapshot: function (situationId, data, ts) {
+      return run(['snapshots'], 'readwrite', function (tx) {
+        var st = tx.objectStore('snapshots');
+        st.add({ situationId: situationId, ts: ts || Date.now(), data: data });
+        var keys = [];
+        var cur = st.index('bySituation').openCursor(IDBKeyRange.only(situationId));
+        cur.onsuccess = function (ev) {
+          var c = ev.target.result;
+          if (c) { keys.push(c.primaryKey); c.continue(); return; }
+          var extra = keys.length - C.SNAPSHOTS_PER_SITUATION;
+          for (var i = 0; i < extra; i++) st.delete(keys[i]);
+        };
+      });
+    },
+    snapshotsOf: function (situationId) {
+      var out = [];
+      return run(['snapshots'], 'readonly', function (tx) {
+        var cur = tx.objectStore('snapshots').index('bySituation').openCursor(IDBKeyRange.only(situationId));
+        cur.onsuccess = function (ev) {
+          var c = ev.target.result;
+          if (c) { out.push(c.value); c.continue(); }
+        };
+      }).then(function () { return out; });
+    },
+    dropSnapshots: function (situationId) {
+      return run(['snapshots'], 'readwrite', function (tx) {
+        var st = tx.objectStore('snapshots');
+        var cur = st.index('bySituation').openCursor(IDBKeyRange.only(situationId));
+        cur.onsuccess = function (ev) {
+          var c = ev.target.result;
+          if (c) { st.delete(c.primaryKey); c.continue(); }
+        };
       });
     },
 
@@ -1784,6 +1884,7 @@ var Storage = (function () {
   var dirtySits = Object.create(null);   // id -> true
   var removedSits = Object.create(null); // id -> true
   var dirtySettings = false;
+  var lastSnap = Object.create(null);     // id ситуации -> когда снимали
   var dirtyForms = Object.create(null);   // id заготовки -> true
   var removedForms = Object.create(null); // id заготовки -> true
   var histPending = Object.create(null); // "sid|path" -> запись журнала
@@ -1836,6 +1937,9 @@ var Storage = (function () {
 
   function flush() {
     schedule.cancel();
+    /* Стоп-кран второй вкладки: раздел 11 ТЗ. Правки остаются в памяти
+       и в очереди, но в базу не идут - иначе две вкладки затрут друг друга. */
+    if (typeof Tabs !== 'undefined' && !Tabs.canWrite()) return Promise.resolve();
     if (writing) { rewriteAfter = true; return Promise.resolve(); }
     var batch = collect();
     var empty = !batch.situations.length && !batch.removed.length && !batch.meta.length &&
@@ -1851,8 +1955,11 @@ var Storage = (function () {
 
     writing = true;
     setState('saving');
+    var snapped = batch.situations.map(function (x) { return x.id; });
     return adapter.write(batch).then(function () {
       writing = false;
+      if (typeof Tabs !== 'undefined') Tabs.announce();   // объявляем запись соседним вкладкам
+      snapped.forEach(function (sid) { Storage.snapshot(sid); });
       if (rewriteAfter) { rewriteAfter = false; return flush(); }
       setState(hasPending() ? 'dirty' : 'saved');
     }).catch(function (err) {
@@ -1934,7 +2041,30 @@ var Storage = (function () {
       return true;
     },
 
+    /* Мягкое удаление: ситуация уходит в корзину на 30 дней.
+       Раздел 11 ТЗ. Стереть насовсем можно из корзины. */
     remove: function (id) {
+      var s = find(id);
+      if (!s || s.deletedAt) return false;
+      s.deletedAt = U.now();
+      s.updatedAt = U.now();
+      dirtySits[id] = true;
+      markDirty();
+      return true;
+    },
+
+    restore: function (id) {
+      var s = find(id);
+      if (!s || !s.deletedAt) return false;
+      s.deletedAt = 0;
+      s.updatedAt = U.now();
+      dirtySits[id] = true;
+      markDirty();
+      return true;
+    },
+
+    /* Окончательное удаление: из корзины или при чистке по сроку. */
+    purge: function (id) {
       if (!root) return false;
       var i = root.situations.findIndex(function (s) { return s.id === id; });
       if (i < 0) return false;
@@ -2053,6 +2183,52 @@ var Storage = (function () {
        в архив не попадают, в облако не уходят. */
     readLocal: function (key) { return adapter.readLocal ? adapter.readLocal(key) : Promise.resolve(null); },
     writeLocal: function (key, value) { return adapter.writeLocal ? adapter.writeLocal(key, value) : Promise.resolve(); },
+
+    /* Перечитать состояние с диска: вторая вкладка изменила базу,
+       а на экране списка терять нечего. */
+    reload: function () {
+      if (!root) return Promise.resolve(null);
+      return LocalAdapter.init().then(function (next) {
+        root.schema = next.schema;
+        root.situations.length = 0;
+        next.situations.forEach(function (x) { root.situations.push(x); });
+        root.formulaLibrary.length = 0;
+        next.formulaLibrary.forEach(function (f) { root.formulaLibrary.push(f); });
+        emit({ type: 'external' });
+        return root;
+      });
+    },
+
+    /* Автоснимки, раздел 3.1 ТЗ. Снимок пишется не чаще, чем раз
+       в две минуты на ситуацию: снимок на каждую букву не нужен. */
+    snapshot: function (id) {
+      var s = find(id);
+      if (!s) return Promise.resolve(false);
+      var now = U.now();
+      if (lastSnap[id] && now - lastSnap[id] < C.SNAPSHOT_MS) return Promise.resolve(false);
+      lastSnap[id] = now;
+      return IDB.putSnapshot(id, U.clone(s), now).then(function () { return true; }, function () { return false; });
+    },
+    snapshotsOf: function (id) { return IDB.snapshotsOf(id); },
+
+    /* Вернуть ситуацию к состоянию снимка целиком. Прежнее состояние
+       уходит в снимки перед заменой: откат тоже должен быть обратим. */
+    restoreSnapshot: function (id, data) {
+      var s = find(id);
+      if (!s || !data) return Promise.resolve(false);
+      return IDB.putSnapshot(id, U.clone(s), U.now()).catch(function () {}).then(function () {
+        var next = Schema.normalizeSituation(U.clone(data));
+        if (!next) return false;
+        next.id = s.id;
+        next.updatedAt = U.now();
+        Object.keys(s).forEach(function (k) { if (!(k in next)) delete s[k]; });
+        Object.keys(next).forEach(function (k) { s[k] = next[k]; });
+        lastSnap[id] = 0;
+        dirtySits[id] = true;
+        markDirty();
+        return true;
+      });
+    },
 
     flush: flush,
     saveState: function () { return saveState; },
@@ -2568,6 +2744,7 @@ var Icons = (function () {
     cloud_alert: '<path d="M7 18a4 4 0 010-8 5.5 5.5 0 0110.5-1A3.9 3.9 0 0121 13a4 4 0 01-4 5z"/><path d="M12 11v3M12 16.5v.5"/>',
     star: '<path d="M12 4l2.3 4.9 5.2.7-3.8 3.7.9 5.3-4.6-2.6-4.6 2.6.9-5.3L4.5 9.6l5.2-.7z"/>',
     arrow: '<path d="M4 12h14M13 7l5 5-5 5"/>',
+    play: '<path d="M7 5l11 7-11 7z"/>',
     broken: '<path d="M4 12h5M15 12h5"/><path d="M11 7l-1 5 3-1-1 5"/>',
     star_on: '<path d="M12 4l2.3 4.9 5.2.7-3.8 3.7.9 5.3-4.6-2.6-4.6 2.6.9-5.3L4.5 9.6l5.2-.7z" fill="currentColor"/>'
   };
@@ -2756,22 +2933,146 @@ var Roles = {
 /* ---------------------------------------------------------------------
    10. Архив: сборка файла, слияние при импорте
    --------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------
+   9и. Вторая вкладка. Раздел 11 ТЗ: механика «стоп-тормоз» как
+   в «А что потом?». Там она построена на событии storage, здесь
+   хранилище другое, поэтому вкладки объявляют о записи через
+   BroadcastChannel. Смысл тот же и он не в синхронизации: две вкладки
+   пишут в одну базу и молча затирают правки друг друга. Поэтому
+   вкладка, узнавшая о чужой записи, замораживает свою и говорит об
+   этом вслух, а не пытается слиться.
+   --------------------------------------------------------------------- */
+var Tabs = {
+  ch: null,
+  locked: false,
+  onLock: null,
+  onRemote: null,
+  id: U.id('tab_'),
+
+  start: function () {
+    try {
+      if (typeof BroadcastChannel !== 'function') return false;   // поддержки нет - работаем без нее
+      Tabs.ch = new BroadcastChannel(C.TAB_CHANNEL);
+      Tabs.ch.onmessage = function (e) {
+        var d = e && e.data;
+        if (!d || d.from === Tabs.id || d.type !== 'wrote') return;
+        Tabs.remote();
+      };
+      return true;
+    } catch (e) { return false; }
+  },
+
+  /* Объявить, что эта вкладка записала в базу. */
+  announce: function () {
+    if (Tabs.locked) return;
+    try { if (Tabs.ch) Tabs.ch.postMessage({ type: 'wrote', from: Tabs.id }); } catch (e) {}
+  },
+
+  /* Пришла чужая запись. */
+  remote: function () {
+    if (Tabs.locked) return;
+    if (Tabs.onRemote && Tabs.onRemote() === 'reload') return;  // список просто перечитывает
+    Tabs.locked = true;
+    if (Tabs.onLock) Tabs.onLock();
+  },
+
+  /* Разрешена ли запись. Хранилище спрашивает это перед каждой записью. */
+  canWrite: function () { return !Tabs.locked; }
+};
+
+/* ---------------------------------------------------------------------
+   9з. Сохранность. Раздел 3.1 ТЗ.
+   Safari на iOS стирает данные сайта после семи дней без посещений.
+   Две меры на этом уровне: разовая подсказка про установку на домашний
+   экран и напоминание об экспорте. Обе - баннеры, а не окна: окно
+   человек закроет не читая, а баннер останется на глазах.
+   --------------------------------------------------------------------- */
+var Safety = {
+  /* Приложение открыто как установленное, а не как вкладка. */
+  installed: function (win) {
+    var w = win || window;
+    try {
+      if (w.navigator && w.navigator.standalone) return true;   // iOS
+      if (w.matchMedia && w.matchMedia('(display-mode: standalone)').matches) return true;
+      if (w.matchMedia && w.matchMedia('(display-mode: fullscreen)').matches) return true;
+    } catch (e) {}
+    return false;
+  },
+  /* Мобильный Safari: только там работает «Поделиться - На экран Домой». */
+  iosSafari: function (win) {
+    var w = win || window;
+    var ua = String((w.navigator && w.navigator.userAgent) || '');
+    var ios = /iPad|iPhone|iPod/.test(ua) ||
+      (/Macintosh/.test(ua) && w.navigator && w.navigator.maxTouchPoints > 1);
+    if (!ios) return false;
+    return !/CriOS|FxiOS|EdgiOS|OPiOS/.test(ua);
+  },
+  /* Показывать ли подсказку про установку: только в мобильном Safari,
+     только если не установлено и подсказку еще не убирали. */
+  needInstallHint: function (dismissed, win) {
+    if (dismissed) return false;
+    if (Safety.installed(win)) return false;
+    return Safety.iosSafari(win);
+  },
+
+  /* Сколько дней прошло с последней выгрузки архива. */
+  daysSince: function (ts, now) {
+    if (!ts) return null;
+    return Math.floor(((now || U.now()) - ts) / 86400000);
+  },
+  /* Напоминать ли об экспорте. При включенной синхронизации не напоминаем:
+     копия и так лежит на диске, это мера 4 того же раздела. */
+  needExportHint: function (lastExport, cloudConnected, hasData, now) {
+    if (!hasData || cloudConnected) return false;
+    if (!lastExport) return true;
+    return Safety.daysSince(lastExport, now) >= C.EXPORT_REMIND_DAYS;
+  }
+};
+
+/* ---------------------------------------------------------------------
+   9ж. Корзина. Раздел 11 ТЗ: 30 дней.
+   Удаленная ситуация не стирается сразу, а получает метку времени.
+   Списки берут только живые, корзина - только помеченные.
+   --------------------------------------------------------------------- */
+var Trash = {
+  alive: function (list) {
+    return (list || []).filter(function (s) { return !s.deletedAt; });
+  },
+  inTrash: function (list) {
+    return (list || []).filter(function (s) { return !!s.deletedAt; })
+      .sort(function (a, b) { return b.deletedAt - a.deletedAt; });
+  },
+  daysLeft: function (s, now) {
+    var passed = ((now || U.now()) - s.deletedAt) / 86400000;
+    return Math.max(0, Math.ceil(C.TRASH_DAYS - passed));
+  },
+  /* Что пора стереть окончательно. Считается при каждой загрузке. */
+  expired: function (list, now) {
+    var edge = (now || U.now()) - C.TRASH_DAYS * 86400000;
+    return (list || []).filter(function (s) { return s.deletedAt && s.deletedAt < edge; });
+  }
+};
+
 var Archive = {
   fileName: function () { return 'poedinok-prep-' + U.dateFile() + '.json'; },
 
-  download: function (root) {
-    var text = JSON.stringify(root, null, 2);
-    var blob = new Blob([text], { type: 'application/json' });
+  /* Одна дверь наружу для всех форматов раздела 8 ТЗ. */
+  saveFile: function (text, name, mime) {
+    var blob = new Blob([text], { type: mime || 'text/plain;charset=utf-8' });
     var url = URL.createObjectURL(blob);
     var a = document.createElement('a');
     a.href = url;
-    a.download = Archive.fileName();
+    a.download = name;
     document.body.appendChild(a);
     a.click();
     setTimeout(function () {
-      document.body.removeChild(a);
+      if (a.parentNode) a.parentNode.removeChild(a);
       URL.revokeObjectURL(url);
     }, 400);
+  },
+
+  download: function (root) {
+    Archive.saveFile(JSON.stringify(root, null, 2), Archive.fileName(), 'application/json');
   },
 
   /* Слияние: настройки остаются местными, совпадающие id получают новые.
@@ -2810,6 +3111,572 @@ var Archive = {
     });
   }
 };
+/* ---------------------------------------------------------------------
+   9е. Отчет. Раздел 8 ТЗ.
+   Содержание собирается один раз в список блоков, а HTML, RTF и Markdown
+   получаются из него разными выводами. Иначе три формата разъезжаются:
+   в одном шаг есть, в другом забыли.
+   --------------------------------------------------------------------- */
+var Report = {
+  /* Блоки: h1, h2, h3, p, kv (подпись и значение), ul, table, hr, page */
+  build: function (sit, root) {
+    var B = [];
+    var h1 = function (t) { B.push({ t: 'h1', text: t }); };
+    var h2 = function (t) { B.push({ t: 'h2', text: t }); };
+    var h3 = function (t) { B.push({ t: 'h3', text: t }); };
+    var p = function (t) { if (String(t || '').trim()) B.push({ t: 'p', text: String(t) }); };
+    var kv = function (l, v) { B.push({ t: 'kv', label: l, text: String(v == null ? '' : v) }); };
+    var ul = function (items) { if (items.length) B.push({ t: 'ul', items: items }); };
+    var page = function () { B.push({ t: 'page' }); };
+    var roles = Roles.sorted(sit.roles);
+    var nameOf = function (id) {
+      var out = '';
+      sit.roles.forEach(function (r) { if (r.id === id) out = Roles.nameOf(r); });
+      return out;
+    };
+    var dash = function (v) { return String(v || '').trim() || 'не заполнено'; };
+
+    h1(sit.title || C.TITLE_DEFAULT);
+    if (sit.context) p(sit.context);
+    p('Выгружено ' + U.dateShort(U.now()) + ', приложение «Подготовка к поединку» ' + C.APP_VERSION + '.');
+
+    var pts = Traffic.of(sit);
+    ul(pts.map(function (x) {
+      var frac = (x.total !== null && x.total > 0) ? (', ролей ' + x.done + ' из ' + x.total) : '';
+      var word = x.state === 'green' ? 'закрыт' : (x.state === 'yellow' ? 'начат' : 'не начат');
+      return x.n + '. ' + x.title + ' - ' + word + frac;
+    }));
+
+    page();
+    h2('Роли');
+    ul(roles.map(function (r) {
+      return Roles.nameOf(r) + (r.hard ? ' (трудная)' : '') + (r.interest ? ': ' + r.interest : '');
+    }));
+    if (String(sit.sourceText || '').trim()) {
+      h3('Текст ситуации');
+      p(sit.sourceText);
+    }
+
+    page();
+    h2('1. Понять ситуацию');
+    kv('Фабула', dash(sit.step1.fabula));
+    kv('Сюжет', dash(sit.step1.plot));
+    kv('Суть', dash(sit.step1.essence));
+    h3('Пересказ в трех предложениях');
+    ul(sit.step1.retell.map(function (t, i) { return (i + 1) + '. ' + dash(t); }));
+
+    page();
+    h2('2. Разобрать текст на фразы и слова');
+    var phrases = sit.step2.phrases.filter(function (x) { return String(x.quote || '').trim(); });
+    if (!phrases.length) p('Фраз не разобрано.');
+    phrases.forEach(function (ph, i) {
+      h3('Фраза ' + (i + 1) + ': ' + ph.quote);
+      if (ph.purpose) kv('Зачем эта фраза в тексте', ph.purpose);
+      C.LAYERS.forEach(function (l) {
+        var rd = ph.readings.filter(function (r) { return r.layer === l.id && String(r.text || '').trim(); });
+        var wm = ph.wordMeanings.filter(function (m) { return m.layer === l.id && String(m.text || '').trim(); });
+        if (!rd.length && !wm.length) return;
+        var items = rd.map(function (r) {
+          return (r.starred ? '* ' : '') + r.text + (String(r.use || '').trim() ? ' (в переговорах: ' + r.use + ')' : '');
+        }).concat(wm.map(function (m) { return m.word + ' - ' + m.text; }));
+        kv(l.name, '');
+        ul(items);
+      });
+    });
+    var notes = C.LAYERS.filter(function (l) { return String(sit.step2.layerNotes[l.id] || '').trim(); });
+    if (notes.length) {
+      h3('Заметки по слоям');
+      notes.forEach(function (l) { kv(l.name, sit.step2.layerNotes[l.id]); });
+    }
+
+    page();
+    h2('3. Вытащить роль на положительного героя');
+    roles.forEach(function (r) {
+      var d = Schema.step3ForRole(sit, r.id);
+      h3(Roles.nameOf(r));
+      kv('Положительный герой', dash(d.heroVersion));
+      ul(d.assumptions.filter(function (a) { return String(a.text || '').trim(); }).map(function (a) {
+        var m = [];
+        if (a.necessary) m.push('необходима');
+        if (a.sufficient) m.push('достаточна');
+        return a.text + (m.length ? ' (' + m.join(', ') + ')' : ' (без отметок: подозрительна)');
+      }));
+    });
+
+    page();
+    h2('4. Нежелательные построения и блоки');
+    var thrOut = function (list, common) {
+      list.filter(function (t) { return String(t.text || '').trim(); }).forEach(function (t) {
+        kv((common ? 'Общее: ' : '') + t.text + (t.preemptive ? ' (на упреждение)' : ''),
+          'Опасно: ' + dash(t.why) + '. Блок: ' + dash(t.block));
+      });
+    };
+    h3('Общие построения');
+    thrOut(sit.step4.common, true);
+    roles.forEach(function (r) {
+      var d = Schema.step4ForRole(sit, r.id);
+      if (!d.threats.filter(function (t) { return String(t.text || '').trim(); }).length) return;
+      h3(Roles.nameOf(r));
+      thrOut(d.threats, false);
+    });
+
+    page();
+    h2('5. Позиция мирового судьи и последствия');
+    kv('Что сказал бы мировой судья', dash(sit.step5.judgeStatement));
+    kv('Критерий', dash(sit.step5.criteria));
+    kv('Решение', dash(sit.step5.decision));
+    var nodes = sit.step5.consequences.nodes;
+    var walk = function (parent, depth) {
+      Schema.childrenOf(nodes, parent).forEach(function (nd) {
+        var marks = nd.coord.map(function (c) {
+          var L = '';
+          C.COORDS.forEach(function (z) { if (z.id === c) L = z.letter; });
+          return L;
+        }).join('');
+        var hn = '';
+        C.HORIZONS.forEach(function (h) { if (h.id === nd.horizon) hn = h.name; });
+        var sg = nd.sign === 'plus' ? '+' : '-';
+        B.push({ t: 'li', depth: depth, text: sg + ' ' + dash(nd.text) + ' [' + hn + (marks ? ', ' + marks : '') + ']' });
+        walk(nd.id, depth + 1);
+      });
+    };
+    if (nodes.length) { h3('Дерево последствий'); walk(null, 0); }
+    var pm = sit.step5.consequences.premortem.filter(function (m) { return String(m.text || '').trim(); });
+    if (pm.length) {
+      h3('Пре-мортем');
+      pm.forEach(function (m) { kv(m.text, 'Заранее: ' + dash(m.counter)); });
+    }
+
+    page();
+    h2('6. Ролевые соотношения');
+    roles.forEach(function (r) {
+      kv(Roles.nameOf(r), dash(Schema.step6ForRole(sit, r.id).helpAny));
+    });
+    var cells = [];
+    roles.forEach(function (a) {
+      roles.forEach(function (b) {
+        if (a.id === b.id) return;
+        var c = sit.step6.cells[Schema.cellKey(a.id, b.id)];
+        if (!c || c.state === 'empty') return;
+        var st = '';
+        C.CELL_STATES.forEach(function (x) { if (x.id === c.state) st = x.name; });
+        cells.push([Roles.nameOf(a), Roles.nameOf(b), st,
+          String(c.helpOverride || '').trim() || String(c.notes || '').trim() || '']);
+      });
+    });
+    if (cells.length) {
+      h3('Матрица соотношений');
+      B.push({ t: 'table', head: ['Моя роль', 'Соперник', 'Состояние', 'Что особенного'], rows: cells });
+    }
+
+    page();
+    h2('7. Формулы');
+    var fmOut = function (list) {
+      C.FORMULA_TYPES.forEach(function (ty) {
+        var items = list.filter(function (f) { return f.type === ty.id && String(f.text || '').trim(); });
+        if (!items.length) return;
+        kv(ty.name, '');
+        ul(items.map(function (f) { return f.text; }));
+      });
+    };
+    h3('Общие формулы');
+    fmOut(sit.step7.common);
+    roles.forEach(function (r) {
+      var d = Schema.step7ForRole(sit, r.id);
+      if (!d.formulas.filter(function (f) { return String(f.text || '').trim(); }).length) return;
+      h3(Roles.nameOf(r));
+      fmOut(d.formulas);
+    });
+
+    page();
+    h2('8. Первая фраза');
+    roles.forEach(function (r) {
+      var d = Schema.step8ForRole(sit, r.id);
+      h3(Roles.nameOf(r));
+      kv('Какие задать роли', dash(d.roleAssignment));
+      kv('Цель на раунд', dash(d.roundGoal));
+      kv('Первая фраза', dash(d.firstPhrase));
+      if (String(d.firstPhrase || '').trim()) {
+        p(U.len(d.firstPhrase) + ' знаков, около ' + U.seconds(U.len(d.firstPhrase)) + ' секунд речи.');
+      }
+    });
+
+    page();
+    h2('9. Стратегия связанных раундов');
+    kv('Общая стратегия', dash(sit.step9.strategy));
+    sit.step9.rounds.forEach(function (r, i) {
+      h3('Раунд ' + r.n + (r.myRoleId ? ' - роль «' + nameOf(r.myRoleId) + '»' : ''));
+      kv('Цель', dash(r.goal));
+      if (i < sit.step9.rounds.length - 1) kv('Связка со следующим', dash(r.carryOver));
+      kv('Если не выйдет', dash(r.ifFails));
+    });
+
+    var qs = (sit.secondQuestions || []).filter(function (q) { return String(q.text || '').trim(); });
+    if (qs.length) {
+      page();
+      h2('Вопросы секунданта');
+      qs.forEach(function (q) {
+        kv(q.text + (q.confident ? ' (отвечаю уверенно)' : ' (без уверенного ответа)'), dash(q.answer));
+      });
+    }
+    var cm = (sit.comments || []).filter(function (c) { return String(c.text || '').trim(); });
+    if (cm.length) {
+      page();
+      h2('Комментарии');
+      cm.forEach(function (c) {
+        kv(Comments.locate(c.path).label + (c.resolved ? ' (снято)' : ''), c.text);
+      });
+    }
+    return B;
+  },
+
+  /* Самодостаточный HTML: стили внутри, ни одной внешней ссылки.
+     Он же идет на печать, поэтому правила печати лежат тут же. */
+  toHtml: function (sit, root) {
+    var B = Report.build(sit, root);
+    var e = U.esc;
+    var body = B.map(function (b) {
+      if (b.t === 'h1') return '<h1>' + e(b.text) + '</h1>';
+      if (b.t === 'h2') return '<h2>' + e(b.text) + '</h2>';
+      if (b.t === 'h3') return '<h3>' + e(b.text) + '</h3>';
+      if (b.t === 'p') return '<p>' + e(b.text).replace(/\n/g, '<br>') + '</p>';
+      if (b.t === 'kv') return '<p class="kv"><b>' + e(b.label) + '</b>' +
+        (String(b.text || '').trim() ? ': ' + e(b.text).replace(/\n/g, '<br>') : '') + '</p>';
+      if (b.t === 'ul') return '<ul>' + b.items.map(function (x) { return '<li>' + e(x) + '</li>'; }).join('') + '</ul>';
+      if (b.t === 'li') return '<div class="tree" style="margin-left:' + (b.depth * 18) + 'px">' + e(b.text) + '</div>';
+      if (b.t === 'table') return '<table><thead><tr>' +
+        b.head.map(function (x) { return '<th>' + e(x) + '</th>'; }).join('') + '</tr></thead><tbody>' +
+        b.rows.map(function (r) {
+          return '<tr>' + r.map(function (x) { return '<td>' + e(x) + '</td>'; }).join('') + '</tr>';
+        }).join('') + '</tbody></table>';
+      if (b.t === 'page') return '<div class="page"></div>';
+      return '';
+    }).join('\n');
+
+    return '<!doctype html><html lang="ru"><head><meta charset="utf-8">' +
+      '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+      '<title>' + e(sit.title || C.TITLE_DEFAULT) + '</title><style>' +
+      'body{font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;' +
+      'color:#16191d;background:#fff;max-width:820px;margin:0 auto;padding:28px 20px 60px}' +
+      'h1{font-size:26px;margin:0 0 6px}h2{font-size:21px;margin:26px 0 8px;border-bottom:1px solid #d8dde3;padding-bottom:4px}' +
+      'h3{font-size:17px;margin:18px 0 6px}p{margin:0 0 8px}.kv{margin:0 0 6px}' +
+      'ul{margin:4px 0 10px 22px;padding:0}li{margin:0 0 4px}' +
+      '.tree{margin:2px 0;font-size:15px}' +
+      'table{border-collapse:collapse;width:100%;margin:8px 0 14px;font-size:14px}' +
+      'th,td{border:1px solid #d8dde3;padding:6px 8px;text-align:left;vertical-align:top}' +
+      'th{background:#f2f4f7}.page{height:0}' +
+      '@media print{body{max-width:none;padding:0;font-size:12pt}' +
+      '.page{page-break-before:always;height:0}' +
+      'h2{page-break-after:avoid}h3{page-break-after:avoid}tr{page-break-inside:avoid}' +
+      '@page{margin:18mm 14mm;}}' +
+      '</style></head><body>' + body +
+      '<hr style="margin-top:30px;border:0;border-top:1px solid #d8dde3">' +
+      '<p style="color:#6b7480;font-size:13px">' + e(sit.title || C.TITLE_DEFAULT) + ' &middot; ' +
+      e(U.dateShort(U.now())) + '</p>' +
+      '</body></html>';
+  },
+
+  /* Markdown для Obsidian. */
+  toMd: function (sit, root) {
+    var B = Report.build(sit, root);
+    var out = [];
+    B.forEach(function (b) {
+      if (b.t === 'h1') out.push('# ' + b.text, '');
+      else if (b.t === 'h2') out.push('## ' + b.text, '');
+      else if (b.t === 'h3') out.push('### ' + b.text, '');
+      else if (b.t === 'p') out.push(b.text, '');
+      else if (b.t === 'kv') out.push('**' + b.label + '**' + (String(b.text || '').trim() ? ': ' + b.text : ''), '');
+      else if (b.t === 'ul') { b.items.forEach(function (x) { out.push('- ' + x); }); out.push(''); }
+      else if (b.t === 'li') out.push(new Array(b.depth + 1).join('  ') + '- ' + b.text);
+      else if (b.t === 'table') {
+        out.push('| ' + b.head.join(' | ') + ' |');
+        out.push('|' + b.head.map(function () { return '---'; }).join('|') + '|');
+        b.rows.forEach(function (r) { out.push('| ' + r.join(' | ') + ' |'); });
+        out.push('');
+      } else if (b.t === 'page') out.push('');
+    });
+    return out.join('\n');
+  },
+
+  /* RTF. Кириллица уходит escape-последовательностями \uNNNN?, как в ТЗ:
+     так документ открывается одинаково в Word, Pages и Google Docs. */
+  rtfText: function (str) {
+    var out = '';
+    var t = String(str == null ? '' : str);
+    for (var i = 0; i < t.length; i++) {
+      var ch = t.charAt(i), code = t.charCodeAt(i);
+      if (ch === '\\') out += '\\\\';
+      else if (ch === '{') out += '\\{';
+      else if (ch === '}') out += '\\}';
+      else if (ch === '\n') out += '\\par ';
+      else if (code < 128) out += ch;
+      else out += '\\u' + (code > 32767 ? code - 65536 : code) + '?';
+    }
+    return out;
+  },
+  toRtf: function (sit, root) {
+    var B = Report.build(sit, root);
+    var T = Report.rtfText;
+    var out = ['{\\rtf1\\ansi\\ansicpg1251\\deff0{\\fonttbl{\\f0\\fnil\\fcharset204 Calibri;}}\\fs22'];
+    B.forEach(function (b) {
+      if (b.t === 'h1') out.push('{\\pard\\sa180\\b\\fs40 ' + T(b.text) + '\\par}');
+      else if (b.t === 'h2') out.push('{\\pard\\sb280\\sa140\\b\\fs30 ' + T(b.text) + '\\par}');
+      else if (b.t === 'h3') out.push('{\\pard\\sb200\\sa100\\b\\fs24 ' + T(b.text) + '\\par}');
+      else if (b.t === 'p') out.push('{\\pard\\sa120 ' + T(b.text) + '\\par}');
+      else if (b.t === 'kv') out.push('{\\pard\\sa100{\\b ' + T(b.label) + '}' +
+        (String(b.text || '').trim() ? ': ' + T(b.text) : '') + '\\par}');
+      else if (b.t === 'ul') b.items.forEach(function (x) {
+        out.push('{\\pard\\fi-220\\li440\\sa60\\bullet\\tab ' + T(x) + '\\par}');
+      });
+      else if (b.t === 'li') out.push('{\\pard\\li' + (440 + b.depth * 300) + '\\sa40 ' + T(b.text) + '\\par}');
+      else if (b.t === 'table') {
+        var widths = [], step = Math.floor(9000 / b.head.length), k;
+        for (k = 0; k < b.head.length; k++) widths.push((k + 1) * step);
+        var row = function (cells, bold) {
+          var r = '{\\trowd\\trgaph80';
+          for (k = 0; k < widths.length; k++) r += '\\clbrdrt\\brdrs\\clbrdrl\\brdrs\\clbrdrb\\brdrs\\clbrdrr\\brdrs\\cellx' + widths[k];
+          for (k = 0; k < cells.length; k++) r += '\\intbl ' + (bold ? '{\\b ' : '') + T(cells[k]) + (bold ? '}' : '') + '\\cell';
+          return r + '\\row}';
+        };
+        out.push(row(b.head, true));
+        b.rows.forEach(function (r) { out.push(row(r, false)); });
+      } else if (b.t === 'page') out.push('{\\pard\\page\\par}');
+    });
+    out.push('}');
+    return out.join('\n');
+  },
+
+  /* Печать. Отчет уходит в отдельный кадр и печатается оттуда:
+     так на бумагу попадает все содержание разом, без свернутых шагов
+     и без навигации, с разрывом страницы перед каждым шагом. */
+  print: function (sit, root) {
+    var html = Report.toHtml(sit, root);
+    var frame = document.createElement('iframe');
+    frame.setAttribute('aria-hidden', 'true');
+    frame.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden';
+    document.body.appendChild(frame);
+    var done = false;
+    var go = function () {
+      if (done) return;
+      done = true;
+      try {
+        frame.contentWindow.focus();
+        frame.contentWindow.print();
+      } catch (e) { /* печать могли запретить */ }
+      setTimeout(function () { if (frame.parentNode) frame.parentNode.removeChild(frame); }, 1000);
+    };
+    frame.onload = go;
+    try {
+      var d = frame.contentWindow.document;
+      d.open();
+      d.write(html);
+      d.close();
+    } catch (e) {
+      if (frame.parentNode) frame.parentNode.removeChild(frame);
+      return false;
+    }
+    setTimeout(go, 300);   // если onload не пришел
+    return true;
+  },
+
+  fileName: function (sit, ext) {
+    var t = String(sit.title || C.TITLE_DEFAULT).replace(/[\\/:*?"<>|]+/g, ' ').replace(/\s+/g, ' ').trim();
+    return U.cut(t, 60) + ' - ' + U.dateFile() + '.' + ext;
+  }
+};
+
+/* ---------------------------------------------------------------------
+   9д. Репетиция. Раздел 7 ТЗ. Чистая часть: время и содержание карточки.
+   Часы считаются по системному времени, а не сложением тиков: вкладка
+   в фоне тикает как попало, а раунд должен кончиться вовремя.
+   --------------------------------------------------------------------- */
+var Rehearsal = {
+  /* Оставшееся время. st = { total, startedAt, elapsed, running } */
+  left: function (st, now) {
+    var spent = st.elapsed + (st.running ? Math.max(0, (now || U.now()) - st.startedAt) : 0);
+    return Math.max(0, st.total - Math.floor(spent / 1000));
+  },
+  clock: function (sec) {
+    var m = Math.floor(sec / 60), s = sec % 60;
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  },
+  /* Какой сигнал пора подать при переходе через границу. */
+  signalAt: function (prevLeft, left) {
+    if (prevLeft > 0 && left === 0) return 'end';
+    if (prevLeft > C.WARN_SECONDS && left <= C.WARN_SECONDS) return 'warn';
+    return '';
+  },
+
+  /* Формулы роли по типам: общий уровень и уровень роли вместе. */
+  formulasByType: function (sit, roleId) {
+    var out = [];
+    C.FORMULA_TYPES.forEach(function (t) {
+      var items = [];
+      var take = function (list, common) {
+        (list || []).forEach(function (f) {
+          if (f && f.type === t.id && String(f.text || '').trim()) items.push({ f: f, common: common });
+        });
+      };
+      take((sit.step7 || {}).common, true);
+      take(((sit.step7 || {}).byRole || {})[roleId] && sit.step7.byRole[roleId].formulas, false);
+      if (items.length) out.push({ type: t, items: items });
+    });
+    return out;
+  },
+
+  /* Случайный вопрос секунданта из этой ситуации. Приложение ничего
+     не оценивает: оно только достает вопрос. */
+  randomQuestion: function (sit, rnd) {
+    var list = (sit.secondQuestions || []).filter(function (q) { return String(q.text || '').trim(); });
+    if (!list.length) return null;
+    return list[Math.floor((rnd === undefined ? Math.random() : rnd) * list.length) % list.length];
+  },
+
+  /* Самопроверка «пересказать из любого места», раздел 5.2 ТЗ:
+     случайное предложение текста ситуации, дальше человек говорит вслух. */
+  randomSentence: function (sit, rnd) {
+    var list = Schema.sentences(sit.sourceText);
+    if (!list.length) return null;
+    return list[Math.floor((rnd === undefined ? Math.random() : rnd) * list.length) % list.length];
+  }
+};
+
+/* ---------------------------------------------------------------------
+   9г. Звук репетиции. Раздел 7 и пункт 14.2 ТЗ.
+
+   Механика перенесена из `tournament-checkin` v0.9.3, как велит пункт
+   14.2, и сводится к одному наблюдению: беззвучный переключатель
+   айфона глушит WebAudio, но не глушит медийный канал. Поэтому сигнал
+   синтезируется в WAV, кладется в data-адрес и играет через обычный
+   HTMLAudio. Разблокировка обязательна: первый запуск делается тихим
+   и по касанию, иначе браузер не даст играть потом.
+
+   WebAudio остался запасным путем, вибрация идет вдобавок.
+
+   Оговорка, честно перенесенная вместе с решением: в паспорте
+   `tournament-checkin` этот звук помечен как требующий боевой проверки
+   на реальном айфоне, и такая проверка там не проводилась. Здесь она
+   тоже не проводилась - это первый пункт приемки 0.8.
+   --------------------------------------------------------------------- */
+var Sound = {
+  ctx: null,
+  bank: {},
+  ready: false,
+
+  /* Синтез WAV: части вида [частота, длительность]; нулевая частота - пауза. */
+  wav: function (parts) {
+    var sr = 22050, total = 0, i, j;
+    for (i = 0; i < parts.length; i++) total += Math.round(parts[i][1] * sr);
+    var data = new Int16Array(total), pos = 0;
+    for (i = 0; i < parts.length; i++) {
+      var freq = parts[i][0];
+      var cnt = Math.round(parts[i][1] * sr);
+      var fade = Math.min(Math.round(0.008 * sr), Math.floor(cnt / 2));
+      for (j = 0; j < cnt; j++) {
+        var amp = freq === 0 ? 0 : 0.85;
+        if (j < fade) amp = amp * j / fade;
+        if (j > cnt - fade) amp = amp * (cnt - j) / fade;
+        data[pos + j] = Math.round(Math.sin(2 * Math.PI * freq * j / sr) * amp * 32767);
+      }
+      pos += cnt;
+    }
+    var bytes = new Uint8Array(44 + data.length * 2);
+    var dv = new DataView(bytes.buffer);
+    var wstr = function (off, str) {
+      for (var k = 0; k < str.length; k++) bytes[off + k] = str.charCodeAt(k);
+    };
+    wstr(0, 'RIFF'); dv.setUint32(4, 36 + data.length * 2, true); wstr(8, 'WAVE');
+    wstr(12, 'fmt '); dv.setUint32(16, 16, true); dv.setUint16(20, 1, true);
+    dv.setUint16(22, 1, true); dv.setUint32(24, sr, true); dv.setUint32(28, sr * 2, true);
+    dv.setUint16(32, 2, true); dv.setUint16(34, 16, true);
+    wstr(36, 'data'); dv.setUint32(40, data.length * 2, true);
+    new Uint8Array(bytes.buffer, 44).set(new Uint8Array(data.buffer));
+    var bin = '', CH = 8192;
+    for (i = 0; i < bytes.length; i += CH) {
+      bin += String.fromCharCode.apply(null, bytes.subarray(i, Math.min(i + CH, bytes.length)));
+    }
+    return 'data:audio/wav;base64,' + btoa(bin);
+  },
+
+  /* Две части сигнала: предупреждение за минуту и конец раунда.
+     Конец звучит ниже и длиннее: его нельзя перепутать с предупреждением. */
+  PARTS: {
+    warn: [[880, 0.12], [0, 0.05], [880, 0.12]],
+    end: [[520, 0.28], [0, 0.06], [392, 0.45]]
+  },
+
+  /* Разблокировка по касанию. Без нее айфон не даст играть звук потом. */
+  unlock: function () {
+    if (Sound.ready) { Sound.resume(); return; }
+    try {
+      var k;
+      for (k in Sound.PARTS) {
+        if (!Object.prototype.hasOwnProperty.call(Sound.PARTS, k)) continue;
+        var a = new Audio(Sound.wav(Sound.PARTS[k]));
+        a.preload = 'auto';
+        Sound.bank[k] = a;
+        (function (au) {
+          au.muted = true;
+          var pr = au.play();
+          if (pr && pr.then) {
+            pr.then(function () { au.pause(); au.currentTime = 0; au.muted = false; },
+              function () { au.muted = false; });
+          } else { au.muted = false; }
+        })(a);
+      }
+      Sound.ready = true;
+    } catch (e) { Sound.ready = false; }
+    Sound.resume();
+  },
+
+  resume: function () {
+    try {
+      if (!Sound.ctx) {
+        var AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) Sound.ctx = new AC();
+      }
+      if (Sound.ctx && Sound.ctx.state === 'suspended') Sound.ctx.resume();
+    } catch (e) { /* без звука репетиция все равно идет */ }
+  },
+
+  /* Запасной путь: чистый WebAudio. Беззвучный переключатель его глушит. */
+  tone: function (freq, dur, delay) {
+    if (!Sound.ctx) return;
+    try {
+      var osc = Sound.ctx.createOscillator();
+      var gain = Sound.ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      gain.gain.value = 0.25;
+      osc.connect(gain);
+      gain.connect(Sound.ctx.destination);
+      var t = Sound.ctx.currentTime + (delay || 0);
+      osc.start(t);
+      osc.stop(t + dur);
+    } catch (e) { /* не критично */ }
+  },
+  fallback: function (kind) {
+    if (kind === 'end') { Sound.tone(520, 0.3); Sound.tone(392, 0.45, 0.34); }
+    else { Sound.tone(880, 0.12); Sound.tone(880, 0.12, 0.17); }
+  },
+
+  play: function (kind) {
+    var a = Sound.ready ? Sound.bank[kind] : null;
+    if (a) {
+      try {
+        a.currentTime = 0;
+        var pr = a.play();
+        if (pr && pr.catch) pr.catch(function () { Sound.fallback(kind); });
+      } catch (e) { Sound.fallback(kind); }
+    } else {
+      Sound.fallback(kind);
+    }
+    try {
+      if (navigator.vibrate) navigator.vibrate(kind === 'end' ? [120, 80, 120] : 90);
+    } catch (e) { /* не критично */ }
+  }
+};
+
 /* ---------------------------------------------------------------------
    9в. Комментарии к полям. Раздел 5.12 ТЗ.
    Секундант не правит ваши формулировки, он их оспаривает, поэтому
@@ -3248,6 +4115,7 @@ var View = (function () {
      ничего. Ситуация приходит через замыкание отрисовки, потому что
      field() зовут из двух десятков мест. */
   var CUR = null;   // ситуация, которую рисуем прямо сейчас
+  var SELF = '';    // предложение самопроверки: живет на сеанс, в данные не входит
 
   function commentDot(path) {
     if (!CUR || !path) return '';
@@ -3267,7 +4135,8 @@ var View = (function () {
   /* ---------------- экран 1: список ситуаций ---------------- */
 
   function screenList(root, state) {
-    var list = root.situations.slice().sort(function (a, b) { return (b.updatedAt || 0) - (a.updatedAt || 0); });
+    var list = Trash.alive(root.situations).slice().sort(function (a, b) { return (b.updatedAt || 0) - (a.updatedAt || 0); });
+    var trashed = Trash.inTrash(root.situations);
     var cards = list.map(function (s) {
       var roles = s.roles.length;
       return '<div class="card sit-card">' +
@@ -3289,6 +4158,7 @@ var View = (function () {
       saveIndicator(state) + cloudBtn(Cloud.state()) + themeBtn(root.settings.theme) +
       '</div></header>' +
       '<div class="wrap">' +
+      banners(root) +
       '<div class="row" style="margin:16px 0">' +
       '<button class="btn btn-primary" data-act="new-sit">' + Icons('plus') + 'Новая ситуация</button>' +
       '<span class="spacer"></span>' +
@@ -3303,9 +4173,49 @@ var View = (function () {
       '<div class="row">' +
       '<button class="btn" data-act="export">' + Icons('down_tray') + 'Выгрузить архив</button>' +
       '<button class="btn" data-act="import">' + Icons('up_tray') + 'Загрузить архив</button>' +
+      (trashed.length
+        ? '<span class="spacer"></span><button class="btn" data-act="trash">' + Icons('trash') +
+          'Корзина <span class="muted">' + trashed.length + '</span></button>'
+        : '') +
       '</div></div>' +
       '<div class="muted" style="text-align:center;margin-top:20px">Данные хранятся только в этом браузере.</div>' +
       '</div>';
+  }
+
+  /* Баннеры сохранности. Раздел 3.1 ТЗ: баннер в шапке, не модальное окно. */
+  var SAFE = { installHint: false, lastExport: 0, hintOff: false };
+
+  function banners(root) {
+    var out = '';
+    /* Условие считается на месте, а не заранее: ситуации появляются и
+       исчезают, а баннер должен отвечать текущему состоянию. */
+    var hasData = Trash.alive(root.situations).length > 0;
+    var need = Safety.needExportHint(SAFE.lastExport, root.settings.cloud.connected, hasData, U.now());
+    var days = (need && SAFE.lastExport) ? Safety.daysSince(SAFE.lastExport, U.now()) : null;
+    if (Tabs.locked) {
+      out += '<div class="banner"><span class="bt">' +
+        '<b>Данные изменены в другой вкладке приложения.</b> Правки здесь больше не сохраняются, ' +
+        'чтобы две вкладки не затерли работу друг друга. Выгрузите архив, если тут есть несохраненное, ' +
+        'и обновите страницу.' +
+        '</span><button class="btn btn-sm" data-act="export">Выгрузить архив</button>' +
+        '<button class="btn btn-sm btn-primary" data-act="reload">Обновить</button></div>';
+    }
+    if (SAFE.installHint) {
+      out += '<div class="banner calm"><span class="bt">' +
+        '<b>Поставьте приложение на домашний экран.</b> Нажмите «Поделиться» внизу Safari и выберите «На экран Домой». ' +
+        'Safari стирает данные сайтов, которыми не пользовались неделю; установленное приложение под эту чистку не попадает.' +
+        '</span><button class="btn btn-sm" data-act="hint-off">Понятно</button></div>';
+    }
+    if (need) {
+      out += '<div class="banner"><span class="bt">' +
+        (days === null
+          ? '<b>Архив ни разу не выгружался.</b> '
+          : '<b>Архив выгружался ' + days + ' ' + plural(days, 'день', 'дня', 'дней') + ' назад.</b> ') +
+        'Данные лежат только в этом браузере. Выгрузите архив или включите синхронизацию с Диском.' +
+        '</span><button class="btn btn-sm" data-act="export">Выгрузить</button>' +
+        '<button class="btn btn-sm" data-act="cloud">Синхронизация</button></div>';
+    }
+    return out;
   }
 
   function plural(n, one, few, many) {
@@ -3440,7 +4350,16 @@ var View = (function () {
       '<div class="sep"></div>' +
       '<h3 style="margin-bottom:4px">Пересказ в трех предложениях</h3>' +
       '<div class="hint">По ' + C.RETELL_MAX + ' символов на предложение.</div>' +
-      ret;
+      ret +
+      '<div class="sep"></div>' +
+      '<h3 style="margin-bottom:4px">Пересказать из любого места</h3>' +
+      '<div class="hint">Шаблон требует уметь пересказать ситуацию не только целиком. Кнопка достает случайное предложение текста, дальше вы продолжаете вслух. Приложение ничего не оценивает и не записывает.</div>' +
+      (SELF ? '<div class="self-box"><b>Продолжите отсюда:</b><div class="q" style="margin-top:6px">' +
+        U.esc(SELF) + '</div></div>' : '') +
+      '<div class="row"><button class="btn" data-act="self-check">' + Icons('wand', 18) +
+      (SELF ? 'Другое место' : 'Проверить себя') + '</button>' +
+      (SELF ? '<button class="btn btn-ghost" data-act="self-hide">Убрать</button>' : '') +
+      '</div>';
   }
 
   /* ---- шаг 2 ---- */
@@ -4257,13 +5176,16 @@ var View = (function () {
 
   function formulaCard(sit, roleId, f, path, i, level) {
     var text = String(f.text || '').trim();
+    /* Кнопка «В копилку» рисуется сразу, но прячется у пустой формулы:
+       так она появляется во время набора, а не после перерисовки шага. */
     return '<div class="fm" data-fm="' + f.id + '">' +
       '<div class="fm-h">' +
       typeSelect('data-ftype', path + '.' + i + '.type', f.type) +
       (f.originId ? '<span class="fm-o">из копилки</span>' : '') +
       '<span class="spacer"></span>' +
-      (text && !f.originId
-        ? '<button class="btn btn-sm" data-act="to-lib" data-level="' + level + '" data-i="' + i + '">В копилку</button>' : '') +
+      (f.originId ? '' :
+        '<button class="btn btn-sm" data-act="to-lib" data-level="' + level + '" data-i="' + i +
+        '" data-fm-send="' + f.id + '"' + (text ? '' : ' hidden') + '>В копилку</button>') +
       '<button class="btn btn-ghost btn-icon" data-act="del-formula" data-level="' + level + '" data-i="' + i +
       '" title="Удалить формулу" aria-label="Удалить формулу">' + Icons('trash') + '</button>' +
       '</div>' +
@@ -4333,6 +5255,277 @@ var View = (function () {
       copyFrom(sit, role.id, 'first') +
       '<div class="row"><button class="btn" data-act="preempt-list">' + Icons('doc', 18) + 'Блоки на упреждение' +
       (pre ? ' <span class="muted">' + pre + '</span>' : '') + '</button></div>';
+  }
+
+  /* ---------------- экран 8: разбор после поединка ---------------- */
+
+  /* Все формулы ситуации подряд: разбор идет по ним, а не по ролям.
+     В бою формула либо сработала, либо нет, и роль тут ни при чем. */
+  function afterFormulas(sit) {
+    var out = [];
+    (sit.step7.common || []).forEach(function (f, i) {
+      if (String(f.text || '').trim()) out.push({ f: f, path: 'step7.common.' + i, where: 'общая' });
+    });
+    Roles.sorted(sit.roles).forEach(function (r) {
+      var d = Schema.step7ForRole(sit, r.id);
+      d.formulas.forEach(function (f, i) {
+        if (String(f.text || '').trim()) {
+          out.push({ f: f, path: 'step7.byRole.' + r.id + '.formulas.' + i, where: Roles.nameOf(r) });
+        }
+      });
+    });
+    return out;
+  }
+
+  function screenAfter(root, state, view) {
+    var sit = Storage.getSituation(view.sitId);
+    if (!sit) return screenList(root, state);
+    var list = afterFormulas(sit);
+    var rows = list.map(function (x) {
+      var mark = x.f.outcome === 'worked' ? ' ok' : (x.f.outcome === 'failed' ? ' no' : '');
+      return '<div class="after-fm' + mark + '" data-af="' + x.f.id + '">' +
+        '<div class="csq-h"><span class="chip">' + U.esc(x.where) + '</span>' +
+        '<span class="muted">' + U.esc(Library.typeName(x.f.type)) + '</span>' +
+        (x.f.originId ? '<span class="fm-o">из копилки</span>' : '') +
+        '<span class="spacer"></span>' +
+        '<button class="btn btn-sm' + (x.f.outcome === 'worked' ? ' btn-primary' : '') +
+        '" data-act="outcome" data-id="' + x.f.id + '" data-v="worked">Сработала</button>' +
+        '<button class="btn btn-sm' + (x.f.outcome === 'failed' ? ' btn-danger' : '') +
+        '" data-act="outcome" data-id="' + x.f.id + '" data-v="failed">Нет</button>' +
+        '</div>' +
+        '<div class="pre">' + U.esc(x.f.text) + '</div>' +
+        '</div>';
+    }).join('');
+
+    var counted = list.filter(function (x) { return x.f.outcome; }).length;
+    var toLib = list.filter(function (x) { return x.f.outcome && x.f.originId; }).length;
+
+    return '<header class="hdr"><div class="hdr-in">' +
+      '<button class="btn btn-ghost btn-icon" data-act="back-sit" title="К ситуации" aria-label="К ситуации">' + Icons('back') + '</button>' +
+      '<div class="hdr-title"><h1>После поединка</h1>' +
+      '<div class="hdr-sub">' + U.esc(sit.title || C.TITLE_DEFAULT) + '</div></div>' +
+      saveIndicator(state) + cloudBtn(Cloud.state()) + themeBtn(root.settings.theme) +
+      '</div></header>' +
+      '<div class="wrap"><div style="height:14px"></div>' +
+      '<div class="card">' +
+      field('Что было на самом деле', 'Как прошел поединок, что сработало не так, как готовили.',
+        '<textarea rows="6" data-field="afterNotes" placeholder="Разбор своими словами">' + U.esc(sit.afterNotes) + '</textarea>',
+        'afterNotes') +
+      '</div>' +
+      '<div class="card" style="margin-top:12px">' +
+      '<div class="row" style="margin-bottom:8px"><h3 style="margin:0">Формулы в бою</h3>' +
+      '<span class="spacer"></span><span class="muted" data-af-done="1">отмечено ' + counted + ' из ' + list.length +
+      (toLib ? ', в копилку ушло ' + toLib : '') + '</span></div>' +
+      '<div class="hint">Отметка идет в копилку тем заготовкам, откуда формула взята: по ним потом видно, что работает. Формула, написанная здесь и не отправленная в копилку, считается только в этой ситуации.</div>' +
+      (rows || '<div class="muted">Формул в этой ситуации нет.</div>') +
+      '</div><div style="height:20px"></div></div>';
+  }
+
+  /* ---------------- экран 6: корзина ---------------- */
+
+  function screenTrash(root, state) {
+    var list = Trash.inTrash(root.situations);
+    var cards = list.map(function (s) {
+      var d = Trash.daysLeft(s, U.now());
+      return '<div class="card sit-card">' +
+        '<div class="sit-main">' +
+        '<div class="sit-title">' + U.esc(s.title || C.TITLE_DEFAULT) + '</div>' +
+        '<div class="muted">удалена ' + U.dateShort(s.deletedAt) + ' &middot; ' +
+        (d ? ('сотрется через ' + d + ' ' + plural(d, 'день', 'дня', 'дней')) : 'сотрется при следующем открытии') +
+        '</div></div>' +
+        '<button class="btn btn-sm" data-act="restore" data-id="' + s.id + '">Вернуть</button>' +
+        '<button class="btn btn-ghost btn-icon" data-act="purge" data-id="' + s.id +
+        '" title="Стереть насовсем" aria-label="Стереть насовсем">' + Icons('trash') + '</button>' +
+        '</div>';
+    }).join('');
+
+    return '<header class="hdr"><div class="hdr-in">' +
+      '<button class="btn btn-ghost btn-icon" data-act="back" title="К списку" aria-label="К списку">' + Icons('back') + '</button>' +
+      '<div class="hdr-title"><h1>Корзина</h1>' +
+      '<div class="hdr-sub">Удаленное хранится ' + C.TRASH_DAYS + ' дней</div></div>' +
+      saveIndicator(state) + cloudBtn(Cloud.state()) + themeBtn(root.settings.theme) +
+      '</div></header>' +
+      '<div class="wrap"><div style="height:14px"></div>' +
+      (cards || '<div class="empty">Корзина пуста.</div>') +
+      (list.length ? '<div class="row" style="margin-top:14px">' +
+        '<button class="btn btn-danger" data-act="trash-empty">Очистить корзину</button></div>' : '') +
+      '</div>';
+  }
+
+  /* ---------------- экран 7: история изменений ---------------- */
+
+  function screenHistory(root, state, view) {
+    var sit = Storage.getSituation(view.sitId);
+    if (!sit) return screenList(root, state);
+    var list = (view.history || []).slice().sort(function (a, b) { return b.ts - a.ts; });
+    var short = function (v) {
+      if (v === null || v === undefined) return 'пусто';
+      if (typeof v === 'string') return String(v).trim() ? '«' + U.cut(v, 70) + (U.len(v) > 70 ? '...' : '') + '»' : 'пусто';
+      if (typeof v === 'boolean') return v ? 'да' : 'нет';
+      if (Array.isArray(v)) return 'список из ' + v.length;
+      if (typeof v === 'object') return 'запись';
+      return String(v);
+    };
+    var snapList = (view.snaps || []).slice().sort(function (a, b) { return b.ts - a.ts; });
+    var snaps = snapList.length ? '<div class="card">' + snapList.map(function (sn, i) {
+      var t = new Date(sn.ts);
+      var hh = function (x) { return (x < 10 ? '0' : '') + x; };
+      var filled = Traffic.of(sn.data || {}).filter(function (p) { return p.state !== 'red'; }).length;
+      return '<div class="rd-row" style="cursor:default">' +
+        '<span><b>' + U.dateShort(sn.ts) + ', ' + hh(t.getHours()) + ':' + hh(t.getMinutes()) + '</b><br>' +
+        '<span class="muted">начатых шагов ' + filled + ' из 9</span></span>' +
+        '<span class="spacer"></span>' +
+        '<button class="btn btn-sm" data-act="snap-restore" data-i="' + i + '">Вернуть целиком</button>' +
+        '</div>';
+    }).join('') + '</div>' : '';
+
+    var rows = list.map(function (h, i) {
+      var place = Comments.locate(h.path);
+      var t = new Date(h.ts);
+      var hh = function (x) { return (x < 10 ? '0' : '') + x; };
+      return '<div class="rd-row" style="cursor:default">' +
+        '<span><b>' + U.esc(place.label) + '</b> ' +
+        '<span class="muted">' + U.dateShort(h.ts) + ', ' + hh(t.getHours()) + ':' + hh(t.getMinutes()) + '</span><br>' +
+        '<span class="muted">было ' + U.esc(short(h.oldValue)) + ' &rarr; стало ' + U.esc(short(h.newValue)) + '</span></span>' +
+        '<span class="spacer"></span>' +
+        '<button class="btn btn-sm" data-act="undo" data-i="' + i + '">Вернуть</button>' +
+        '</div>';
+    }).join('');
+
+    return '<header class="hdr"><div class="hdr-in">' +
+      '<button class="btn btn-ghost btn-icon" data-act="back-sit" title="К ситуации" aria-label="К ситуации">' + Icons('back') + '</button>' +
+      '<div class="hdr-title"><h1>История</h1>' +
+      '<div class="hdr-sub">' + U.esc(sit.title || C.TITLE_DEFAULT) + '</div></div>' +
+      saveIndicator(state) + cloudBtn(Cloud.state()) + themeBtn(root.settings.theme) +
+      '</div></header>' +
+      '<div class="wrap"><div style="height:14px"></div>' +
+      '<h3 style="margin:0 0 6px">Снимки состояния</h3>' +
+      '<div class="muted" style="margin-bottom:10px">Последние ' + C.SNAPSHOTS_PER_SITUATION +
+      ' состояний ситуации целиком. Возврат к снимку откатывает всю ситуацию сразу, а прежнее состояние тут же становится новым снимком.</div>' +
+      (snaps || '<div class="empty" style="margin-bottom:16px">Снимков пока нет: они появляются по ходу работы.</div>') +
+      '<div class="sep"></div>' +
+      '<h3 style="margin:0 0 6px">Отдельные правки</h3>' +
+      '<div class="muted" style="margin-bottom:10px">Последние ' + C.HISTORY_PER_SITUATION +
+      ' правок этой ситуации. «Вернуть» кладет в поле прежнее значение и само становится правкой: откат тоже можно откатить.</div>' +
+      (rows ? '<div class="card">' + rows + '</div>' : '<div class="empty">Правок пока нет.</div>') +
+      '<div style="height:20px"></div></div>';
+  }
+
+  /* ---------------- экран 5: репетиция ---------------- */
+
+  function screenRehearsal(root, state, view) {
+    var sit = Storage.getSituation(view.sitId);
+    if (!sit) return screenList(root, state);
+    var roles = Roles.sorted(sit.roles);
+    var role = null;
+    roles.forEach(function (r) { if (r.id === view.rehRole) role = r; });
+    if (!role) role = roles[0];
+    var st = view.reh;
+    var left = Rehearsal.left(st, U.now());
+    var d8 = Schema.step8ForRole(sit, role.id);
+    var rounds = (sit.step9 && sit.step9.rounds) || [];
+    var rn = Math.min(Math.max(view.rehRound || 0, 0), Math.max(0, rounds.length - 1));
+    var rd = rounds[rn] || null;
+
+    var roleOpts = roles.map(function (r) {
+      return '<option value="' + r.id + '"' + (r.id === role.id ? ' selected' : '') + '>' + U.esc(Roles.nameOf(r)) + '</option>';
+    }).join('');
+    var roundOpts = rounds.map(function (r, i) {
+      return '<option value="' + i + '"' + (i === rn ? ' selected' : '') + '>раунд ' + r.n + '</option>';
+    }).join('');
+    var minOpts = '';
+    for (var m = C.ROUND_MINUTES_MIN; m <= C.ROUND_MINUTES_MAX; m++) {
+      minOpts += '<option value="' + m + '"' + (st.total === m * 60 ? ' selected' : '') + '>' + m + ' мин</option>';
+    }
+
+    var phrase = String(d8.firstPhrase || '').trim();
+    var card = '<div class="reh-card">' +
+      '<div class="card">' +
+      '<div class="label">Первая фраза</div>' +
+      (phrase
+        ? '<div class="q">' + U.esc(phrase) + '</div><div class="muted">' + U.len(phrase) +
+          ' знаков, около ' + U.seconds(U.len(phrase)) + ' секунд речи</div>'
+        : '<div class="muted">Не написана. Шаг 8.</div>') +
+      '<div class="sep" style="margin:12px 0"></div>' +
+      '<div class="label">Цель на раунд</div>' +
+      '<div class="q">' + (String(d8.roundGoal || '').trim() ? U.esc(d8.roundGoal) : '<span class="muted">не записана</span>') + '</div>' +
+      '<div class="label" style="margin-top:10px">Какие задать роли</div>' +
+      '<div class="q">' + (String(d8.roleAssignment || '').trim() ? U.esc(d8.roleAssignment) : '<span class="muted">не записано</span>') + '</div>' +
+      (rd && String(rd.goal || '').trim()
+        ? '<div class="label" style="margin-top:10px">Цель раунда ' + rd.n + ' по стратегии</div><div class="q">' + U.esc(rd.goal) + '</div>'
+        : '') +
+      '</div></div>';
+
+    var cls = 'clock' + (left === 0 ? ' over' : (left <= C.WARN_SECONDS ? ' warn' : ''));
+
+    return '<div class="reh">' +
+      '<div class="reh-top">' +
+      '<button class="btn btn-ghost btn-icon" data-act="reh-exit" title="Выйти" aria-label="Выйти">' + Icons('close') + '</button>' +
+      '<select class="lsel" data-rehrole="1" aria-label="Роль">' + roleOpts + '</select>' +
+      (roundOpts ? '<select class="lsel" data-rehround="1" aria-label="Раунд">' + roundOpts + '</select>' : '') +
+      '<select class="lsel" data-rehmin="1" aria-label="Длительность">' + minOpts + '</select>' +
+      '<span class="spacer"></span>' +
+      '<span class="muted">' + U.esc(sit.title || C.TITLE_DEFAULT) + '</span>' +
+      '</div>' +
+      '<div class="reh-mid">' +
+      '<div class="' + cls + '" id="reh-clock">' + Rehearsal.clock(left) + '</div>' +
+      '<div class="muted" id="reh-hint">' +
+      (left === 0 ? 'Раунд кончился' : (st.running ? 'Идет' : (st.elapsed ? 'Пауза' : 'Готов к старту'))) +
+      '</div>' + card +
+      '</div>' +
+      '<div class="reh-acts">' +
+      '<button class="btn btn-primary" data-act="reh-run">' + (st.running ? 'Пауза' : 'Старт') + '</button>' +
+      '<button class="btn" data-act="reh-reset">Сброс</button>' +
+      '<button class="btn" data-act="reh-panel" data-p="formulas">Формулы</button>' +
+      '<button class="btn" data-act="reh-panel" data-p="blocks">Блоки</button>' +
+      '<button class="btn" data-act="reh-panel" data-p="question">Вопрос</button>' +
+      '</div>' +
+      (view.rehPanel ? rehPanel(sit, role, view) : '') +
+      '</div>';
+  }
+
+  /* Выдвижные панели репетиции. Раздел 7 ТЗ. */
+  function rehPanel(sit, role, view) {
+    var body = '', title = '';
+    if (view.rehPanel === 'formulas') {
+      title = 'Формулы роли «' + Roles.nameOf(role) + '»';
+      var groups = Rehearsal.formulasByType(sit, role.id);
+      body = groups.length ? groups.map(function (g) {
+        return '<div class="ftype">' + U.esc(g.type.name) + '</div>' +
+          g.items.map(function (x) {
+            return '<div class="fm" style="margin-bottom:8px">' +
+              (x.common ? '<span class="chip">общая</span> ' : '') +
+              '<span class="pre">' + U.esc(x.f.text) + '</span></div>';
+          }).join('');
+      }).join('') : '<div class="muted">Формул нет. Шаг 7.</div>';
+    } else if (view.rehPanel === 'blocks') {
+      title = 'Блоки на упреждение';
+      var pre = Schema.preemptiveOf(sit, role.id);
+      body = pre.length ? pre.map(function (x) {
+        return '<div class="thr' + (x.common ? ' thr-c' : '') + '" style="margin-bottom:8px">' +
+          (x.common ? '<span class="chip">общая</span><br>' : '') +
+          '<b>' + U.esc(x.threat.text) + '</b>' +
+          (String(x.threat.block || '').trim()
+            ? '<div style="margin-top:6px">' + U.esc(x.threat.block) + '</div>'
+            : '<div class="muted" style="margin-top:6px">Блок не написан.</div>') +
+          '</div>';
+      }).join('') : '<div class="muted">Построений с отметкой «на упреждение» нет. Шаг 4.</div>';
+    } else {
+      title = 'Вопрос секунданта';
+      var q = view.rehQuestion;
+      body = q
+        ? '<div class="qst open"><b>' + U.esc(q.text) + '</b>' +
+          (String(q.answer || '').trim()
+            ? '<div class="muted" style="margin-top:6px">Ваш ответ: ' + U.esc(q.answer) + '</div>'
+            : '<div class="muted" style="margin-top:6px">Ответа не записано. Ответьте вслух.</div>') + '</div>' +
+          '<div class="row"><button class="btn" data-act="reh-question">Другой вопрос</button></div>'
+        : '<div class="muted">Вопросов в этой ситуации нет. Раздел «Вопросы секунданта».</div>';
+    }
+    return '<div class="panel" role="dialog" aria-label="' + U.esc(title) + '">' +
+      '<div class="row" style="margin-bottom:8px"><h3 style="margin:0">' + U.esc(title) + '</h3>' +
+      '<span class="spacer"></span>' +
+      '<button class="btn btn-ghost btn-icon" data-act="reh-panel" data-p="" title="Закрыть" aria-label="Закрыть">' +
+      Icons('close') + '</button></div>' + body + '</div>';
   }
 
   /* ---------------- экран 4: «Готов?» ---------------- */
@@ -4461,6 +5654,7 @@ var View = (function () {
     var sit = Storage.getSituation(view.sitId);
     if (!sit) return screenList(root, state);
     CUR = sit;   // точки комментариев рисуются по этой ситуации
+    SELF = view.selfCheck || '';
     var roles = Roles.sorted(sit.roles);
     var role = null, i;
     for (i = 0; i < roles.length; i++) if (roles[i].id === view.roleId) role = roles[i];
@@ -4506,6 +5700,7 @@ var View = (function () {
       saveIndicator(state) + cloudBtn(Cloud.state()) + themeBtn(root.settings.theme) +
       '</div></header>' +
       '<div class="wrap">' +
+      (Tabs.locked ? banners(root) : '') +
       '<div style="margin:12px 0 4px">' + lights(sit) + '</div>' +
       (root.settings.expressMode
         ? '<div class="det-b" style="padding:6px 0 0">Экспресс-режим: показаны только поля, которые считает светофор.</div>'
@@ -4514,7 +5709,10 @@ var View = (function () {
       '<div class="botbar"><div class="row">' +
       '<button class="btn" data-act="express">' + Icons(root.settings.expressMode ? 'check' : 'wand', 18) +
       (root.settings.expressMode ? 'Экспресс-режим' : 'Экспресс') + '</button>' +
-      '<button class="btn" data-act="export">' + Icons('down_tray', 18) + 'Экспорт</button>' +
+      '<button class="btn" data-act="rehearse">' + Icons('play', 18) + 'Репетиция</button>' +
+      '<button class="btn" data-act="export-sit">' + Icons('down_tray', 18) + 'Экспорт</button>' +
+      '<button class="btn" data-act="history">' + Icons('back', 18) + 'История</button>' +
+      '<button class="btn" data-act="after">' + Icons('check', 18) + 'После поединка</button>' +
       '<span class="spacer"></span>' +
       '<button class="btn btn-primary" data-act="ready">Готов?</button>' +
       '</div></div>' +
@@ -4559,10 +5757,16 @@ var View = (function () {
     threatStatus: threatStatus,
     step6Head: step6Head,
     ready: screenReady,
+    rehearsal: screenRehearsal,
+    trash: screenTrash,
+    after: screenAfter,
+    safe: SAFE,
+    history: screenHistory,
     lights: lights,
     lightsMini: lightsMini,
     express: Express,
     comments: commentsBody,
+    rehPanel: rehPanel,
     step5Head: step5Head,
     step9Head: step9Head,
     roundRibbon: roundRibbon,
@@ -4584,6 +5788,10 @@ var App = (function () {
     screen: 'list', sitId: null, roleId: null, open: 'setup',
     s2tab: 'pass', s2layer: 'tech', s2phrase: 0,
     s6mine: null, s6theirs: null, s5view: 'list', round: 0, allRoles: false,
+    selfCheck: '',
+    rehRole: null, rehRound: 0, rehPanel: '', rehQuestion: null,
+    reh: { total: 0, startedAt: 0, elapsed: 0, running: false },
+    history: [], snaps: [],
     libType: 'all', libQuery: '', libSort: 'recent'
   };
   var mount = null;
@@ -4593,10 +5801,14 @@ var App = (function () {
 
   function render() {
     var state = Storage.saveState();
-    mount.innerHTML = (view.screen === 'situation') ? View.situation(root, state, view)
-      : (view.screen === 'ready') ? View.ready(root, state, view)
-        : (view.screen === 'library') ? View.library(root, state, view)
-          : View.list(root, state);
+    mount.innerHTML = (view.screen === 'rehearsal') ? View.rehearsal(root, state, view)
+      : (view.screen === 'situation') ? View.situation(root, state, view)
+        : (view.screen === 'ready') ? View.ready(root, state, view)
+          : (view.screen === 'library') ? View.library(root, state, view)
+            : (view.screen === 'trash') ? View.trash(root, state)
+              : (view.screen === 'history') ? View.history(root, state, view)
+                : (view.screen === 'after') ? View.after(root, state, view)
+                  : View.list(root, state);
     growAll();
   }
 
@@ -4645,6 +5857,57 @@ var App = (function () {
   }
 
   function sit() { return Storage.getSituation(view.sitId); }
+
+  /* Часы репетиции. Время считается по системным часам, а не сложением
+     тиков: вкладка в фоне тикает как попало, а раунд должен кончиться
+     вовремя. Тик только перерисовывает цифры и решает, пора ли сигналить. */
+  var rehTimer = null;
+  var rehLast = -1;
+  var wakeLock = null;
+
+  function rehTick() {
+    if (view.screen !== 'rehearsal') { rehStop(); return; }
+    var left = Rehearsal.left(view.reh, U.now());
+    var box = document.getElementById('reh-clock');
+    if (box) {
+      box.textContent = Rehearsal.clock(left);
+      box.className = 'clock' + (left === 0 ? ' over' : (left <= C.WARN_SECONDS ? ' warn' : ''));
+    }
+    if (rehLast >= 0) {
+      var sig = Rehearsal.signalAt(rehLast, left);
+      if (sig) Sound.play(sig);
+    }
+    rehLast = left;
+    if (left === 0 && view.reh.running) {
+      view.reh.running = false;
+      view.reh.elapsed = view.reh.total * 1000;
+      rehStop();
+      render();
+    }
+  }
+
+  function rehStart() {
+    rehStop();
+    rehLast = Rehearsal.left(view.reh, U.now());
+    rehTimer = setInterval(rehTick, C.TICK_MS);
+  }
+  function rehStop() {
+    if (rehTimer) { clearInterval(rehTimer); rehTimer = null; }
+  }
+
+  /* Экран не должен гаснуть посреди раунда. При отказе молча продолжаем. */
+  function keepAwake(on) {
+    try {
+      if (on) {
+        if (navigator.wakeLock && navigator.wakeLock.request && !wakeLock) {
+          navigator.wakeLock.request('screen').then(function (l) { wakeLock = l; }, function () {});
+        }
+      } else if (wakeLock) {
+        try { wakeLock.release(); } catch (e) {}
+        wakeLock = null;
+      }
+    } catch (e) { /* поддержки нет - работаем без нее */ }
+  }
 
   /* Копилка: список перерисовывается отдельно от экрана, иначе
      поле поиска теряло бы курсор на каждой букве. */
@@ -4781,6 +6044,19 @@ var App = (function () {
 
   /* Светофор считается по всей ситуации, поэтому обновляется при любой
      правке. Перерисовывается только строка точек: поле с курсором цело. */
+  /* Баннеры сохранности пересчитываются при загрузке и после выгрузки. */
+  function refreshSafety() {
+    return Promise.all([
+      Storage.readLocal('lastExport'),
+      Storage.readLocal('installHintOff')
+    ]).then(function (v) {
+      View.safe.lastExport = Number(v[0]) || 0;
+      View.safe.hintOff = !!v[1];
+      View.safe.installHint = Safety.needInstallHint(View.safe.hintOff, window);
+      return true;
+    }).catch(function () { return false; });
+  }
+
   function refreshLights() {
     var box = document.getElementById('lights');
     var s = sit();
@@ -4866,6 +6142,13 @@ var App = (function () {
     var s = sit(), role = activeRole();
     if (!box || !s || !role) return;
     box.innerHTML = View.step7Head(s, role.id);
+    /* Кнопка отправки в копилку появляется, как только у формулы есть текст */
+    Schema.ensureStep7(s);
+    var all = (s.step7.common || []).concat(Schema.step7ForRole(s, role.id).formulas);
+    all.forEach(function (f) {
+      var b = mount.querySelector('[data-fm-send="' + f.id + '"]');
+      if (b) b.hidden = !String(f.text || '').trim();
+    });
   }
 
   function refreshSource() {
@@ -4886,6 +6169,27 @@ var App = (function () {
     if (t && t.tagName === 'SELECT' && t.getAttribute('data-lsort')) {
       view.libSort = t.value;
       renderLibList();
+      return;
+    }
+    if (t && t.tagName === 'SELECT' && t.getAttribute('data-rehrole')) {
+      view.rehRole = t.value;
+      render();
+      return;
+    }
+    if (t && t.tagName === 'SELECT' && t.getAttribute('data-rehround')) {
+      view.rehRound = Number(t.value) || 0;
+      var sR = sit();
+      var rr = sR && sR.step9.rounds[view.rehRound];
+      if (rr && rr.myRoleId) view.rehRole = rr.myRoleId;   // раунд знает свою роль
+      render();
+      return;
+    }
+    if (t && t.tagName === 'SELECT' && t.getAttribute('data-rehmin')) {
+      var mins = Number(t.value) || C.ROUND_MINUTES_DEFAULT;
+      Storage.setSetting('roundMinutes', mins);
+      view.reh = { total: mins * 60, startedAt: 0, elapsed: 0, running: false };
+      rehStop();
+      render();
       return;
     }
     if (t && t.tagName === 'SELECT' && t.getAttribute('data-rcount')) {
@@ -5076,11 +6380,12 @@ var App = (function () {
       var s = Storage.getSituation(id);
       if (!s) return;
       Modal.confirm('Удалить ситуацию',
-        'Ситуация «' + (s.title || C.TITLE_DEFAULT) + '» будет удалена вместе со всеми заполненными шагами. Восстановить ее можно будет только из выгруженного архива.'
+        'Ситуация «' + (s.title || C.TITLE_DEFAULT) + '» уйдет в корзину и будет храниться там ' +
+        C.TRASH_DAYS + ' дней. Оттуда ее можно вернуть.'
       ).then(function (ok) {
         if (!ok) return;
         Storage.remove(id);
-        Toast.show('Ситуация удалена');
+        Toast.show('Ситуация в корзине');
         render();
       });
     },
@@ -5786,6 +7091,115 @@ var App = (function () {
       renderLibList();
     },
 
+    /* ---- репетиция, раздел 7 ТЗ ---- */
+
+    rehearse: function () {
+      var s = sit();
+      if (!s) return;
+      Storage.flush().catch(function () {});
+      var mins = Number(root.settings.roundMinutes) || C.ROUND_MINUTES_DEFAULT;
+      view.screen = 'rehearsal';
+      view.rehPanel = '';
+      view.rehQuestion = null;
+      view.reh = { total: mins * 60, startedAt: 0, elapsed: 0, running: false };
+      if (!view.rehRole) {
+        var r0 = activeRole();
+        view.rehRole = r0 ? r0.id : null;
+      }
+      /* Звук разблокируется здесь: это касание, а без касания айфон
+         играть потом не даст. Пункт 14.2 ТЗ. */
+      Sound.unlock();
+      rehStop();
+      render();
+      window.scrollTo(0, 0);
+    },
+
+    'reh-exit': function () {
+      rehStop();
+      keepAwake(false);
+      view.reh.running = false;
+      view.screen = 'situation';
+      render();
+    },
+
+    'reh-run': function () {
+      Sound.unlock();
+      if (view.reh.running) {
+        view.reh.elapsed += Math.max(0, U.now() - view.reh.startedAt);
+        view.reh.running = false;
+        rehStop();
+        keepAwake(false);
+      } else {
+        if (Rehearsal.left(view.reh, U.now()) === 0) view.reh.elapsed = 0;
+        view.reh.startedAt = U.now();
+        view.reh.running = true;
+        rehStart();
+        keepAwake(true);
+      }
+      render();
+    },
+
+    'reh-reset': function () {
+      view.reh.running = false;
+      view.reh.elapsed = 0;
+      view.reh.startedAt = 0;
+      rehStop();
+      keepAwake(false);
+      rehLast = -1;
+      render();
+    },
+
+    'reh-panel': function (_id, b) {
+      var p = b.getAttribute('data-p') || '';
+      view.rehPanel = (view.rehPanel === p) ? '' : p;
+      if (view.rehPanel === 'question') {
+        var s = sit();
+        view.rehQuestion = s ? Rehearsal.randomQuestion(s) : null;
+      }
+      render();
+    },
+
+    'reh-question': function () {
+      var s = sit();
+      if (!s) return;
+      var next = Rehearsal.randomQuestion(s);
+      var list = (s.secondQuestions || []).filter(function (q) { return String(q.text || '').trim(); });
+      /* Второй раз подряд один и тот же вопрос это не проверка себя */
+      if (list.length > 1 && view.rehQuestion && next && next.id === view.rehQuestion.id) {
+        next = Rehearsal.randomQuestion(s);
+        if (next.id === view.rehQuestion.id) {
+          var others = list.filter(function (q) { return q.id !== view.rehQuestion.id; });
+          next = others[Math.floor(Math.random() * others.length)];
+        }
+      }
+      view.rehQuestion = next;
+      render();
+    },
+
+    /* ---- самопроверка пересказа, раздел 5.2 ТЗ ---- */
+
+    'self-check': function () {
+      var s = sit();
+      if (!s) return;
+      var sent = Rehearsal.randomSentence(s);
+      if (!sent) {
+        Toast.show('Текст ситуации пуст: пересказывать нечего');
+        return;
+      }
+      /* Второе нажатие должно дать другое место, иначе проверки нет */
+      if (view.selfCheck && sent === view.selfCheck) {
+        var all = Schema.sentences(s.sourceText).filter(function (x) { return x !== view.selfCheck; });
+        if (all.length) sent = all[Math.floor(Math.random() * all.length)];
+      }
+      view.selfCheck = sent;
+      render();
+    },
+
+    'self-hide': function () {
+      view.selfCheck = '';
+      render();
+    },
+
     /* ---- светофор, «Готов?», режимы ---- */
 
     light: function (_id, b) {
@@ -5857,10 +7271,206 @@ var App = (function () {
         'Заменить').then(function (ok) { if (ok) put(); });
     },
 
+    /* ---- разбор после поединка, раздел 5.8 ТЗ ---- */
+
+    after: function () {
+      var s = sit();
+      if (!s) return;
+      Storage.flush().catch(function () {});
+      view.screen = 'after';
+      render();
+      window.scrollTo(0, 0);
+    },
+
+    outcome: function (id, b) {
+      var s = sit();
+      if (!s) return;
+      var want = b.getAttribute('data-v');
+      var found = null;
+      var scan = function (list, path) {
+        (list || []).forEach(function (f, i) {
+          if (f.id === id) found = { f: f, path: path + '.' + i };
+        });
+      };
+      Schema.ensureStep7(s);
+      scan(s.step7.common, 'step7.common');
+      s.roles.forEach(function (r) {
+        scan(Schema.step7ForRole(s, r.id).formulas, 'step7.byRole.' + r.id + '.formulas');
+      });
+      if (!found) return;
+      var prev = found.f.outcome || '';
+      var next = (prev === want) ? '' : want;   // повторное нажатие снимает отметку
+      Storage.patch(s.id, found.path + '.outcome', next);
+
+      /* Счет уходит заготовке в копилку. Снятие отметки счет возвращает:
+         иначе одно случайное нажатие навсегда портило бы статистику. */
+      if (found.f.originId) {
+        var lib = Storage.getFormula(found.f.originId);
+        if (lib) {
+          var d = { worked: 0, failed: 0 };
+          if (prev) d[prev] -= 1;
+          if (next) d[next] += 1;
+          if (d.worked) Storage.patchFormula(lib.id, 'worked', Math.max(0, (lib.worked || 0) + d.worked));
+          if (d.failed) Storage.patchFormula(lib.id, 'failed', Math.max(0, (lib.failed || 0) + d.failed));
+        }
+      }
+      render();
+    },
+
+    reload: function () {
+      try { window.location.reload(); } catch (e) {}
+    },
+
+    'hint-off': function () {
+      View.safe.installHint = false;
+      Storage.writeLocal('installHintOff', 1).catch(function () {});
+      render();
+    },
+
+    /* ---- корзина, раздел 11 ТЗ ---- */
+
+    trash: function () {
+      view.screen = 'trash';
+      render();
+      window.scrollTo(0, 0);
+    },
+
+    restore: function (id) {
+      Storage.restore(id);
+      Toast.show('Ситуация возвращена');
+      /* Опустевшая корзина - не экран, на котором стоит держать: уводим к списку */
+      if (!Trash.inTrash(root.situations).length) view.screen = 'list';
+      render();
+    },
+
+    purge: function (id) {
+      var s = Storage.getSituation(id);
+      if (!s) return;
+      Modal.confirm('Стереть насовсем',
+        'Ситуация «' + (s.title || C.TITLE_DEFAULT) + '» будет стерта окончательно. Вернуть ее можно будет только из выгруженного архива.',
+        'Стереть').then(function (ok) {
+          if (!ok) return;
+          Storage.purge(id);
+          Toast.show('Стерто');
+          render();
+        });
+    },
+
+    'trash-empty': function () {
+      var list = Trash.inTrash(root.situations);
+      if (!list.length) return;
+      Modal.confirm('Очистить корзину',
+        'Из корзины будет стерто ситуаций: ' + list.length + '. Окончательно.',
+        'Очистить').then(function (ok) {
+          if (!ok) return;
+          list.forEach(function (s) { Storage.purge(s.id); });
+          Toast.show('Корзина очищена');
+          render();
+        });
+    },
+
+    /* ---- история, раздел 11 ТЗ ---- */
+
+    history: function () {
+      var s = sit();
+      if (!s) return;
+      Storage.flush().catch(function () {}).then(function () {
+        return Promise.all([Storage.historyOf(s.id), Storage.snapshotsOf(s.id)]);
+      }).then(function (both) {
+        view.history = both[0] || [];
+        view.snaps = both[1] || [];
+        view.screen = 'history';
+        render();
+        window.scrollTo(0, 0);
+      }).catch(function (e) {
+        Toast.show('Не удалось прочитать историю: ' + (e.message || e), 'err');
+      });
+    },
+
+    'snap-restore': function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var list = (view.snaps || []).slice().sort(function (a, c) { return c.ts - a.ts; });
+      var sn = list[Number(b.getAttribute('data-i'))];
+      if (!sn) return;
+      Modal.confirm('Вернуть состояние целиком',
+        'Ситуация вернется к состоянию на ' + U.dateShort(sn.ts) + '. Все, что заполнено после этого, пропадет. ' +
+        'Нынешнее состояние тут же станет новым снимком, так что возврат обратим.',
+        'Вернуть').then(function (ok) {
+          if (!ok) return;
+          Storage.restoreSnapshot(s.id, sn.data).then(function (done) {
+            if (!done) { Toast.show('Не удалось вернуть состояние', 'err'); return; }
+            Toast.show('Состояние возвращено');
+            view.screen = 'situation';
+            view.roleId = null;
+            render();
+          });
+        });
+    },
+
+    undo: function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var list = (view.history || []).slice().sort(function (a, c) { return c.ts - a.ts; });
+      var h = list[Number(b.getAttribute('data-i'))];
+      if (!h) return;
+      /* Откат сам становится правкой: его тоже можно откатить. */
+      Storage.patch(s.id, h.path, h.oldValue);
+      Toast.show('Прежнее значение возвращено');
+      view.screen = 'situation';
+      view.open = Comments.locate(h.path).sec;
+      render();
+    },
+
+    /* ---- выгрузки, раздел 8 ТЗ ---- */
+
+    'export-sit': function () { exportDialog(); },
+
     export: function () { doExport(); },
     import: function () { doImport(); },
     cloud: function () { cloudDialog(); }
   };
+
+  /* Выбор формата выгрузки. Раздел 8 ТЗ. */
+  function exportDialog() {
+    var s = sit();
+    if (!s) return;
+    Modal.open({
+      title: 'Выгрузить подготовку',
+      html: '<p class="muted">HTML открывается везде и перетаскивается в Word. RTF правится в Word, Pages и Google Docs. Markdown нужен Obsidian. JSON одной ситуации отдают секунданту.</p>' +
+        ['html', 'rtf', 'md', 'json'].map(function (k, i) {
+          var name = { html: 'HTML - основной формат', rtf: 'RTF - редактируемый документ', md: 'Markdown', json: 'JSON одной ситуации' }[k];
+          return '<label class="chk" style="display:flex;margin-bottom:6px;text-align:left">' +
+            '<input type="radio" name="expf" data-exp="' + k + '"' + (i === 0 ? ' checked' : '') + '>' + name + '</label>';
+        }).join(''),
+      actions: [
+        { label: 'Отмена', value: null },
+        { label: 'Печать', value: 'print' },
+        {
+          label: 'Выгрузить', kind: 'btn-primary',
+          collect: function (node) {
+            var r = node.querySelector('[data-exp]:checked');
+            return r ? r.getAttribute('data-exp') : null;
+          }
+        }
+      ]
+    }).then(function (kind) {
+      if (!kind) return;
+      try {
+        if (kind === 'print') {
+          Report.print(s, root);
+          return;
+        }
+        if (kind === 'html') Archive.saveFile(Report.toHtml(s, root), Report.fileName(s, 'html'), 'text/html;charset=utf-8');
+        else if (kind === 'rtf') Archive.saveFile(Report.toRtf(s, root), Report.fileName(s, 'rtf'), 'application/rtf');
+        else if (kind === 'md') Archive.saveFile(Report.toMd(s, root), Report.fileName(s, 'md'), 'text/markdown;charset=utf-8');
+        else Archive.saveFile(JSON.stringify(s, null, 2), Report.fileName(s, 'json'), 'application/json');
+        Toast.show('Выгружено');
+      } catch (e) {
+        Toast.show('Не удалось выгрузить: ' + (e.message || e), 'err');
+      }
+    });
+  }
 
   /* Выбор заготовки из копилки. В ситуацию уходит копия текста. */
   function pickFormula(level) {
@@ -6135,6 +7745,10 @@ var App = (function () {
     Storage.flush().catch(function () {}).then(function () {
       try {
         Archive.download(root);
+        /* Отметка о выгрузке местная: архив выгружают на устройстве,
+           и напоминание тоже нужно этому устройству. */
+        Storage.writeLocal('lastExport', U.now()).catch(function () {});
+        refreshSafety();
         Toast.show('Архив выгружен');
       } catch (e) {
         Toast.show('Не удалось выгрузить архив: ' + e.message, 'err');
@@ -6236,6 +7850,21 @@ var App = (function () {
       }
     });
 
+    /* Стоп-кран второй вкладки, раздел 11 ТЗ */
+    Tabs.start();
+    Tabs.onRemote = function () {
+      /* На списке ситуаций затирать нечего: перечитываем и показываем свежее */
+      if (view.screen === 'list' && !Storage.hasPending()) {
+        Storage.reload().then(function () { render(); }).catch(function () {});
+        return 'reload';
+      }
+      return 'lock';
+    };
+    Tabs.onLock = function () {
+      Toast.show('Данные изменены в другой вкладке: правки здесь не сохраняются', 'err');
+      render();
+    };
+
     Storage.subscribe(function (ev) {
       if (ev.type === 'save') updateSaveIndicator(ev.state);
       if (ev.type === 'error') Toast.show('Данные не сохранились: ' + (ev.error && ev.error.message ? ev.error.message : 'ошибка базы'), 'err');
@@ -6254,6 +7883,12 @@ var App = (function () {
       }
     });
     window.addEventListener('pagehide', function () { Storage.flush().catch(function () {}); });
+    /* Часы репетиции не должны тикать в свернутой вкладке: время все
+       равно считается по системным часам и сойдется при возврате. */
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') rehStop();
+      else if (view.screen === 'rehearsal' && view.reh.running) rehStart();
+    });
     window.addEventListener('beforeunload', function (e) {
       if (Storage.hasPending()) { e.preventDefault(); e.returnValue = ''; }
     });
@@ -6263,6 +7898,10 @@ var App = (function () {
       root = r;
       Theme.apply(root.settings.theme);
       Express.set(root.settings.expressMode);
+      /* Корзина чистится по сроку при каждом открытии: раздел 11 ТЗ. */
+      Trash.expired(root.situations, U.now()).forEach(function (s) { Storage.purge(s.id); });
+      /* Баннеры сохранности, раздел 3.1 ТЗ */
+      refreshSafety().then(function () { if (view.screen === 'list') render(); });
       if (root.settings.cloud.connected) useCloudAdapter(true);
       render();
 
@@ -6295,7 +7934,8 @@ var App = (function () {
 window.PP = {
   C: C, U: U, Schema: Schema, Storage: Storage, Roles: Roles, Archive: Archive,
   Cloud: Cloud, GoogleAuth: GoogleAuth, Drive: Drive, App: App, Library: Library,
-  Traffic: Traffic, Copy: Copy, Express: Express, Comments: Comments
+  Traffic: Traffic, Copy: Copy, Express: Express, Comments: Comments,
+  Rehearsal: Rehearsal, Sound: Sound, Report: Report, Trash: Trash, Safety: Safety, Tabs: Tabs
 };
 
 if (!IS_OAUTH_POPUP) {
