@@ -255,6 +255,23 @@ table.mx .pnum{
   display:inline-flex; width:20px; height:20px; border-radius:5px; background:var(--accent-soft); color:var(--accent);
   align-items:center; justify-content:center; font-size:11px; font-weight:700; vertical-align:middle;
 }
+.linkq{
+  border:0; background:none; padding:0; margin:0; font:inherit; color:var(--text);
+  text-align:left; cursor:pointer; width:100%; min-height:28px;
+}
+.linkq:hover{color:var(--accent)}
+
+/* ---------- свод по одной фразе: все слои сразу ---------- */
+.lblock{border:1px solid var(--line); border-radius:var(--r); padding:12px; margin:0 0 10px; background:var(--surface)}
+.lblock.lb-idle{border-style:dashed; background:transparent}
+.lblock.lb-sil{opacity:.6}
+.lb-h{display:flex; gap:8px; align-items:baseline; flex-wrap:wrap; margin-bottom:8px}
+.lb-h b{font-size:15px}
+.lb-h .st{font-size:12px; color:var(--muted)}
+.one-q{
+  font-size:16px; line-height:1.5; padding:12px; border-radius:var(--r);
+  background:var(--accent-soft); color:var(--text);
+}
 
 /* ---------- значок синхронизации ---------- */
 .cloud-btn.muted{color:var(--muted)}
@@ -340,7 +357,7 @@ var IS_OAUTH_POPUP = false;
    1. КОНСТАНТЫ. Все пороги ТЗ собраны здесь и больше нигде не повторяются.
    --------------------------------------------------------------------- */
 var C = {
-  APP_VERSION: '0.2.1',
+  APP_VERSION: '0.2.2',
   SYNC_VERSION: '0.1',
   SCHEMA: 2,                 // версия схемы данных, раздел 5 ТЗ
   DB_NAME: 'poedinok-prep',  // раздел 3 ТЗ
@@ -2223,12 +2240,12 @@ var View = (function () {
     return '<select class="lsel" data-sel="' + path + '">' + opts + '</select>';
   }
 
-  function step2Body(sit, tab, layerId) {
+  function step2Body(sit, tab, layerId, phraseIdx) {
     var s2 = sit.step2;
     var src = markSource(sit.sourceText, s2.phrases);
 
     var head =
-      '<details class="det"' + (tab !== 'pass' ? ' open' : '') + '><summary>Текст ситуации</summary><div class="det-b">' +
+      '<details class="det"' + (tab !== 'pass' && tab !== 'one' ? ' open' : '') + '><summary>Текст ситуации</summary><div class="det-b">' +
       '<div class="src" id="src-text">' + src.html + '</div>' +
       '<div class="hint" style="margin-top:10px">Выделите кусок текста: кнопка «В разбор» появится прямо у выделения. Разобранное подсвечивается и нумеруется.</div>' +
       '<div class="selhint" id="sel-hint"></div>' +
@@ -2240,11 +2257,13 @@ var View = (function () {
       '<button class="selbtn" id="sel-btn" data-act="to-analysis">' + Icons('plus', 18) + 'В разбор</button>' +
       '<div class="tabs">' +
       '<button class="tab' + (tab === 'pass' ? ' on' : '') + '" data-act="s2tab" data-tab="pass">Прогон по слоям</button>' +
+      '<button class="tab' + (tab === 'one' ? ' on' : '') + '" data-act="s2tab" data-tab="one">Разбор фразы</button>' +
       '<button class="tab' + (tab === 'phrases' ? ' on' : '') + '" data-act="s2tab" data-tab="phrases">Фразы (' + s2.phrases.length + ')</button>' +
       '<button class="tab' + (tab === 'matrix' ? ' on' : '') + '" data-act="s2tab" data-tab="matrix">Матрица</button>' +
       '</div>';
 
     if (tab === 'pass') return head + step2Pass(s2, layerId);
+    if (tab === 'one') return head + step2One(s2, phraseIdx);
     if (tab === 'matrix') return head + step2Matrix(s2);
 
     if (!s2.phrases.length) {
@@ -2373,6 +2392,97 @@ var View = (function () {
         : '');
   }
 
+  /* ---- свод по одной фразе: все семь слоев сразу ----
+     Прогон разносит работу по слоям, а здесь она собирается обратно:
+     одно предложение и весь его разбор в одном месте, чтобы ничего не потерять. */
+  function step2One(s2, phraseIdx) {
+    if (!s2.phrases.length) {
+      return '<div class="empty">Фраз пока нет.<br>Нажмите «Нарезать текст на фразы» или выделите кусок текста выше.</div>';
+    }
+    var i = Math.min(Math.max(Number(phraseIdx) || 0, 0), s2.phrases.length - 1);
+    var p = s2.phrases[i];
+    var base = 'step2.phrases.' + i;
+    var nLayers = C.LAYERS.length;
+
+    // лента фраз с прогрессом по слоям у каждой
+    var bar = '<div class="roles-bar">' + s2.phrases.map(function (x, k) {
+      var done = C.LAYERS.filter(function (l) { return Schema.passedInLayer(x, l.id); }).length;
+      return '<button class="role-tab' + (k === i ? ' on' : '') + '" data-act="s2one" data-i="' + k + '" ' +
+        'title="' + U.esc(U.cut(String(x.quote || ''), C.QUOTE_PREVIEW)) + '">' +
+        '<span class="dot' + (done === nLayers ? ' filled' : '') + '"></span>' +
+        '<span class="nm">' + (k + 1) + '</span>' +
+        '<span class="muted" style="font-size:11px">' + done + '/' + nLayers + '</span>' +
+        '</button>';
+    }).join('') + '</div>';
+
+    var blocks = C.LAYERS.map(function (l) {
+      var silent = (p.silent || []).indexOf(l.id) >= 0;
+
+      var rn = 0, rds = '';
+      p.readings.forEach(function (r, j) {
+        if (r.layer !== l.id) return;
+        if (String(r.text || '').trim()) rn++;
+        var rb = base + '.readings.' + j;
+        rds += '<div class="reading">' +
+          '<div class="row" style="flex-wrap:nowrap;align-items:flex-start">' +
+          '<textarea rows="2" data-field="' + rb + '.text" placeholder="Как фраза читается в слое «' + U.esc(l.name) + '»">' + U.esc(r.text) + '</textarea>' +
+          '<button class="btn btn-ghost btn-icon' + (r.starred ? ' starred' : '') + '" data-act="star" data-i="' + i + '" data-j="' + j +
+          '" title="Отметить главной" aria-label="Отметить главной">' + Icons(r.starred ? 'star_on' : 'star') + '</button>' +
+          '<button class="btn btn-ghost btn-icon" data-act="del-reading" data-i="' + i + '" data-j="' + j +
+          '" title="Удалить трактовку" aria-label="Удалить трактовку">' + Icons('trash') + '</button>' +
+          '</div>' +
+          '<textarea rows="1" data-field="' + rb + '.use" placeholder="Что это дает в переговорах">' + U.esc(r.use) + '</textarea>' +
+          '</div>';
+      });
+
+      var wn = 0, wms = '';
+      p.wordMeanings.forEach(function (m, k) {
+        if (m.layer !== l.id) return;
+        if (String(m.text || '').trim()) wn++;
+        wms += '<div class="reading"><div class="row" style="flex-wrap:nowrap;align-items:flex-start">' +
+          '<span class="wtag">' + U.esc(m.word) + '</span>' +
+          '<textarea rows="1" data-field="' + base + '.wordMeanings.' + k + '.text" placeholder="Что значит это слово в слое «' + U.esc(l.name) + '»">' + U.esc(m.text) + '</textarea>' +
+          '<button class="btn btn-ghost btn-icon" data-act="del-wm" data-i="' + i + '" data-k="' + k +
+          '" title="Убрать" aria-label="Убрать">' + Icons('trash') + '</button>' +
+          '</div></div>';
+      });
+
+      var status = silent
+        ? 'в этом слое фраза не звучит'
+        : (rn + wn ? 'трактовок ' + rn + ', слов ' + wn : 'не разобрано');
+      var cls = silent ? ' lb-sil' : (rn + wn ? '' : ' lb-idle');
+
+      return '<div class="lblock' + cls + '">' +
+        '<div class="lb-h"><b>' + U.esc(l.name) + '</b><span class="st">' + status + '</span></div>' +
+        (silent ? '' :
+          (rds || '<div class="muted" style="margin-bottom:8px">Трактовки в этом слое нет.</div>') +
+          (wms ? '<div class="label" style="margin-top:6px">Слова</div>' + wms : '') +
+          '<div class="row">' +
+          '<button class="btn btn-sm" data-act="add-reading-l" data-i="' + i + '" data-layer="' + l.id + '">' + Icons('plus', 16) + 'Трактовку</button>' +
+          '<button class="btn btn-sm" data-act="go-layer" data-i="' + i + '" data-layer="' + l.id + '">Разобрать слова в прогоне</button>' +
+          '</div>') +
+        '<label class="chk' + (silent ? ' on' : '') + '" style="margin-top:8px">' +
+        '<input type="checkbox" data-check="silent1" data-i="' + i + '" data-layer="' + l.id + '"' + (silent ? ' checked' : '') + '>' +
+        'в этом слое фраза не звучит</label>' +
+        '</div>';
+    }).join('');
+
+    var done = C.LAYERS.filter(function (l) { return Schema.passedInLayer(p, l.id); }).length;
+
+    return bar +
+      '<div class="row" style="justify-content:space-between;flex-wrap:nowrap;align-items:center;margin-bottom:8px">' +
+      '<button class="btn btn-sm" data-act="s2one" data-i="' + (i - 1) + '"' + (i === 0 ? ' disabled' : '') + '>Предыдущая</button>' +
+      '<span class="muted" style="font-size:13px">Фраза ' + (i + 1) + ' из ' + s2.phrases.length + '</span>' +
+      '<button class="btn btn-sm" data-act="s2one" data-i="' + (i + 1) + '"' + (i === s2.phrases.length - 1 ? ' disabled' : '') + '>Следующая</button>' +
+      '</div>' +
+      '<div class="one-q">' + U.esc(p.quote || 'фраза без цитаты') + '</div>' +
+      (p.purpose ? '' : '<div class="hint" style="margin-top:8px">Зачем эта фраза в тексте, стоит записать: это половина смысла разбора.</div>') +
+      '<div class="field" style="margin-top:10px"><span class="label">Зачем эта фраза в тексте</span>' +
+      '<textarea rows="2" data-field="' + base + '.purpose" placeholder="Смысл и причина существования фразы">' + U.esc(p.purpose) + '</textarea></div>' +
+      '<div class="muted" style="margin:0 0 10px">Пройдено слоев по этой фразе: ' + done + ' из ' + nLayers + '.</div>' +
+      blocks;
+  }
+
   function step2Matrix(s2) {
     var usedCount = 0;
     var cols = C.LAYERS.map(function (l) {
@@ -2395,8 +2505,11 @@ var View = (function () {
         }
         return '<td' + (silent ? ' class="sil" title="Отмечено: в этом слое фраза не звучит"' : '') + '>' + (silent ? '&middot;' : '') + '</td>';
       }).join('');
-      return '<tr><td class="qcell"><span class="pnum">' + (i + 1) + '</span> ' +
-        U.esc(q.length > C.QUOTE_PREVIEW ? U.cut(q, C.QUOTE_PREVIEW) + '...' : (q || 'без цитаты')) + '</td>' + cells + '</tr>';
+      return '<tr><td class="qcell">' +
+        '<button class="linkq" data-act="s2one" data-i="' + i + '" title="Открыть разбор этой фразы по всем слоям">' +
+        '<span class="pnum">' + (i + 1) + '</span> ' +
+        U.esc(q.length > C.QUOTE_PREVIEW ? U.cut(q, C.QUOTE_PREVIEW) + '...' : (q || 'без цитаты')) +
+        '</button></td>' + cells + '</tr>';
     }).join('');
 
     var notes = C.LAYERS.map(function (l) {
@@ -2407,7 +2520,7 @@ var View = (function () {
     }).join('');
 
     return '<div class="muted" style="margin:4px 0 10px">Задействовано слоев: ' + usedCount + ' из ' + C.LAYERS.length +
-      '. Пустой столбец означает слой, который вы не тронули ни разу.</div>' +
+      '. Пустой столбец означает слой, который вы не тронули ни разу. Нажатие на фразу открывает ее разбор по всем слоям.</div>' +
       (s2.phrases.length
         ? '<div class="mx-wrap"><table class="mx"><thead><tr><th class="qcell">Фраза</th>' + cols + '</tr></thead><tbody>' + rows + '</tbody></table></div>'
         : '<div class="empty">Фраз пока нет, матрица пуста.</div>') +
@@ -2464,7 +2577,7 @@ var View = (function () {
     var body = '';
     body += accordion(Icons('doc', 16), 'Текст и роли', open === 'setup', 'setup', open === 'setup' ? setupBody(sit) : '');
     body += accordion('1', 'Понять ситуацию', open === 's1', 's1', open === 's1' ? step1Body(sit) : '');
-    body += accordion('2', 'Разобрать текст на фразы и слова', open === 's2', 's2', open === 's2' ? step2Body(sit, view.s2tab, view.s2layer) : '');
+    body += accordion('2', 'Разобрать текст на фразы и слова', open === 's2', 's2', open === 's2' ? step2Body(sit, view.s2tab, view.s2layer, view.s2phrase) : '');
     body += accordion('3', 'Вытащить роль на положительного героя', open === 's3', 's3',
       open === 's3' ? (roleBar(sit, role.id, 's3') + step3Body(sit, role)) : '');
     body += accordion('8', 'Первая фраза', open === 's8', 's8',
@@ -2526,7 +2639,7 @@ var View = (function () {
    --------------------------------------------------------------------- */
 var App = (function () {
   var root = null;
-  var view = { screen: 'list', sitId: null, roleId: null, open: 'setup', s2tab: 'pass', s2layer: 'tech' };
+  var view = { screen: 'list', sitId: null, roleId: null, open: 'setup', s2tab: 'pass', s2layer: 'tech', s2phrase: 0 };
   var mount = null;
   var lastSelection = '';   // кусок текста ситуации, выделенный пользователем
 
@@ -2683,6 +2796,18 @@ var App = (function () {
       render();
       return;
     }
+    /* То же самое в своде по фразе, где слой берется у самой отметки */
+    if (kind === 'silent1') {
+      var so = sit();
+      var pho = so && so.step2.phrases[i];
+      if (!pho) return;
+      var lay1 = t.getAttribute('data-layer');
+      var lst = (pho.silent || []).filter(function (x) { return x !== lay1; });
+      if (t.checked) lst.push(lay1);
+      Storage.patch(so.id, 'step2.phrases.' + i + '.silent', lst);
+      render();
+      return;
+    }
     var role = activeRole();
     if (!role) return;
     Storage.patch(view.sitId, 'step3.byRole.' + role.id + '.assumptions.' + i + '.' + kind, t.checked);
@@ -2836,7 +2961,7 @@ var App = (function () {
 
     s2tab: function (_id, b) {
       var tb = b.getAttribute('data-tab');
-      view.s2tab = (tb === 'matrix' || tb === 'phrases' || tb === 'pass') ? tb : 'pass';
+      view.s2tab = (tb === 'matrix' || tb === 'phrases' || tb === 'pass' || tb === 'one') ? tb : 'pass';
       render();
     },
 
@@ -2845,6 +2970,40 @@ var App = (function () {
       view.s2tab = 'pass';
       render();
       window.scrollTo(0, 0);
+    },
+
+    /* Свод по одной фразе: все семь слоев сразу */
+    s2one: function (_id, b) {
+      var s = sit();
+      var n = s ? s.step2.phrases.length : 0;
+      var i = Number(b.getAttribute('data-i'));
+      if (!n || isNaN(i)) return;
+      view.s2phrase = Math.min(Math.max(i, 0), n - 1);
+      view.s2tab = 'one';
+      render();
+    },
+
+    /* Трактовка в заданном слое прямо из свода, без переключения прогона */
+    'add-reading-l': function (_id, b) {
+      var s = sit();
+      if (!s) return;
+      var i = Number(b.getAttribute('data-i'));
+      var lay = b.getAttribute('data-layer');
+      var p = s.step2.phrases[i];
+      if (!p) return;
+      Storage.patch(s.id, 'step2.phrases.' + i + '.readings', p.readings.concat([Schema.newReading(lay)]));
+      render();
+    },
+
+    /* Из свода в прогон: тот же слой, та же фраза */
+    'go-layer': function (_id, b) {
+      var i = Number(b.getAttribute('data-i'));
+      view.s2layer = b.getAttribute('data-layer');
+      view.s2phrase = isNaN(i) ? 0 : i;
+      view.s2tab = 'pass';
+      render();
+      var card = mount.querySelectorAll('.phrase')[view.s2phrase];
+      if (card && card.scrollIntoView) { try { card.scrollIntoView(); } catch (e) {} }
     },
 
     /* Нарезка текста на фразы по предложениям, с подтверждением */
@@ -3183,6 +3342,7 @@ var App = (function () {
     view.screen = 'situation';
     view.sitId = id;
     view.roleId = null; // роль не выбрана: активной будет трудная
+    view.s2phrase = 0;  // свод по фразе начинается с первой, а не с чужого номера
     view.open = String(s.sourceText || '').trim() ? 's1' : 'setup';
     render();
     window.scrollTo(0, 0);
